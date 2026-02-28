@@ -50,6 +50,59 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+
+/* ===== شاشة الترحيب باللوجو (Splash Screen) - محسنة للموبايل والكمبيوتر ===== */
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #1a2b4a, #0f1a2f);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease;
+    opacity: 1;
+    pointer-events: none;
+}
+.splash-content {
+    text-align: center;
+    animation: float 3s infinite ease-in-out;
+    padding: 20px;
+    max-width: 90vw;
+}
+.splash-logo {
+    width: clamp(160px, 35vw, 320px); /* صغير على الموبايل + عريض وجميل على الكمبيوتر واللابتوب */
+    height: auto;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    margin-bottom: 25px;
+    border: 4px solid rgba(255, 255, 255, 0.25);
+    image-rendering: crisp-edges; /* يجعل الصورة أوضح وأنقى */
+}
+.splash-title {
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.8rem);
+    margin-bottom: 12px;
+    letter-spacing: 3px;
+    text-shadow: 0 3px 15px rgba(0,0,0,0.4);
+    font-weight: 700;
+}
+.splash-subtitle {
+    color: #c9b27e;
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+    opacity: 0.95;
+    font-weight: 500;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* باقي التصميم بدون تغيير (كامل ومتكامل) */
 .auth-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 1; visibility: visible; transition: all 0.5s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; padding: 20px; }
 .auth-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .auth-container { background: var(--bg-secondary); backdrop-filter: blur(10px); width: 90%; max-width: 450px; margin: auto; padding: 50px 40px; border-radius: 40px; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.1) inset; text-align: center; animation: slideUpFade 0.6s ease-out; }
@@ -298,12 +351,23 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 .right-sidebar::-webkit-scrollbar, .left-content::-webkit-scrollbar, .my-posts-section::-webkit-scrollbar, .notifications-section::-webkit-scrollbar, .messages-section::-webkit-scrollbar, .comments-section::-webkit-scrollbar, .chat-messages::-webkit-scrollbar { width: 6px; }
 .right-sidebar::-webkit-scrollbar-track, .left-content::-webkit-scrollbar-track, .my-posts-section::-webkit-scrollbar-track, .notifications-section::-webkit-scrollbar-track, .messages-section::-webkit-scrollbar-track, .comments-section::-webkit-scrollbar-track, .chat-messages::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
 .right-sidebar::-webkit-scrollbar-thumb, .left-content::-webkit-scrollbar-thumb, .my-posts-section::-webkit-scrollbar-thumb, .notifications-section::-webkit-scrollbar-thumb, .messages-section::-webkit-scrollbar-thumb, .comments-section::-webkit-scrollbar-thumb, .chat-messages::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
-.right-sidebar::-webkit-scrollbar-thumb:hover, .left-content::-webkit-scrollbar-thumb:hover, .my-posts-section::-webkit-scrollbar-thumb:hover, .notifications-section::-webkit-scrollbar-thumb:hover, .messages-section::-webkit-scrollbar-thumb:hover, .chat-messages::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+.right-sidebar::-webkit-scrollbar-thumb:hover, .left-content::-webkit-scrollbar-thumb:hover, .my-posts-section::-webkit-scrollbar-thumb:hover, .notifications-section::-webkit-scrollbar-thumb:hover, .messages-section::-webkit-scrollbar-thumb:hover, .comments-section::-webkit-scrollbar-thumb:hover, .chat-messages::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 .post-item.highlight { animation: highlightPost 1s ease; border-color: var(--highlight-border); box-shadow: 0 0 20px var(--highlight-shadow); }
 @keyframes highlightPost { 0%, 100% { background: var(--bg-secondary); } 50% { background: var(--highlight-bg); } }
 </style>
 </head>
 <body>
+<!-- ===== شاشة الترحيب باللوجو (Splash Screen) ===== -->
+<div class="splash-screen" id="splashScreen">
+    <div class="splash-content">
+        <!-- صورة اللوجو مع حواف دائرية - محسنة ومتجاوبة -->
+        <img src="logo.jpg" alt="Helper Pal Logo" class="splash-logo">
+        <h1 class="splash-title">Helper Pal</h1>
+        <p class="splash-subtitle">Keep our community safe</p>
+    </div>
+</div>
+
+<!-- باقي الكود كامل بدون أي تغيير (الأصلي 100%) -->
 <div class="auth-screen" id="authScreen">
 <div class="auth-container">
 <h1>Helper Pal</h1>
@@ -321,14 +385,12 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <div class="right-sidebar" id="rightSidebar">
 <div class="unified-card">
 <div class="mobile-back-btn" id="mobileBackBtn" onclick="closeMobileProfile()"><span>←</span> الرجوع للرئيسية</div>
-<!-- قسم الملف الشخصي المصغر (في الأعلى) -->
 <div class="profile-section">
 <div class="profile-header">
 <div class="profile-avatar" id="avatarDisplay">م</div>
 <div class="profile-name"><h3 id="displayName">الاسم</h3><p onclick="openModal()"><span>✎</span> تعديل البروفايل</p></div>
 </div>
 </div>
-<!-- قسم مشاركة جديدة (الترتيب 1) -->
 <div class="post-section">
 <h3>📝 مشاركة جديدة</h3>
 <textarea id="postDesc" placeholder="اكتب ما يدور في ذهنك..."></textarea>
@@ -341,7 +403,6 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <button class="sidebar-btn" id="notificationsToggle" onclick="toggleNotifications()"><span>🔔</span><span>الإشعارات</span><span class="notification-badge" id="notificationBadge">0</span></button>
 <button class="sidebar-btn" id="messagesToggle" onclick="toggleMessages()"><span>💬</span><span>الرسائل</span><span class="notification-badge" id="messageBadge">0</span></button>
 </div>
-<!-- قسم روابط سريعة (الترتيب 2) -->
 <div class="quick-links-section">
 <div class="quick-links-title">📌 روابط سريعة</div>
 <div class="quick-links-grid">
@@ -363,11 +424,9 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 </a>
 </div>
 </div>
-<!-- الأقسام المخفية (منشوراتي, إشعارات, رسائل) -->
 <div class="my-posts-section" id="myPostsSection"><h4 class="section-title">📌 منشوراتي <span class="section-count" id="myPostsCount">0</span></h4><div class="my-posts-list" id="myPostsList"></div></div>
 <div class="notifications-section" id="notificationsSection"><h4 class="section-title">🔔 الإشعارات <span class="section-count" id="notificationsCount">0</span></h4><div class="notifications-list" id="notificationsList"></div></div>
 <div class="messages-section" id="messagesSection"><h4 class="section-title">💬 المحادثات <span class="section-count" id="messagesCount">0</span></h4><div class="messages-list" id="messagesList"></div></div>
-<!-- قسم الملف الشخصي الكامل (الترتيب 3) -->
 <div class="profile-section" style="border-bottom:none;border-top:1px solid var(--border-color);">
 <div class="profile-info">
 <div class="info-row"><span class="info-label">الاسم</span><span class="info-value" id="infoName"></span></div>
@@ -397,13 +456,25 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <div class="chat-modal" id="chatModal"><div class="chat-container"><div class="chat-header"><button class="chat-back-btn" id="chatBackBtn" onclick="closeChat()">←</button><div class="chat-header-avatar" id="chatAvatar">م</div><div class="chat-header-info"><h3 id="chatUserName">اسم المستخدم</h3><p>متصل الآن</p></div><button class="chat-close" onclick="closeChat()">✕</button></div><div class="chat-messages" id="chatMessages"></div><div class="chat-input-area"><input type="text" class="chat-input" id="chatInput" placeholder="اكتب رسالتك..."><button class="chat-send-btn" onclick="sendChatMessage()"><img src="send.png" alt="إرسال"></button></div></div></div>
 <div class="new-message-modal" id="newMessageModal"><div class="new-message-container"><div class="new-message-header"><h3>📝 رسالة جديدة</h3><button class="new-message-close" onclick="closeNewMessageModal()">✕</button></div><div class="new-message-recipient" id="newMessageRecipient"></div><textarea class="new-message-textarea" id="newMessageText" placeholder="اكتب رسالتك هنا..."></textarea><button class="new-message-send-btn" onclick="sendNewMessage()"><img src="send.png" alt="إرسال"><span>إرسال الرسالة</span></button></div></div>
 <input type="file" id="mobileImageUpload" accept="image/*" multiple style="display:none;">
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove, set, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 const firebaseConfig = { apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o", authDomain: "talk-19c55.firebaseapp.com", databaseURL: "https://talk-19c55-default-rtdb.firebaseio.com", projectId: "talk-19c55", storageBucket: "talk-19c55.firebasestorage.app", messagingSenderId: "908101479029", appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c" };
 const app = initializeApp(firebaseConfig), db = getDatabase(app);
 const $ = id => document.getElementById(id);
-const els = { authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'), mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'), loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'), loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'), infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'), infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'), editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'), editGovernorate: $('editGovernorate'), editJob: $('editJob'), postsContainer: $('postsContainer'), postsCount: $('postsCount'), mobilePostInput: $('mobilePostInput'), postDesc: $('postDesc'), imageUpload: $('imageUpload'), imagePreviewContainer: $('imagePreviewContainer'), myPostsList: $('myPostsList'), myPostsSection: $('myPostsSection'), myPostsToggle: $('myPostsToggle'), myPostsCount: $('myPostsCount'), notificationsList: $('notificationsList'), notificationsSection: $('notificationsSection'), notificationsToggle: $('notificationsToggle'), notificationsCount: $('notificationsCount'), notificationBadge: $('notificationBadge'), messagesList: $('messagesList'), messagesSection: $('messagesSection'), messagesToggle: $('messagesToggle'), messagesCount: $('messagesCount'), messageBadge: $('messageBadge'), mobileImageBtn: $('mobileImageBtn'), mobileImageUpload: $('mobileImageUpload'), mobileImagePreview: $('mobileImagePreview'), mobilePreviewGrid: $('mobilePreviewGrid'), imageViewerModal: $('imageViewerModal'), imageViewerContainer: $('imageViewerContainer'), imageViewerCounter: $('imageViewerCounter'), chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'), chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'), newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'), confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon') };
+const els = { authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'), mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'), loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'), loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'), infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'), infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'), editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'), editGovernorate: $('editGovernorate'), editJob: $('editJob'), postsContainer: $('postsContainer'), postsCount: $('postsCount'), mobilePostInput: $('mobilePostInput'), postDesc: $('postDesc'), imageUpload: $('imageUpload'), imagePreviewContainer: $('imagePreviewContainer'), myPostsList: $('myPostsList'), myPostsSection: $('myPostsSection'), myPostsToggle: $('myPostsToggle'), myPostsCount: $('myPostsCount'), notificationsList: $('notificationsList'), notificationsSection: $('notificationsSection'), notificationsToggle: $('notificationsToggle'), notificationsCount: $('notificationsCount'), notificationBadge: $('notificationBadge'), messagesList: $('messagesList'), messagesSection: $('messagesSection'), messagesToggle: $('messagesToggle'), messagesCount: $('messagesCount'), messageBadge: $('messageBadge'), mobileImageBtn: $('mobileImageBtn'), mobileImageUpload: $('mobileImageUpload'), mobileImagePreview: $('mobileImagePreview'), mobilePreviewGrid: $('mobilePreviewGrid'), imageViewerModal: $('imageViewerModal'), imageViewerContainer: $('imageViewerContainer'), imageViewerCounter: $('imageViewerCounter'), chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'), chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'), newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'), confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon'), splashScreen: $('splashScreen') };
+// ===== إخفاء شاشة الترحيب بعد 3 ثواني =====
+window.addEventListener('load', function() {
+    if (els.splashScreen) {
+        setTimeout(function() {
+            els.splashScreen.style.opacity = '0';
+            setTimeout(function() {
+                els.splashScreen.style.display = 'none';
+            }, 800);
+        }, 3000);
+    }
+});
 let currentUser = null, allPosts = [], allNotifications = [], allMessages = [], selectedImages = [], mobileSelectedImages = [], currentViewerImages = [], currentViewerIndex = 0, currentChatUser = null, currentChatRoomId = null, newMessageTargetUser = null, commentsOpenState = {};
 function loadDarkMode() { const saved = localStorage.getItem('helperpal_theme'), isDark = saved !== 'light'; document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); els.darkModeToggle.checked = isDark; els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; }
 window.toggleDarkMode = () => { const isDark = els.darkModeToggle.checked; document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; localStorage.setItem('helperpal_theme', isDark ? 'dark' : 'light'); };
