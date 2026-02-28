@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>Helper Pal · مجتمع التطور</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-primary: #f0f5fa; --bg-secondary: #ffffff; --bg-tertiary: #f8fbfe;
+--bg-gradient-start: #667fa0; --bg-gradient-end: #1a4b6d;
+--text-primary: #1e3b5c; --text-secondary: #4a6782; --text-muted: #6b8ca8;
+--border-color: #eef2f8; --border-light: #e2eaf1;
+--accent-primary: #1a4b6d; --accent-secondary: #0f3b5e;
+--accent-light: #e8f0f8; --accent-lighter: #d0e4ed; --accent-lightest: #e1f0f5;
+--danger: #e74c3c; --danger-light: #fee2e2; --danger-lighter: #fecaca;
+--shadow-sm: 0 4px 15px rgba(0,59,94,0.03); --shadow-md: 0 10px 30px rgba(0,59,94,0.08);
+--shadow-lg: 0 30px 60px rgba(0,0,0,0.3);
+--scrollbar-track: #f0f5fa; --scrollbar-thumb: #c5d5e4; --scrollbar-thumb-hover: #1a4b6d;
+--input-bg: #f9fcff; --input-bg-focus: #ffffff;
+--card-shadow: 0 10px 30px rgba(0,59,94,0.03);
+--modal-overlay: rgba(0,0,0,0.35); --modal-overlay-dark: rgba(0,0,0,0.5);
+--image-bg: #f5f9ff; --notification-unread: #f0f7ff; --notification-unread-border: #b3d4fc;
+--message-sent-bg: linear-gradient(145deg, #1a4b6d, #0f3b5e); --message-received-bg: #ffffff;
+--sidebar-btn-bg: #e8f0f8; --sidebar-btn-hover: #d0e4ed;
+--sidebar-btn-active: linear-gradient(145deg, #1a4b6d, #0f3b5e);
+--badge-bg: #e74c3c; --section-count-bg: linear-gradient(145deg, #e8f0f8, #d0e4ed);
+--highlight-bg: #f0f7ff; --highlight-border: #1a4b6d; --highlight-shadow: rgba(26,75,109,0.3);
+}
+[data-theme="dark"] {
+--bg-primary: #0f1724; --bg-secondary: #1a2332; --bg-tertiary: #1f2937;
+--bg-gradient-start: #1a2332; --bg-gradient-end: #0f1724;
+--text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #64748b;
+--border-color: #2d3748; --border-light: #374151;
+--accent-primary: #3b82f6; --accent-secondary: #2563eb;
+--accent-light: #1e3a5f; --accent-lighter: #1a3552; --accent-lightest: #162d44;
+--danger: #ef4444; --danger-light: #451a1a; --danger-lighter: #521f1f;
+--shadow-sm: 0 4px 15px rgba(0,0,0,0.3); --shadow-md: 0 10px 30px rgba(0,0,0,0.5);
+--shadow-lg: 0 30px 60px rgba(0,0,0,0.7);
+--scrollbar-track: #1a2332; --scrollbar-thumb: #374151; --scrollbar-thumb-hover: #3b82f6;
+--input-bg: #1f2937; --input-bg-focus: #2d3748;
+--card-shadow: 0 10px 30px rgba(0,0,0,0.5);
+--modal-overlay: rgba(0,0,0,0.7); --modal-overlay-dark: rgba(0,0,0,0.8);
+--image-bg: #1f2937; --notification-unread: #1e3a5f; --notification-unread-border: #3b82f6;
+--message-sent-bg: linear-gradient(145deg, #3b82f6, #2563eb); --message-received-bg: #2d3748;
+--sidebar-btn-bg: #1e3a5f; --sidebar-btn-hover: #1a3552;
+--sidebar-btn-active: linear-gradient(145deg, #3b82f6, #2563eb);
+--badge-bg: #ef4444; --section-count-bg: linear-gradient(145deg, #1e3a5f, #1a3552);
+--highlight-bg: #1e3a5f; --highlight-border: #3b82f6; --highlight-shadow: rgba(59,130,246,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+.auth-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 1; visibility: visible; transition: all 0.5s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; padding: 20px; }
+.auth-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.auth-container { background: var(--bg-secondary); backdrop-filter: blur(10px); width: 90%; max-width: 450px; margin: auto; padding: 50px 40px; border-radius: 40px; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.1) inset; text-align: center; animation: slideUpFade 0.6s ease-out; }
+@keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px) scale(0.95); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+.auth-container h1 { color: var(--text-primary); font-size: 3rem; margin-bottom: 10px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+.auth-container .subtitle { color: var(--text-secondary); margin-bottom: 40px; font-size: 1.1rem; position: relative; }
+.auth-container .subtitle::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: linear-gradient(90deg, transparent, var(--accent-primary), transparent); border-radius: 3px; }
+.auth-container input, .auth-container select { width: 100%; padding: 16px 22px; margin-bottom: 16px; border: 2px solid var(--border-light); border-radius: 50px; font-size: 1rem; background: var(--input-bg); color: var(--text-primary); transition: all 0.3s; }
+.auth-container input:focus, .auth-container select:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 4px rgba(59,130,246,0.15); transform: scale(1.02); }
+.auth-container button { width: 100%; padding: 18px; background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 20px; box-shadow: 0 10px 20px rgba(59,130,246,0.3); }
+.auth-container button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59,130,246,0.4); }
+.main-container { display: none; width: 100%; max-width: 100%; margin: 0; gap: 0; padding: 0; min-height: 100vh; opacity: 1; transition: opacity 0.5s; }
+.main-container.show { display: flex !important; }
+@media (min-width: 769px) {
+.main-container { display: flex !important; }
+.right-sidebar { width: 30%; position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 20px 10px 20px 20px; background: var(--bg-primary); }
+.left-content { width: 70%; padding: 20px 20px 20px 10px; height: 100vh; overflow-y: auto; }
+.mobile-profile-icon, .mobile-back-btn, .mobile-bottom-bar, .chat-back-btn { display: none !important; }
+.unified-card { border-radius: 20px; height: auto; min-height: calc(100vh - 40px); }
+}
+@media (max-width: 768px) {
+.main-container { flex-direction: column; padding: 0; gap: 0; }
+.right-sidebar { width: 100%; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; padding: 0; overflow-y: auto; }
+.right-sidebar.show { display: block; }
+.right-sidebar .unified-card { width: 100%; height: 100%; margin: 0; max-width: none; max-height: none; border-radius: 0; overflow-y: auto; position: relative; }
+.left-content { width: 100%; margin-top: 0; padding: 80px 15px 120px 15px; min-height: 100vh; }
+.mobile-profile-icon { position: fixed; top: 15px; left: 15px; width: 50px; height: 50px; background: var(--accent-primary); border-radius: 50%; overflow: hidden; cursor: pointer; z-index: 1001; box-shadow: 0 4px 12px rgba(59,130,246,0.3); border: 2px solid white; padding: 0; }
+.mobile-profile-icon img { width: 100%; height: 100%; object-fit: cover; }
+.mobile-bottom-bar { display: flex; position: fixed; bottom: 0; left: 0; right: 0; padding: 15px 20px 25px; z-index: 1000; align-items: center; justify-content: center; gap: 12px; pointer-events: none; }
+.mobile-input-wrapper { flex: 1; display: flex; align-items: center; background: var(--input-bg); border: 1px solid var(--border-light); border-radius: 30px; padding: 4px 4px 4px 15px; transition: 0.3s; pointer-events: auto; backdrop-filter: blur(10px); }
+.mobile-input-wrapper:focus-within { border-color: var(--accent-primary); background: var(--input-bg-focus); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.mobile-input-wrapper input { flex: 1; background: transparent; border: none; padding: 10px 0; font-size: 1rem; outline: none; min-width: 0; color: var(--text-primary); }
+.mobile-image-btn { background: transparent; color: var(--accent-primary); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; flex-shrink: 0; }
+.mobile-image-btn:hover { background: var(--accent-light); }
+.mobile-image-btn.active { background: var(--accent-primary); color: white; }
+.mobile-image-btn img { width: 24px; height: 24px; object-fit: contain; }
+.mobile-send-btn { background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(59,130,246,0.4); flex-shrink: 0; transition: 0.3s; padding: 0; pointer-events: auto; }
+.mobile-send-btn img { width: 26px; height: 26px; object-fit: contain; }
+.mobile-send-btn:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(59,130,246,0.5); }
+.mobile-image-preview { position: fixed; bottom: 110px; left: 15px; right: 15px; background: var(--bg-secondary); border-radius: 20px; padding: 15px; box-shadow: 0 -5px 25px rgba(0,0,0,0.15); border: 1px solid var(--border-color); z-index: 1002; display: none; animation: slideUp 0.3s ease; }
+.mobile-image-preview.show { display: block; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.mobile-preview-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: var(--text-primary); font-weight: 600; }
+.mobile-preview-close { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.mobile-preview-close:hover { background: var(--bg-primary); }
+.mobile-preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 200px; overflow-y: auto; padding: 5px; }
+.mobile-preview-item { position: relative; aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 2px solid var(--border-color); }
+.mobile-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.mobile-preview-remove { position: absolute; top: -5px; right: -5px; width: 22px; height: 22px; background: var(--danger); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+.mobile-back-btn { position: sticky; top: 0; width: 100%; background: var(--bg-secondary); padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; cursor: pointer; z-index: 100; font-weight: 600; color: var(--accent-primary); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+.mobile-back-btn:hover { background: var(--bg-tertiary); }
+.mobile-back-btn span { font-size: 1.4rem; line-height: 1; }
+.chat-back-btn { display: none; background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+}
+.unified-card { background: var(--bg-secondary); border-radius: 25px; padding: 0; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); overflow: hidden; }
+.profile-section { padding: 25px; background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary)); border-bottom: 1px solid var(--border-color); }
+.profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.profile-avatar { width: 60px; height: 60px; background: linear-gradient(145deg, var(--accent-lightest), var(--accent-lighter)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 600; color: var(--accent-primary); }
+.profile-name h3 { color: var(--text-primary); font-size: 1.2rem; }
+.profile-name p { color: var(--text-muted); font-size: 0.9rem; cursor: pointer; }
+.profile-info { background: var(--bg-secondary); padding: 15px; border-radius: 18px; margin-bottom: 15px; border: 1px solid var(--border-color); }
+.info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+.info-row:last-child { margin-bottom: 0; }
+.info-label { color: var(--text-muted); }
+.info-value { color: var(--text-primary); font-weight: 500; }
+.edit-profile-btn { background: var(--accent-light); color: var(--accent-primary); border: none; padding: 12px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.edit-profile-btn:hover { background: var(--accent-lighter); }
+.logout-profile-btn { background: var(--danger-light); color: var(--danger); border: none; padding: 12px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+.logout-profile-btn:hover { background: var(--danger-lighter); }
+/* Quick Links Section */
+.quick-links-section { padding: 20px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
+.quick-links-title { color: var(--text-primary); font-size: 1rem; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.quick-links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.quick-link-item { background: var(--bg-tertiary); border: 1px solid var(--border-light); border-radius: 15px; padding: 15px 12px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: 0.3s; text-align: center; }
+.quick-link-item:hover { background: var(--accent-light); border-color: var(--accent-primary); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59,130,246,0.15); }
+.quick-link-icon { width: 45px; height: 45px; background: linear-gradient(145deg, var(--accent-lightest), var(--accent-lighter)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.quick-link-text { color: var(--text-primary); font-size: 0.85rem; font-weight: 600; }
+.post-section { padding: 25px; border-bottom: 1px solid var(--border-color); }
+.post-section h3 { color: var(--text-primary); margin-bottom: 15px; font-size: 1.1rem; }
+.post-section textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-light); border-radius: 15px; background: var(--input-bg); color: var(--text-primary); resize: none; min-height: 100px; font-size: 1rem; }
+.post-section textarea:focus { outline: none; border-color: var(--accent-primary); background: var(--input-bg-focus); }
+.image-upload-container { margin-bottom: 15px; }
+.image-upload-btn { background: var(--bg-primary); color: var(--accent-primary); border: 2px dashed var(--border-light); padding: 15px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.image-upload-btn:hover { background: var(--accent-light); border-color: var(--accent-primary); }
+.image-upload-input { display: none; }
+.image-preview-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.image-preview-item { position: relative; width: 80px; height: 80px; border-radius: 10px; overflow: hidden; border: 2px solid var(--border-color); }
+.image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+.image-remove-btn { position: absolute; top: -5px; right: -5px; width: 22px; height: 22px; background: var(--danger); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+.publish-btn { background: var(--accent-primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.publish-btn img { width: 20px; height: 20px; object-fit: contain; }
+.publish-btn:hover { background: var(--accent-secondary); }
+.sidebar-btn { background: var(--sidebar-btn-bg); color: var(--accent-primary); border: none; padding: 14px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.sidebar-btn:hover { background: var(--sidebar-btn-hover); }
+.sidebar-btn.active { background: var(--sidebar-btn-active); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.25); }
+.notification-badge { background: var(--badge-bg); color: white; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-right: auto; display: none; }
+.notification-badge.show { display: inline-block; }
+.my-posts-section, .notifications-section, .messages-section { display: none; padding: 25px; background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary)); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); max-height: 400px; overflow-y: auto; }
+.my-posts-section.show, .notifications-section.show, .messages-section.show { display: block; animation: slideDown 0.3s ease; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.section-title { color: var(--text-primary); margin-bottom: 15px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+.section-count { background: var(--section-count-bg); color: var(--accent-primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+.my-post-item, .notification-item, .message-chat-item { background: var(--bg-secondary); padding: 18px; border-radius: 18px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: 0.3s; cursor: pointer; position: relative; }
+.my-post-item:hover, .notification-item:hover, .message-chat-item:hover { transform: translateX(-5px); box-shadow: 0 6px 20px rgba(0,59,94,0.08); }
+.my-post-item:last-child, .notification-item:last-child, .message-chat-item:last-child { margin-bottom: 0; }
+.notification-item.unread, .message-chat-item.unread { background: var(--notification-unread); border-color: var(--notification-unread-border); }
+.notification-icon, .message-icon { font-size: 1.5rem; margin-left: 10px; }
+.notification-content, .message-content { flex: 1; }
+.notification-text, .message-chat-name { color: var(--text-primary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 5px; font-weight: 600; }
+.notification-time, .message-chat-time { font-size: 0.75rem; color: var(--text-muted); }
+.message-chat-preview { font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.my-post-date, .notification-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+.my-post-date i, .notification-date i { font-style: normal; background: var(--accent-lightest); padding: 3px 8px; border-radius: 30px; color: var(--accent-primary); }
+.my-post-text, .notification-desc { color: var(--text-primary); font-size: 0.95rem; line-height: 1.6; }
+.no-items { text-align: center; color: var(--text-muted); padding: 40px 20px; background: var(--bg-secondary); border-radius: 18px; border: 2px dashed var(--border-color); font-size: 1rem; }
+.delete-post-btn { position: absolute; top: 15px; left: 15px; background: var(--danger-light); color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0.7; }
+.delete-post-btn:hover { opacity: 1; background: var(--danger-lighter); transform: scale(1.1); }
+.feed-header { background: var(--bg-secondary); padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
+.posts-grid { display: flex; flex-direction: column; gap: 20px; }
+.post-item { background: var(--bg-secondary); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
+.post-author { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.post-avatar { width: 40px; height: 40px; background: var(--accent-lightest); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent-primary); font-weight: 600; }
+.post-author-info { flex: 1; }
+.post-author-info h4 { color: var(--text-primary); font-size: 1rem; }
+.post-author-info p { font-size: 0.85rem; color: var(--text-muted); }
+.post-dm-btn { background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+.post-dm-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.post-desc { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin-bottom: 15px; white-space: pre-wrap; }
+.post-images-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 15px 0; border-radius: 16px; overflow: hidden; }
+.post-image-wrapper { position: relative; width: 100%; padding-bottom: 100%; overflow: hidden; cursor: pointer; border-radius: 12px; background: var(--image-bg); }
+.post-image-wrapper img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.post-image-wrapper:hover img { transform: scale(1.05); }
+.image-counter-badge { position: absolute; bottom: 8px; right: 8px; background: rgba(59,130,246,0.8); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
+.single-image-wrapper { width: 100%; max-height: 350px; border-radius: 16px; overflow: hidden; cursor: pointer; margin: 15px 0; background: var(--image-bg); }
+.single-image-wrapper img { width: 100%; height: auto; max-height: 350px; object-fit: contain; transition: transform 0.3s; }
+.single-image-wrapper:hover img { transform: scale(1.02); }
+.image-viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; flex-direction: column; }
+.image-viewer-modal.show { display: flex; }
+.image-viewer-header { position: absolute; top: 20px; right: 20px; left: 20px; display: flex; justify-content: space-between; align-items: center; color: white; z-index: 10001; }
+.image-counter { background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; color: white; backdrop-filter: blur(5px); }
+.image-viewer-close { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 1.5rem; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); transition: 0.3s; }
+.image-viewer-close:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
+.image-viewer-container { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 20px; }
+.image-viewer-slide { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+.image-viewer-slide.active { display: flex; }
+.image-viewer-slide img { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.image-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); transition: 0.3s; z-index: 10002; }
+.image-nav-btn:hover { background: rgba(255,255,255,0.3); transform: translateY(-50%) scale(1.1); }
+.image-prev-btn { right: 20px; }
+.image-next-btn { left: 20px; }
+@media (max-width: 768px) {
+.image-nav-btn { width: 40px; height: 40px; font-size: 1.5rem; }
+.image-viewer-header { top: 10px; right: 10px; left: 10px; }
+}
+.post-actions { display: flex; gap: 20px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+.action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.3s; padding: 8px 12px; border-radius: 20px; }
+.action-btn:hover { background: var(--bg-primary); }
+.action-btn.liked { color: var(--danger); }
+.comments-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
+.comments-section.show { display: block; }
+.comments-section.hide { display: none; }
+.comment-input-wrapper { display: flex; gap: 10px; margin-bottom: 15px; }
+.comment-input { flex: 1; padding: 10px 15px; border: 1px solid var(--border-light); border-radius: 20px; background: var(--input-bg); color: var(--text-primary); font-size: 0.9rem; outline: none; transition: 0.3s; }
+.comment-input:focus { border-color: var(--accent-primary); background: var(--input-bg-focus); }
+.comment-send-btn { background: var(--accent-primary); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; padding: 0; }
+.comment-send-btn img { width: 20px; height: 20px; object-fit: contain; }
+.comment-send-btn:hover { background: var(--accent-secondary); transform: scale(1.1); }
+.comment-list { display: flex; flex-direction: column; gap: 12px; }
+.comment-item { background: var(--bg-tertiary); padding: 12px 15px; border-radius: 15px; border: 1px solid var(--border-color); margin-bottom: 8px; position: relative; }
+.comment-item:last-child { margin-bottom: 0; }
+.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.comment-author { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
+.comment-date { font-size: 0.75rem; color: var(--text-muted); }
+.comment-text { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 8px; white-space: pre-wrap; }
+.comment-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.comment-action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 15px; transition: 0.3s; }
+.comment-action-btn:hover { background: var(--accent-light); color: var(--accent-primary); }
+.comment-action-btn.liked { color: var(--danger); }
+.delete-comment-btn { position: absolute; top: 10px; left: 10px; background: var(--danger-light); color: var(--danger); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0.7; }
+.delete-comment-btn:hover { opacity: 1; background: var(--danger-lighter); transform: scale(1.1); }
+.reply-container { margin-top: 10px; padding-right: 20px; }
+.reply-input-wrapper { display: flex; gap: 8px; margin-top: 8px; }
+.reply-input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 20px; background: var(--input-bg-focus); color: var(--text-primary); font-size: 0.85rem; outline: none; }
+.reply-input:focus { border-color: var(--accent-primary); }
+.reply-send-btn { background: var(--accent-primary); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; padding: 0; }
+.reply-send-btn img { width: 18px; height: 18px; object-fit: contain; }
+.reply-send-btn:hover { background: var(--accent-secondary); transform: scale(1.05); }
+.replies-list { margin-top: 10px; padding-right: 20px; border-right: 2px solid var(--border-color); }
+.modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay); backdrop-filter: blur(5px); align-items: center; justify-content: center; z-index: 2000; }
+.modal-content { background: var(--bg-secondary); padding: 30px; border-radius: 25px; width: 90%; max-width: 420px; position: relative; }
+.close-modal { position: absolute; top: 15px; left: 15px; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
+.modal-content h2 { color: var(--text-primary); margin-bottom: 20px; font-size: 1.3rem; }
+.modal-content input, .modal-content select { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid var(--border-light); border-radius: 15px; background: var(--input-bg); color: var(--text-primary); }
+.dark-mode-toggle { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-tertiary); border-radius: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); }
+.dark-mode-toggle-label { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 600; }
+.dark-mode-toggle-icon { font-size: 1.3rem; }
+.toggle-switch { position: relative; width: 60px; height: 32px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; inset: 0; background-color: var(--border-light); transition: 0.3s; border-radius: 32px; }
+.toggle-slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 4px; bottom: 4px; background-color: white; transition: 0.3s; border-radius: 50%; }
+input:checked + .toggle-slider { background-color: var(--accent-primary); }
+input:checked + .toggle-slider:before { transform: translateX(28px); }
+.save-btn { background: var(--accent-primary); color: white; flex: 1; padding: 12px; border: none; border-radius: 15px; font-weight: 600; cursor: pointer; }
+.confirm-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); backdrop-filter: blur(5px); align-items: center; justify-content: center; z-index: 3000; }
+.confirm-modal.show { display: flex; }
+.confirm-content { background: var(--bg-secondary); padding: 35px; border-radius: 25px; width: 90%; max-width: 380px; text-align: center; }
+.confirm-content h3 { color: var(--text-primary); margin-bottom: 15px; font-size: 1.3rem; }
+.confirm-content p { color: var(--text-muted); margin-bottom: 25px; font-size: 1rem; }
+.confirm-buttons { display: flex; gap: 15px; }
+.confirm-yes { flex: 1; padding: 14px; background: var(--accent-primary); color: white; border: none; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.confirm-yes:hover { background: var(--accent-secondary); }
+.confirm-no { flex: 1; padding: 14px; background: var(--accent-light); color: var(--accent-primary); border: none; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.confirm-no:hover { background: var(--accent-lighter); }
+.chat-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); z-index: 3000; align-items: center; justify-content: center; }
+.chat-modal.show { display: flex; }
+.chat-container { background: var(--bg-secondary); width: 90%; max-width: 500px; height: 80vh; border-radius: 25px; overflow: hidden; display: flex; flex-direction: column; }
+.chat-header { background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; padding: 20px; display: flex; align-items: center; gap: 15px; }
+.chat-header-avatar { width: 45px; height: 45px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 600; }
+.chat-header-info { flex: 1; }
+.chat-header-info h3 { font-size: 1.1rem; }
+.chat-header-info p { font-size: 0.85rem; opacity: 0.8; }
+.chat-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; background: var(--bg-tertiary); display: flex; flex-direction: column; gap: 15px; }
+.message-bubble { max-width: 75%; padding: 12px 16px; border-radius: 18px; font-size: 0.95rem; line-height: 1.5; }
+.message-bubble.sent { background: var(--message-sent-bg); color: white; align-self: flex-start; border-bottom-right-radius: 5px; }
+.message-bubble.received { background: var(--message-received-bg); color: var(--text-primary); align-self: flex-end; border-bottom-left-radius: 5px; border: 1px solid var(--border-color); }
+.message-time { font-size: 0.7rem; opacity: 0.7; margin-top: 5px; }
+.chat-input-area { padding: 15px 20px; background: var(--bg-secondary); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center; }
+.chat-input { flex: 1; padding: 12px 18px; border: 1px solid var(--border-light); border-radius: 25px; background: var(--input-bg); color: var(--text-primary); font-size: 0.95rem; outline: none; }
+.chat-input:focus { border-color: var(--accent-primary); background: var(--input-bg-focus); }
+.chat-send-btn { background: var(--accent-primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; padding: 0; }
+.chat-send-btn img { width: 22px; height: 22px; object-fit: contain; }
+.chat-send-btn:hover { background: var(--accent-secondary); transform: scale(1.05); }
+.new-message-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); z-index: 4000; align-items: center; justify-content: center; }
+.new-message-modal.show { display: flex; }
+.new-message-container { background: var(--bg-secondary); width: 90%; max-width: 400px; border-radius: 25px; padding: 25px; }
+.new-message-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.new-message-header h3 { color: var(--text-primary); font-size: 1.2rem; }
+.new-message-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+.new-message-recipient { background: var(--bg-primary); padding: 12px 15px; border-radius: 15px; margin-bottom: 15px; color: var(--accent-primary); font-weight: 600; }
+.new-message-textarea { width: 100%; padding: 15px; border: 1px solid var(--border-light); border-radius: 15px; background: var(--input-bg); color: var(--text-primary); resize: none; min-height: 100px; font-size: 1rem; margin-bottom: 15px; }
+.new-message-textarea:focus { outline: none; border-color: var(--accent-primary); background: var(--input-bg-focus); }
+.new-message-send-btn { background: var(--accent-primary); color: white; border: none; padding: 14px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.new-message-send-btn img { width: 20px; height: 20px; object-fit: contain; }
+.new-message-send-btn:hover { background: var(--accent-secondary); }
+.right-sidebar::-webkit-scrollbar, .left-content::-webkit-scrollbar, .my-posts-section::-webkit-scrollbar, .notifications-section::-webkit-scrollbar, .messages-section::-webkit-scrollbar, .comments-section::-webkit-scrollbar, .chat-messages::-webkit-scrollbar { width: 6px; }
+.right-sidebar::-webkit-scrollbar-track, .left-content::-webkit-scrollbar-track, .my-posts-section::-webkit-scrollbar-track, .notifications-section::-webkit-scrollbar-track, .messages-section::-webkit-scrollbar-track, .comments-section::-webkit-scrollbar-track, .chat-messages::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
+.right-sidebar::-webkit-scrollbar-thumb, .left-content::-webkit-scrollbar-thumb, .my-posts-section::-webkit-scrollbar-thumb, .notifications-section::-webkit-scrollbar-thumb, .messages-section::-webkit-scrollbar-thumb, .comments-section::-webkit-scrollbar-thumb, .chat-messages::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+.right-sidebar::-webkit-scrollbar-thumb:hover, .left-content::-webkit-scrollbar-thumb:hover, .my-posts-section::-webkit-scrollbar-thumb:hover, .notifications-section::-webkit-scrollbar-thumb:hover, .messages-section::-webkit-scrollbar-thumb:hover, .chat-messages::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+.post-item.highlight { animation: highlightPost 1s ease; border-color: var(--highlight-border); box-shadow: 0 0 20px var(--highlight-shadow); }
+@keyframes highlightPost { 0%, 100% { background: var(--bg-secondary); } 50% { background: var(--highlight-bg); } }
+</style>
+</head>
+<body>
+<div class="auth-screen" id="authScreen">
+<div class="auth-container">
+<h1>Helper Pal</h1>
+<p class="subtitle">أنشئ حسابك الآن للانضمام إلى المجتمع</p>
+<input type="text" id="loginName" placeholder="الاسم الكامل">
+<input type="tel" id="loginPhone" placeholder="رقم الموبايل">
+<input type="date" id="loginBirthdate">
+<select id="loginGovernorate"><option value="">اختر المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>أسوان</option><option>أسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>شمال سيناء</option><option>الشرقية</option><option>سوهاج</option></select>
+<input type="text" id="loginJob" placeholder="الوظيفة">
+<button onclick="handleLogin()">تسجيل ودخول</button>
+</div>
+</div>
+<div class="mobile-profile-icon" id="mobileProfileIcon" onclick="toggleMobileProfile()"><img src="profile.png" alt="الملف الشخصي"></div>
+<div class="main-container" id="mainView">
+<div class="right-sidebar" id="rightSidebar">
+<div class="unified-card">
+<div class="mobile-back-btn" id="mobileBackBtn" onclick="closeMobileProfile()"><span>←</span> الرجوع للرئيسية</div>
+<!-- قسم الملف الشخصي المصغر (في الأعلى) -->
+<div class="profile-section">
+<div class="profile-header">
+<div class="profile-avatar" id="avatarDisplay">م</div>
+<div class="profile-name"><h3 id="displayName">الاسم</h3><p onclick="openModal()"><span>✎</span> تعديل البروفايل</p></div>
+</div>
+</div>
+<!-- قسم مشاركة جديدة (الترتيب 1) -->
+<div class="post-section">
+<h3>📝 مشاركة جديدة</h3>
+<textarea id="postDesc" placeholder="اكتب ما يدور في ذهنك..."></textarea>
+<div class="image-upload-container">
+<label class="image-upload-btn"><img src="camera.png" alt="كاميرا" style="width:24px;height:24px;"><span>إضافة صور</span><input type="file" class="image-upload-input" id="imageUpload" accept="image/*" multiple></label>
+<div class="image-preview-container" id="imagePreviewContainer"></div>
+</div>
+<button class="publish-btn" onclick="publishPost()"><img src="send.png" alt="إرسال"><span>انشر المشاركة</span></button>
+<button class="sidebar-btn" id="myPostsToggle" onclick="toggleMyPosts()"><span>📋</span><span>منشوراتي</span></button>
+<button class="sidebar-btn" id="notificationsToggle" onclick="toggleNotifications()"><span>🔔</span><span>الإشعارات</span><span class="notification-badge" id="notificationBadge">0</span></button>
+<button class="sidebar-btn" id="messagesToggle" onclick="toggleMessages()"><span>💬</span><span>الرسائل</span><span class="notification-badge" id="messageBadge">0</span></button>
+</div>
+<!-- قسم روابط سريعة (الترتيب 2) -->
+<div class="quick-links-section">
+<div class="quick-links-title">📌 روابط سريعة</div>
+<div class="quick-links-grid">
+<a href="contact.html" class="quick-link-item">
+<div class="quick-link-icon">📧</div>
+<div class="quick-link-text">تواصل معنا</div>
+</a>
+<a href="faq.html" class="quick-link-item">
+<div class="quick-link-icon">❓</div>
+<div class="quick-link-text">الأسئلة الشائعة</div>
+</a>
+<a href="privacy-policy.html" class="quick-link-item">
+<div class="quick-link-icon">🔒</div>
+<div class="quick-link-text">سياسة الخصوصية</div>
+</a>
+<a href="terms.html" class="quick-link-item">
+<div class="quick-link-icon">📄</div>
+<div class="quick-link-text">شروط الاستخدام</div>
+</a>
+</div>
+</div>
+<!-- الأقسام المخفية (منشوراتي, إشعارات, رسائل) -->
+<div class="my-posts-section" id="myPostsSection"><h4 class="section-title">📌 منشوراتي <span class="section-count" id="myPostsCount">0</span></h4><div class="my-posts-list" id="myPostsList"></div></div>
+<div class="notifications-section" id="notificationsSection"><h4 class="section-title">🔔 الإشعارات <span class="section-count" id="notificationsCount">0</span></h4><div class="notifications-list" id="notificationsList"></div></div>
+<div class="messages-section" id="messagesSection"><h4 class="section-title">💬 المحادثات <span class="section-count" id="messagesCount">0</span></h4><div class="messages-list" id="messagesList"></div></div>
+<!-- قسم الملف الشخصي الكامل (الترتيب 3) -->
+<div class="profile-section" style="border-bottom:none;border-top:1px solid var(--border-color);">
+<div class="profile-info">
+<div class="info-row"><span class="info-label">الاسم</span><span class="info-value" id="infoName"></span></div>
+<div class="info-row"><span class="info-label">رقم الموبايل</span><span class="info-value" id="infoPhone"></span></div>
+<div class="info-row"><span class="info-label">تاريخ الميلاد</span><span class="info-value" id="infoBirthdate"></span></div>
+<div class="info-row"><span class="info-label">المحافظة</span><span class="info-value" id="infoGovernorate"></span></div>
+<div class="info-row"><span class="info-label">الوظيفة</span><span class="info-value" id="infoJob"></span></div>
+</div>
+<button class="edit-profile-btn" onclick="openModal()">✎ تعديل البيانات</button>
+<button class="logout-profile-btn" onclick="showLogoutConfirm()">🚪 تسجيل خروج</button>
+</div>
+</div>
+</div>
+<div class="left-content">
+<div class="feed-header"><h2 id="feedTitle">أحدث المشاركات</h2><span id="postsCount">٠ منشور</span></div>
+<div class="posts-grid" id="postsContainer"></div>
+</div>
+</div>
+<div class="mobile-bottom-bar" id="mobileBottomBar">
+<div class="mobile-input-wrapper"><input type="text" id="mobilePostInput" placeholder="اكتب مشاركتك..."><button class="mobile-image-btn" id="mobileImageBtn" onclick="toggleMobileImagePicker()"><img src="camera.png" alt="كاميرا"></button></div>
+<button class="mobile-send-btn" onclick="publishMobilePost()"><img src="send.png" alt="إرسال"></button>
+</div>
+<div class="mobile-image-preview" id="mobileImagePreview"><div class="mobile-preview-header"><span>الصور المختارة</span><button class="mobile-preview-close" onclick="toggleMobileImagePicker()">✕</button></div><div class="mobile-preview-grid" id="mobilePreviewGrid"></div></div>
+<div class="modal" id="profileModal"><div class="modal-content"><span class="close-modal" onclick="closeModal('profileModal')">✕</span><h2>تعديل البيانات</h2><div class="dark-mode-toggle"><div class="dark-mode-toggle-label"><span class="dark-mode-toggle-icon" id="darkModeIcon">☀️</span><span>الوضع المظلم</span></div><label class="toggle-switch"><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" checked><span class="toggle-slider"></span></label></div><input type="text" id="editName" placeholder="الاسم"><input type="tel" id="editPhone" placeholder="رقم الموبايل"><input type="date" id="editBirthdate"><select id="editGovernorate"><option value="">اختر المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>أسوان</option><option>أسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>شمال سيناء</option><option>الشرقية</option><option>سوهاج</option></select><input type="text" id="editJob" placeholder="الوظيفة"><div style="display:flex;gap:10px;margin-top:15px;"><button class="save-btn" onclick="saveProfile()">حفظ</button></div></div></div>
+<div class="confirm-modal" id="confirmModal"><div class="confirm-content"><h3>تأكيد تسجيل الخروج</h3><p>هل توافق على تسجيل الخروج من الموقع؟<br>سيتم حذف بياناتك وسيطلب منك إعادة التسجيل من جديد.</p><div class="confirm-buttons"><button class="confirm-yes" onclick="confirmLogout()">نعم، خروج</button><button class="confirm-no" onclick="closeConfirmModal()">لا، إلغاء</button></div></div></div>
+<div class="image-viewer-modal" id="imageViewerModal"><div class="image-viewer-header"><span class="image-counter" id="imageViewerCounter"></span><button class="image-viewer-close" onclick="closeImageViewer()">✕</button></div><button class="image-nav-btn image-prev-btn" onclick="navigateImage(-1)">←</button><button class="image-nav-btn image-next-btn" onclick="navigateImage(1)">→</button><div class="image-viewer-container" id="imageViewerContainer"></div></div>
+<div class="chat-modal" id="chatModal"><div class="chat-container"><div class="chat-header"><button class="chat-back-btn" id="chatBackBtn" onclick="closeChat()">←</button><div class="chat-header-avatar" id="chatAvatar">م</div><div class="chat-header-info"><h3 id="chatUserName">اسم المستخدم</h3><p>متصل الآن</p></div><button class="chat-close" onclick="closeChat()">✕</button></div><div class="chat-messages" id="chatMessages"></div><div class="chat-input-area"><input type="text" class="chat-input" id="chatInput" placeholder="اكتب رسالتك..."><button class="chat-send-btn" onclick="sendChatMessage()"><img src="send.png" alt="إرسال"></button></div></div></div>
+<div class="new-message-modal" id="newMessageModal"><div class="new-message-container"><div class="new-message-header"><h3>📝 رسالة جديدة</h3><button class="new-message-close" onclick="closeNewMessageModal()">✕</button></div><div class="new-message-recipient" id="newMessageRecipient"></div><textarea class="new-message-textarea" id="newMessageText" placeholder="اكتب رسالتك هنا..."></textarea><button class="new-message-send-btn" onclick="sendNewMessage()"><img src="send.png" alt="إرسال"><span>إرسال الرسالة</span></button></div></div>
+<input type="file" id="mobileImageUpload" accept="image/*" multiple style="display:none;">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, update, remove, set, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+const firebaseConfig = { apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o", authDomain: "talk-19c55.firebaseapp.com", databaseURL: "https://talk-19c55-default-rtdb.firebaseio.com", projectId: "talk-19c55", storageBucket: "talk-19c55.firebasestorage.app", messagingSenderId: "908101479029", appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c" };
+const app = initializeApp(firebaseConfig), db = getDatabase(app);
+const $ = id => document.getElementById(id);
+const els = { authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'), mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'), loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'), loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'), infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'), infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'), editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'), editGovernorate: $('editGovernorate'), editJob: $('editJob'), postsContainer: $('postsContainer'), postsCount: $('postsCount'), mobilePostInput: $('mobilePostInput'), postDesc: $('postDesc'), imageUpload: $('imageUpload'), imagePreviewContainer: $('imagePreviewContainer'), myPostsList: $('myPostsList'), myPostsSection: $('myPostsSection'), myPostsToggle: $('myPostsToggle'), myPostsCount: $('myPostsCount'), notificationsList: $('notificationsList'), notificationsSection: $('notificationsSection'), notificationsToggle: $('notificationsToggle'), notificationsCount: $('notificationsCount'), notificationBadge: $('notificationBadge'), messagesList: $('messagesList'), messagesSection: $('messagesSection'), messagesToggle: $('messagesToggle'), messagesCount: $('messagesCount'), messageBadge: $('messageBadge'), mobileImageBtn: $('mobileImageBtn'), mobileImageUpload: $('mobileImageUpload'), mobileImagePreview: $('mobileImagePreview'), mobilePreviewGrid: $('mobilePreviewGrid'), imageViewerModal: $('imageViewerModal'), imageViewerContainer: $('imageViewerContainer'), imageViewerCounter: $('imageViewerCounter'), chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'), chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'), newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'), confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon') };
+let currentUser = null, allPosts = [], allNotifications = [], allMessages = [], selectedImages = [], mobileSelectedImages = [], currentViewerImages = [], currentViewerIndex = 0, currentChatUser = null, currentChatRoomId = null, newMessageTargetUser = null, commentsOpenState = {};
+function loadDarkMode() { const saved = localStorage.getItem('helperpal_theme'), isDark = saved !== 'light'; document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); els.darkModeToggle.checked = isDark; els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; }
+window.toggleDarkMode = () => { const isDark = els.darkModeToggle.checked; document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; localStorage.setItem('helperpal_theme', isDark ? 'dark' : 'light'); };
+const savedUser = localStorage.getItem('helperpal_user'); if (savedUser) { currentUser = JSON.parse(savedUser); loadDarkMode(); checkIfBlocked(currentUser.phone); } else { loadDarkMode(); showAuthScreen(); }
+function checkIfBlocked(phone) { get(child(ref(db), `blockedUsers/${phone}`)).then(s => { if (s.exists()) { alert('🚫 لقد تم حظرك من قبل الإدارة.'); localStorage.removeItem('helperpal_user'); showAuthScreen(); } else { showMainView(); loadPosts(); loadNotifications(); loadMessages(); } }); }
+function showAuthScreen() { els.authScreen.classList.remove('hidden'); els.mainView.classList.remove('show'); els.mobileProfileIcon.style.display = 'none'; els.mobileBottomBar.style.display = 'none'; }
+function showMainView() { els.authScreen.classList.add('hidden'); els.mainView.classList.add('show'); els.mobileBottomBar.style.display = 'flex'; els.mobileProfileIcon.style.display = 'flex'; if (window.innerWidth <= 768) $('chatBackBtn').style.display = 'block'; updateProfileUI(); }
+window.handleLogin = () => { const { loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob } = els; const [name, phone, birthdate, governorate, job] = [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].map(e => e.value.trim()); if (!name || !phone || !birthdate || !governorate || !job) return alert('الرجاء إدخال جميع البيانات'); get(child(ref(db), `blockedUsers/${phone}`)).then(s => { if (s.exists()) return alert('🚫 لقد تم حظرك.'); const userData = { name, phone, birthdate, governorate, job, registeredAt: Date.now(), lastLogin: Date.now() }; set(ref(db, `users/${phone}`), userData).then(() => { currentUser = userData; localStorage.setItem('helperpal_user', JSON.stringify(currentUser)); showMainView(); loadPosts(); loadNotifications(); loadMessages(); [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].forEach(e => e.value = ''); }); }); };
+function updateProfileUI() { els.displayName.textContent = els.infoName.textContent = currentUser.name; els.infoPhone.textContent = currentUser.phone; els.infoBirthdate.textContent = currentUser.birthdate ? new Date(currentUser.birthdate).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) : 'غير محدد'; els.infoGovernorate.textContent = currentUser.governorate; els.infoJob.textContent = currentUser.job; els.avatarDisplay.textContent = currentUser.name.charAt(0).toUpperCase(); [els.editName, els.editPhone, els.editJob].forEach((e, i) => e.value = [currentUser.name, currentUser.phone, currentUser.job][i]); els.editBirthdate.value = currentUser.birthdate || ''; els.editGovernorate.value = currentUser.governorate || ''; }
+window.toggleMobileProfile = () => { if (window.innerWidth <= 768) els.rightSidebar.classList.add('show'); };
+window.closeMobileProfile = () => { if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show'); };
+window.openModal = () => { loadDarkMode(); $('profileModal').style.display = 'flex'; };
+window.closeModal = id => $(id).style.display = 'none';
+window.saveProfile = () => { const [newName, newPhone, newBirthdate, newGovernorate, newJob] = [els.editName, els.editPhone, els.editBirthdate, els.editGovernorate, els.editJob].map(e => e.value.trim()); if (!newName || !newPhone || !newBirthdate || !newGovernorate || !newJob) return alert('جميع الحقول مطلوبة'); const updatedUser = { ...currentUser, name: newName, phone: newPhone, birthdate: newBirthdate, governorate: newGovernorate, job: newJob }; set(ref(db, `users/${newPhone}`), updatedUser).then(() => { currentUser = updatedUser; localStorage.setItem('helperpal_user', JSON.stringify(currentUser)); updateProfileUI(); closeModal('profileModal'); }); };
+window.showLogoutConfirm = () => els.confirmModal.classList.add('show');
+window.closeConfirmModal = () => els.confirmModal.classList.remove('show');
+window.confirmLogout = () => { localStorage.removeItem('helperpal_user'); currentUser = null; closeConfirmModal(); showAuthScreen(); };
+els.imageUpload.addEventListener('change', e => { if (!e.target.files) return; [...e.target.files].filter(f => f.type.startsWith('image/')).forEach(f => { const r = new FileReader(); r.onload = ev => { selectedImages.push(ev.target.result); renderImagePreviews(); }; r.readAsDataURL(f); }); e.target.value = ''; });
+function renderImagePreviews() { els.imagePreviewContainer.innerHTML = selectedImages.map((img, i) => `<div class="image-preview-item"><img src="${img}"><button class="image-remove-btn" onclick="removeImage(${i})">✕</button></div>`).join(''); }
+window.removeImage = i => { selectedImages.splice(i, 1); renderImagePreviews(); };
+window.toggleMobileImagePicker = () => { if (els.mobileImagePreview.classList.contains('show')) { els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); } else els.mobileImageUpload.click(); };
+els.mobileImageUpload.addEventListener('change', e => { if (!e.target.files) return; [...e.target.files].filter(f => f.type.startsWith('image/')).forEach(f => { const r = new FileReader(); r.onload = ev => { mobileSelectedImages.push(ev.target.result); renderMobileImagePreviews(); }; r.readAsDataURL(f); }); e.target.value = ''; els.mobileImagePreview.classList.add('show'); els.mobileImageBtn.classList.add('active'); });
+function renderMobileImagePreviews() { els.mobilePreviewGrid.innerHTML = mobileSelectedImages.map((img, i) => `<div class="mobile-preview-item"><img src="${img}"><button class="mobile-preview-remove" onclick="removeMobileImage(${i})">✕</button></div>`).join(''); }
+window.removeMobileImage = i => { mobileSelectedImages.splice(i, 1); renderMobileImagePreviews(); if (!mobileSelectedImages.length) { els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); } };
+window.publishPost = () => { const desc = els.postDesc.value.trim(); if (!desc && !selectedImages.length) return alert('اكتب شيئاً أو اختر صور'); push(ref(db, 'posts'), { author: currentUser.name, authorPhone: currentUser.phone, desc, images: selectedImages, timestamp: Date.now(), likes: 0, likedBy: [], comments: [] }).then(() => { els.postDesc.value = ''; selectedImages = []; renderImagePreviews(); if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show'); }); };
+window.publishMobilePost = () => { const text = els.mobilePostInput.value.trim(); if (!text && !mobileSelectedImages.length) return alert('اكتب شيئاً أو اختر صور'); push(ref(db, 'posts'), { author: currentUser.name, authorPhone: currentUser.phone, desc: text || '', images: mobileSelectedImages, timestamp: Date.now(), likes: 0, likedBy: [], comments: [] }).then(() => { els.mobilePostInput.value = ''; mobileSelectedImages = []; els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); renderMobileImagePreviews(); }); };
+window.openImageViewer = (images, index) => { currentViewerImages = images; currentViewerIndex = index; renderImageViewer(); els.imageViewerModal.classList.add('show'); document.body.style.overflow = 'hidden'; };
+window.closeImageViewer = () => { els.imageViewerModal.classList.remove('show'); document.body.style.overflow = ''; };
+window.navigateImage = dir => { const newIndex = currentViewerIndex + dir; if (newIndex >= 0 && newIndex < currentViewerImages.length) { currentViewerIndex = newIndex; renderImageViewer(); } };
+function renderImageViewer() { if (!currentViewerImages.length) return; els.imageViewerContainer.innerHTML = ''; els.imageViewerCounter.textContent = `${currentViewerIndex + 1} / ${currentViewerImages.length}`; const slide = document.createElement('div'); slide.className = 'image-viewer-slide active'; const img = document.createElement('img'); img.src = currentViewerImages[currentViewerIndex]; slide.appendChild(img); els.imageViewerContainer.appendChild(slide); }
+function getChatRoomId(u1, u2) { return [u1, u2].sort().join('_'); }
+window.openNewMessageModal = target => { if (target === currentUser.name) return alert('لا يمكنك مراسلة نفسك'); newMessageTargetUser = target; els.newMessageRecipient.textContent = `📩 إلى: ${target}`; els.newMessageText.value = ''; els.newMessageModal.classList.add('show'); };
+window.closeNewMessageModal = () => { els.newMessageModal.classList.remove('show'); newMessageTargetUser = null; };
+window.sendNewMessage = () => { const text = els.newMessageText.value.trim(); if (!text || !newMessageTargetUser) return alert('اكتب رسالة أولاً'); const chatRoomId = getChatRoomId(currentUser.name, newMessageTargetUser); push(ref(db, `messages/${chatRoomId}`), { from: currentUser.name, to: newMessageTargetUser, text, timestamp: Date.now(), read: false }); push(ref(db, 'notifications'), { fromUser: currentUser.name, toUser: newMessageTargetUser, type: 'message', messagePreview: text.substring(0, 50), timestamp: Date.now(), read: false }); closeNewMessageModal(); alert('✅ تم إرسال الرسالة'); openChat(newMessageTargetUser); };
+window.openChat = target => { if (target === currentUser.name) return; currentChatUser = target; currentChatRoomId = getChatRoomId(currentUser.name, target); els.chatUserName.textContent = target; els.chatAvatar.textContent = target.charAt(0); els.chatModal.classList.add('show'); loadChatMessages(); markMessagesAsRead(target); };
+window.closeChat = () => { els.chatModal.classList.remove('show'); currentChatUser = null; currentChatRoomId = null; };
+function markMessagesAsRead(target) { const chatRoomId = getChatRoomId(currentUser.name, target); get(child(ref(db), `messages/${chatRoomId}`)).then(s => { if (!s.exists()) return; const updates = {}; s.forEach(c => { const msg = c.val(); if (msg.to === currentUser.name && !msg.read) updates[`messages/${chatRoomId}/${c.key}/read`] = true; }); if (Object.keys(updates).length) update(ref(db), updates); }); }
+function loadChatMessages() { if (!currentChatRoomId) return; onValue(ref(db, `messages/${currentChatRoomId}`), s => { const data = s.val(); els.chatMessages.innerHTML = ''; if (!data) { els.chatMessages.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:40px 20px;">ابدأ المحادثة الآن 💬</p>'; return; } Object.values(data).sort((a, b) => a.timestamp - b.timestamp).forEach(msg => { const div = document.createElement('div'); div.className = `message-bubble ${msg.from === currentUser.name ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text}</div><div class="message-time">${new Date(msg.timestamp).toLocaleTimeString('ar-EG', {hour:'2-digit',minute:'2-digit'})}</div>`; els.chatMessages.appendChild(div); }); els.chatMessages.scrollTop = els.chatMessages.scrollHeight; }); }
+window.sendChatMessage = () => { const text = els.chatInput.value.trim(); if (!text || !currentChatRoomId) return; push(ref(db, `messages/${currentChatRoomId}`), { from: currentUser.name, to: currentChatUser, text, timestamp: Date.now(), read: false }); push(ref(db, 'notifications'), { fromUser: currentUser.name, toUser: currentChatUser, type: 'message', messagePreview: text.substring(0, 50), timestamp: Date.now(), read: false }); els.chatInput.value = ''; };
+function loadMessages() { onValue(ref(db, 'messages'), s => { const data = s.val(); if (!data || !currentUser) { allMessages = []; updateMessageBadge(); if (els.messagesSection.classList.contains('show')) renderMessages(); return; } const chatMap = {}; Object.entries(data).forEach(([roomId, messages]) => { const users = roomId.split('_'), otherUser = users.find(u => u !== currentUser.name); if (!otherUser) return; const msgs = Object.values(messages).sort((a, b) => b.timestamp - a.timestamp), lastMsg = msgs[0], unreadCount = msgs.filter(m => m.to === currentUser.name && !m.read).length; chatMap[otherUser] = { user: otherUser, lastMessage: lastMsg, unreadCount, totalMessages: msgs.length }; }); allMessages = Object.values(chatMap).sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp); updateMessageBadge(); if (els.messagesSection.classList.contains('show')) renderMessages(); }); }
+function updateMessageBadge() { const totalUnread = allMessages.reduce((sum, c) => sum + c.unreadCount, 0); els.messagesCount.textContent = allMessages.length; if (totalUnread > 0) { els.messageBadge.textContent = totalUnread; els.messageBadge.classList.add('show'); } else els.messageBadge.classList.remove('show'); }
+function renderMessages() { els.messagesList.innerHTML = !allMessages.length ? '<div class="no-items">لا توجد محادثات بعد 💬</div>' : allMessages.map(c => `<div class="message-chat-item ${c.unreadCount > 0 ? 'unread' : ''}" onclick="openChat('${c.user}')"><div style="display:flex;align-items:center;gap:10px;"><span class="message-icon">💬</span><div class="message-content"><div class="message-chat-name">${c.user}</div><div class="message-chat-preview">${c.lastMessage.text}</div><div class="message-chat-time">${getTimeAgo(c.lastMessage.timestamp)}</div></div>${c.unreadCount > 0 ? `<span style="background:var(--badge-bg);color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;">${c.unreadCount}</span>` : ''}</div></div>`).join(''); }
+window.toggleMyPosts = () => toggleSection(els.myPostsSection, els.myPostsToggle, renderMyPosts);
+window.toggleNotifications = () => { toggleSection(els.notificationsSection, els.notificationsToggle, renderNotifications); markAllNotificationsAsRead(); };
+window.toggleMessages = () => { toggleSection(els.messagesSection, els.messagesToggle, renderMessages); markAllMessagesAsRead(); };
+function toggleSection(section, toggle, render) { const isShowing = section.classList.contains('show'); [els.myPostsSection, els.notificationsSection, els.messagesSection].forEach(s => s.classList.remove('show')); [els.myPostsToggle, els.notificationsToggle, els.messagesToggle].forEach(t => t.classList.remove('active')); if (!isShowing) { render(); section.classList.add('show'); toggle.classList.add('active'); setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } }
+function markAllNotificationsAsRead() { allNotifications.forEach(n => { if (!n.read) update(ref(db, `notifications/${n.id}`), { read: true }); }); }
+function markAllMessagesAsRead() { allMessages.forEach(c => { if (c.unreadCount > 0) markMessagesAsRead(c.user); }); }
+function getUserCommentsAndReplies() { const userComments = []; allPosts.forEach(post => { if (post.comments) { const find = (comments, path = '') => { comments.forEach(c => { if (c.author === currentUser.name) userComments.push({ type: 'comment', postId: post.id, commentId: c.id, postTitle: post.desc?.substring(0, 50) || 'منشور', text: c.text, timestamp: c.timestamp, inReplyTo: path || 'تعليق رئيسي' }); if (c.replies?.length) find(c.replies, `رد على ${c.author}`); }); }; find(post.comments); } }); return userComments.sort((a, b) => b.timestamp - a.timestamp); }
+function renderMyPosts() { const myPosts = allPosts.filter(p => p.author === currentUser.name), myComments = getUserCommentsAndReplies(); els.myPostsCount.textContent = myPosts.length; els.myPostsList.innerHTML = ''; if (myPosts.length) { const section = document.createElement('div'); section.innerHTML = '<h5 style="color:var(--accent-primary);margin:15px 0 10px;font-size:1rem;">📝 منشوراتي</h5>'; els.myPostsList.appendChild(section); myPosts.reverse().forEach(p => { const div = document.createElement('div'); div.className = 'my-post-item'; div.innerHTML = `<button class="delete-post-btn" onclick="deletePost('${p.id}')" title="حذف">🗑</button><div class="my-post-date"><i>${new Date(p.timestamp).toLocaleDateString('ar-EG')}</i></div><div class="my-post-text">${p.desc || 'منشور بدون نص'}</div>${p.images?.length ? `<div style="margin-top:10px;color:var(--text-muted);font-size:0.85rem;">📷 ${p.images.length} صورة</div>` : ''}<div style="margin-top:8px;color:var(--accent-primary);font-size:0.8rem;">💬 ${p.comments?.length || 0} تعليق</div>`; els.myPostsList.appendChild(div); }); } if (myComments.length) { const section = document.createElement('div'); section.innerHTML = '<h5 style="color:var(--accent-primary);margin:20px 0 10px;font-size:1rem;">💬 تعليقاتي وردودي</h5>'; els.myPostsList.appendChild(section); myComments.forEach(i => { const div = document.createElement('div'); div.className = 'my-post-item'; div.style.background = 'var(--bg-tertiary)'; div.innerHTML = `<button class="delete-post-btn" onclick="deleteUserComment('${i.postId}', ${i.commentId})" title="حذف">🗑</button><div class="my-post-date"><i>${new Date(i.timestamp).toLocaleDateString('ar-EG')}</i><span style="background:var(--accent-lightest);padding:2px 8px;border-radius:15px;font-size:0.75rem;margin-right:8px;">${i.type === 'comment' ? 'تعليق' : 'رد'}</span></div><div class="my-post-text">"${i.text}"</div><div style="margin-top:8px;color:var(--text-muted);font-size:0.8rem;">📌 على: ${i.postTitle}${i.inReplyTo ? `<br>🔄 ${i.inReplyTo}` : ''}</div><div style="margin-top:8px;"><button class="comment-action-btn" onclick="goToPost('${i.postId}')" style="background:var(--accent-light);padding:5px 12px;">🔍 عرض في المنشور</button></div>`; els.myPostsList.appendChild(div); }); } if (!myPosts.length && !myComments.length) els.myPostsList.innerHTML = '<div class="no-items">لا توجد منشورات أو تعليقات بعد 🌱</div>'; }
+window.goToPost = postId => { const el = $(`post-${postId}`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 2000); } };
+window.deleteUserComment = (postId, commentId) => { if (!confirm('هل أنت متأكد من حذف هذا التعليق؟')) return; const post = allPosts.find(p => p.id === postId); if (!post) return; const deleteFromTree = comments => comments.filter(c => { if (c.id === commentId) return false; if (c.replies?.length) c.replies = deleteFromTree(c.replies); return true; }); update(ref(db, `posts/${postId}`), { comments: deleteFromTree(post.comments || []) }).then(() => alert('✅ تم حذف التعليق')); };
+window.deletePost = postId => { if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) remove(ref(db, `posts/${postId}`)).then(() => alert('✅ تم حذف المنشور')); };
+function loadNotifications() { onValue(ref(db, 'notifications'), s => { const data = s.val(); if (!data || !currentUser) { allNotifications = []; updateNotificationBadge(); return; } allNotifications = Object.entries(data).map(([id, n]) => ({ id, ...n })).filter(n => n.toUser === currentUser.name).sort((a, b) => b.timestamp - a.timestamp); updateNotificationBadge(); if (els.notificationsSection.classList.contains('show')) renderNotifications(); }); }
+function updateNotificationBadge() { const unread = allNotifications.filter(n => !n.read).length; els.notificationsCount.textContent = allNotifications.length; if (unread > 0) { els.notificationBadge.textContent = unread; els.notificationBadge.classList.add('show'); } else els.notificationBadge.classList.remove('show'); }
+function renderNotifications() { els.notificationsList.innerHTML = !allNotifications.length ? '<div class="no-items">لا توجد إشعارات بعد 🔔</div>' : allNotifications.map(n => { const icons = { like: '❤️', comment: '💬', reply: '↩️', commentLike: '❤️', message: '💬' }, actions = { like: 'أعجب بمنشورك', comment: 'علق على منشورك', reply: 'رد على تعليقك', commentLike: 'أعجب بتعليقك', message: 'أرسل لك رسالة' }; return `<div class="notification-item ${!n.read ? 'unread' : ''}" onclick="navigateToPost(n)"><div style="display:flex;align-items:center;gap:10px;"><span class="notification-icon">${icons[n.type] || '🔔'}</span><div class="notification-content"><div class="notification-text"><strong>${n.fromUser}</strong> ${actions[n.type] || ''}</div><div class="notification-desc">"${n.messagePreview || ''}"</div><div class="notification-time">${getTimeAgo(n.timestamp)}</div></div></div></div>`; }).join(''); }
+function getTimeAgo(ts) { const diff = Date.now() - ts, min = Math.floor(diff / 60000); if (min < 1) return 'الآن'; if (min < 60) return `منذ ${min} دقيقة`; const hrs = Math.floor(diff / 3600000); if (hrs < 24) return `منذ ${hrs} ساعة`; return `منذ ${Math.floor(diff / 86400000)} يوم`; }
+function navigateToPost(n) { if (n.type === 'message') { openChat(n.fromUser); update(ref(db, `notifications/${n.id}`), { read: true }); return; } update(ref(db, `notifications/${n.id}`), { read: true }); els.notificationsSection.classList.remove('show'); els.notificationsToggle.classList.remove('active'); setTimeout(() => { const el = $(`post-${n.postId}`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 2000); } }, 300); }
+function createNotification(from, to, type, postId, preview, text = '') { if (from === to) return; push(ref(db, 'notifications'), { fromUser: from, toUser: to, type, postId, messagePreview: text || preview, timestamp: Date.now(), read: false }); }
+window.toggleComments = postId => { commentsOpenState[postId] = !commentsOpenState[postId]; updatePostCommentsUI(postId); };
+function updatePostCommentsUI(postId) { const section = $(`comments-section-${postId}`), btn = $(`comments-btn-${postId}`); if (!section || !btn) return; if (commentsOpenState[postId]) { section.classList.remove('hide'); section.classList.add('show'); btn.innerHTML = '💬 إخفاء التعليقات'; } else { section.classList.remove('show'); section.classList.add('hide'); btn.innerHTML = `💬 تعليق ${getCommentsCount(postId) > 0 ? `(${getCommentsCount(postId)})` : ''}`; } }
+function getCommentsCount(postId) { return allPosts.find(p => p.id === postId)?.comments?.length || 0; }
+function findCommentInTree(comments, id) { for (const c of comments) { if (c.id === id) return c; if (c.replies?.length) { const found = findCommentInTree(c.replies, id); if (found) return found; } } return null; }
+function updateCommentInTree(comments, id, updater) { return comments.map(c => c.id === id ? updater(c) : { ...c, replies: c.replies?.length ? updateCommentInTree(c.replies, id, updater) : c.replies }); }
+window.toggleCommentLike = (postId, commentId) => { const post = allPosts.find(p => p.id === postId); if (!post) return; const comment = findCommentInTree(post.comments || [], commentId); if (!comment) return; const likedBy = comment.likedBy || [], isLiked = likedBy.includes(currentUser.name); const [newLikedBy, newLikes] = isLiked ? [likedBy.filter(n => n !== currentUser.name), (comment.likes || 0) - 1] : [[...likedBy, currentUser.name], (comment.likes || 0) + 1]; if (!isLiked) createNotification(currentUser.name, comment.author, 'commentLike', postId, post.desc?.substring(0, 50) || 'منشور', comment.text); update(ref(db, `posts/${postId}`), { comments: updateCommentInTree(post.comments || [], commentId, c => ({ ...c, likes: newLikes, likedBy: newLikedBy })) }).then(() => renderPosts()); };
+window.addComment = postId => { const input = $(`comment-input-${postId}`), text = input.value.trim(); if (!text) return; const newComment = { id: Date.now() + Math.random(), author: currentUser.name, text, timestamp: Date.now(), likes: 0, likedBy: [], replies: [] }, post = allPosts.find(p => p.id === postId); update(ref(db, `posts/${postId}`), { comments: [...(post.comments || []), newComment] }).then(() => { commentsOpenState[postId] = true; createNotification(currentUser.name, post.author, 'comment', postId, post.desc?.substring(0, 50) || 'منشور', text); input.value = ''; }); };
+window.addReply = (postId, parentCommentId) => { const input = $(`reply-input-${parentCommentId}`), text = input.value.trim(); if (!text) return; const newReply = { id: Date.now() + Math.random(), author: currentUser.name, text, timestamp: Date.now(), likes: 0, likedBy: [], replies: [] }, post = allPosts.find(p => p.id === postId); if (!post) return; const parentComment = findCommentInTree(post.comments || [], parentCommentId); if (!parentComment) return; update(ref(db, `posts/${postId}`), { comments: updateCommentInTree(post.comments || [], parentCommentId, c => ({ ...c, replies: [...(c.replies || []), newReply] })) }).then(() => { commentsOpenState[postId] = true; createNotification(currentUser.name, parentComment.author, 'reply', postId, post.desc?.substring(0, 50) || 'منشور', text); input.value = ''; toggleReplyInput(parentCommentId, false); }); };
+window.toggleReplyInput = (commentId, show) => { const container = $(`reply-container-${commentId}`); if (container) { container.style.display = show ? 'block' : 'none'; if (show) { const input = $(`reply-input-${commentId}`); if (input) input.focus(); } } };
+window.toggleLike = postId => { const post = allPosts.find(p => p.id === postId); if (!post) return; const likedBy = post.likedBy || [], isLiked = likedBy.includes(currentUser.name); const [newLikedBy, newLikes] = isLiked ? [likedBy.filter(n => n !== currentUser.name), (post.likes || 0) - 1] : [[...likedBy, currentUser.name], (post.likes || 0) + 1]; if (!isLiked) createNotification(currentUser.name, post.author, 'like', postId, post.desc?.substring(0, 50) || 'منشور'); update(ref(db, `posts/${postId}`), { likes: newLikes, likedBy: newLikedBy }); };
+function loadPosts() { onValue(ref(db, 'posts'), s => { const data = s.val(); if (!data) { els.postsContainer.innerHTML = '<div style="background:var(--bg-secondary);padding:50px;border-radius:20px;text-align:center;color:var(--text-muted);">كن أول من يشارك 🌱</div>'; els.postsCount.textContent = '٠ منشور'; allPosts = []; return; } allPosts = Object.entries(data).map(([id, p]) => ({ id, ...p })).reverse(); els.postsCount.textContent = `${allPosts.length} منشور`; renderPosts(); if (els.myPostsSection.classList.contains('show')) renderMyPosts(); }); }
+function renderComment(c, postId, level = 0) { const isLiked = (c.likedBy || []).includes(currentUser.name), maxLevel = 5, isAuthor = c.author === currentUser.name; return `<div class="comment-item" id="comment-item-${c.id}" style="margin-right:${Math.min(level * 15, 60)}px;">${isAuthor ? `<button class="delete-comment-btn" onclick="deleteUserComment('${postId}', ${c.id})" title="حذف">🗑</button>` : ''}<div class="comment-header"><span class="comment-author">${c.author}</span><span class="comment-date">${new Date(c.timestamp).toLocaleDateString('ar-EG')}</span></div><div class="comment-text">${c.text}</div><div class="comment-actions"><button class="comment-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleCommentLike('${postId}', ${c.id})">${isLiked ? '❤️' : '🤍'} ${c.likes || 0}</button>${level < maxLevel ? `<button class="comment-action-btn" onclick="toggleReplyInput(${c.id}, true)">💬 رد</button>` : ''}</div><div id="reply-container-${c.id}" class="reply-container" style="display:none;"><div class="reply-input-wrapper"><input type="text" class="reply-input" id="reply-input-${c.id}" placeholder="اكتب ردك..."><button class="reply-send-btn" onclick="addReply('${postId}', ${c.id})"><img src="send.png" style="width:18px;height:18px;"></button></div></div>${c.replies?.length ? `<div class="replies-list">${c.replies.map(r => renderComment(r, postId, level + 1)).join('')}</div>` : ''}</div>`; }
+function renderPosts() { els.postsContainer.innerHTML = ''; allPosts.forEach(post => { const isLiked = (post.likedBy || []).includes(currentUser.name), comments = post.comments || []; if (commentsOpenState[post.id] === undefined) commentsOpenState[post.id] = false; let imagesHTML = ''; if (post.images?.length) { if (post.images.length === 1) imagesHTML = `<div class="single-image-wrapper" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, 0)"><img src="${post.images[0]}" loading="lazy"></div>`; else { imagesHTML = '<div class="post-images-grid">'; post.images.slice(0, 4).forEach((img, i) => { imagesHTML += `<div class="post-image-wrapper" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, ${i})"><img src="${img}" loading="lazy">${i === 3 && post.images.length > 4 ? `<span class="image-counter-badge">+${post.images.length - 4}</span>` : ''}</div>`; }); imagesHTML += '</div>'; } } const commentsHTML = comments.map(c => renderComment(c, post.id)).join(''), div = document.createElement('div'); div.className = 'post-item'; div.id = `post-${post.id}`; div.innerHTML = `<div class="post-author"><div class="post-avatar">${post.author.charAt(0)}</div><div class="post-author-info"><h4>${post.author}</h4><p style="font-size:0.85rem;color:var(--text-muted);">${new Date(post.timestamp).toLocaleDateString('ar-EG')}</p></div><button class="post-dm-btn" onclick="openNewMessageModal('${post.author}')"><span>💬</span><span>تواصل على الخاص</span></button></div>${post.desc ? `<div class="post-desc">${post.desc}</div>` : ''}${imagesHTML}<div class="post-actions"><button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">${isLiked ? '❤️' : '🤍'} ${post.likes || 0}</button><button class="action-btn" id="comments-btn-${post.id}" onclick="toggleComments('${post.id}')">💬 تعليق ${comments.length > 0 ? `(${comments.length})` : ''}</button></div><div class="comments-section ${commentsOpenState[post.id] ? 'show' : 'hide'}" id="comments-section-${post.id}"><div class="comment-input-wrapper"><input type="text" class="comment-input" id="comment-input-${post.id}" placeholder="اكتب تعليقك..."><button class="comment-send-btn" onclick="addComment('${post.id}')"><img src="send.png" style="width:20px;height:20px;"></button></div><div class="comment-list">${commentsHTML || '<p style="text-align:center;color:var(--text-muted);padding:20px;">كن أول من يعلق</p>'}</div></div>`; els.postsContainer.appendChild(div); }); }
+window.onclick = e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; if (e.target === els.imageViewerModal) closeImageViewer(); if (e.target === els.chatModal) closeChat(); if (e.target === els.newMessageModal) closeNewMessageModal(); if (e.target === els.confirmModal) closeConfirmModal(); if (window.innerWidth <= 768 && e.target === els.rightSidebar) els.rightSidebar.classList.remove('show'); };
+els.mobilePostInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); publishMobilePost(); } });
+els.chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); sendChatMessage(); } });
+els.newMessageText.addEventListener('keypress', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendNewMessage(); } });
+document.addEventListener('keydown', e => { if (els.imageViewerModal.classList.contains('show')) { if (e.key === 'Escape') closeImageViewer(); else if (e.key === 'ArrowRight') navigateImage(1); else if (e.key === 'ArrowLeft') navigateImage(-1); } if (e.key === 'Escape') { if (els.chatModal.classList.contains('show')) closeChat(); if (els.newMessageModal.classList.contains('show')) closeNewMessageModal(); if (els.confirmModal.classList.contains('show')) closeConfirmModal(); } });
+document.addEventListener('keypress', e => { if (e.target.classList.contains('comment-input') && e.key === 'Enter') addComment(e.target.id.replace('comment-input-', '')); if (e.target.classList.contains('reply-input') && e.key === 'Enter') { const postId = e.target.closest('.post-item')?.id.replace('post-', ''); if (postId) addReply(postId, parseInt(e.target.id.replace('reply-input-', ''))); } });
+</script>
+</body>
+</html>

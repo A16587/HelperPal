@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>نَماء · لوحة الإدارة المتكاملة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Cairo', sans-serif;
+}
+
+:root {
+--primary: #1a4b6d;
+--primary-dark: #0f3b5e;
+--primary-light: #2d6a8f;
+--secondary: #4a6782;
+--accent: #e74c3c;
+--success: #27ae60;
+--warning: #f39c12;
+--bg-light: #f0f5fa;
+--bg-white: #ffffff;
+--text-dark: #1e3b5c;
+--text-light: #6b8ca8;
+--border: #e2eaf1;
+--shadow: 0 4px 20px rgba(26, 75, 109, 0.1);
+--shadow-lg: 0 10px 40px rgba(26, 75, 109, 0.15);
+--radius: 16px;
+}
+
+body {
+background: linear-gradient(135deg, #667fa0 0%, #1a4b6d 100%);
+min-height: 100vh;
+padding: 20px;
+font-family: 'Cairo', sans-serif;
+}
+
+.admin-container {
+max-width: 1400px;
+margin: 0 auto;
+}
+
+/* ===== شاشة دخول الأدمن ===== */
+.admin-login {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: linear-gradient(135deg, #667fa0 0%, #1a4b6d 100%);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 10000;
+transition: all 0.5s ease;
+}
+
+.admin-login.hidden {
+opacity: 0;
+visibility: hidden;
+pointer-events: none;
+}
+
+.login-box {
+background: var(--bg-white);
+width: 90%;
+max-width: 420px;
+padding: 50px 40px;
+border-radius: 30px;
+box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+text-align: center;
+animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+0% {
+opacity: 0;
+transform: translateY(30px);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.login-box h1 {
+color: var(--primary);
+font-size: 3rem;
+margin-bottom: 10px;
+font-weight: 800;
+}
+
+.login-box .subtitle {
+color: var(--text-light);
+margin-bottom: 30px;
+font-size: 1rem;
+}
+
+.login-box input {
+width: 100%;
+padding: 16px 20px;
+margin-bottom: 15px;
+border: 2px solid var(--border);
+border-radius: 12px;
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+
+.login-box input:focus {
+outline: none;
+border-color: var(--primary);
+box-shadow: 0 0 0 4px rgba(26, 75, 109, 0.1);
+}
+
+.login-box button {
+width: 100%;
+padding: 16px;
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+border: none;
+border-radius: 12px;
+font-size: 1.1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 4px 15px rgba(26, 75, 109, 0.3);
+}
+
+.login-box button:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 25px rgba(26, 75, 109, 0.4);
+}
+
+.error-message {
+background: #fee2e2;
+color: var(--accent);
+padding: 12px;
+border-radius: 12px;
+margin-top: 15px;
+display: none;
+}
+
+.error-message.show {
+display: block;
+animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+25% { transform: translateX(-5px); }
+75% { transform: translateX(5px); }
+}
+
+/* ===== المحتوى الرئيسي ===== */
+.admin-content {
+display: none;
+}
+
+.admin-content.show {
+display: block;
+animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+
+/* الهيدر */
+.admin-header {
+background: var(--bg-white);
+border-radius: 20px;
+padding: 20px 30px;
+margin-bottom: 25px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 20px;
+box-shadow: var(--shadow);
+}
+
+.admin-header h1 {
+color: var(--text-dark);
+font-size: 1.8rem;
+display: flex;
+align-items: center;
+gap: 15px;
+}
+
+.admin-header h1 span {
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+padding: 5px 15px;
+border-radius: 30px;
+font-size: 1rem;
+}
+
+.logout-btn {
+background: #fee2e2;
+color: var(--accent);
+border: none;
+padding: 12px 25px;
+border-radius: 12px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.logout-btn:hover {
+background: #fecaca;
+transform: translateY(-2px);
+}
+
+/* ===== بطاقات الإحصائيات ===== */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 20px;
+margin-bottom: 25px;
+}
+
+.stat-card {
+background: var(--bg-white);
+padding: 25px;
+border-radius: 20px;
+box-shadow: var(--shadow);
+text-align: center;
+transition: all 0.3s ease;
+border: 1px solid var(--border);
+position: relative;
+overflow: hidden;
+}
+
+.stat-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+.stat-card:hover {
+transform: translateY(-5px);
+box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+
+.stat-value {
+font-size: 2.2rem;
+font-weight: 700;
+color: var(--primary);
+line-height: 1.2;
+}
+
+.stat-label {
+color: var(--text-light);
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+/* ===== أزرار التبديل ===== */
+.tabs-container {
+background: var(--bg-white);
+border-radius: 15px;
+padding: 15px;
+margin-bottom: 25px;
+display: flex;
+gap: 10px;
+flex-wrap: wrap;
+box-shadow: var(--shadow);
+}
+
+.tab-btn {
+padding: 12px 25px;
+border: none;
+border-radius: 12px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+background: #f0f5fa;
+color: var(--text-light);
+display: flex;
+align-items: center;
+gap: 8px;
+flex: 1 1 auto;
+justify-content: center;
+}
+
+.tab-btn:hover {
+background: #e8f0f8;
+color: var(--primary);
+}
+
+.tab-btn.active {
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+box-shadow: 0 4px 15px rgba(26, 75, 109, 0.3);
+}
+
+/* ===== الأقسام ===== */
+.section {
+display: none;
+background: var(--bg-white);
+border-radius: 20px;
+padding: 25px;
+box-shadow: var(--shadow);
+animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.section.show {
+display: block;
+}
+
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+flex-wrap: wrap;
+gap: 15px;
+}
+
+.section-header h2 {
+color: var(--text-dark);
+font-size: 1.3rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.section-count {
+background: linear-gradient(145deg, #e8f0f8, #d0e4ed);
+color: var(--primary);
+padding: 5px 15px;
+border-radius: 30px;
+font-size: 0.9rem;
+font-weight: 600;
+}
+
+.search-box {
+position: relative;
+}
+
+.search-box input {
+padding: 12px 20px 12px 45px;
+border: 2px solid var(--border);
+border-radius: 12px;
+font-size: 0.95rem;
+width: 280px;
+transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+outline: none;
+border-color: var(--primary);
+box-shadow: 0 0 0 4px rgba(26, 75, 109, 0.1);
+}
+
+.search-box::before {
+content: '🔍';
+position: absolute;
+right: 15px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 1.1rem;
+opacity: 0.6;
+}
+
+/* ===== الجداول ===== */
+.table-responsive {
+overflow-x: auto;
+border-radius: 15px;
+border: 1px solid var(--border);
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 1200px;
+}
+
+thead {
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+}
+
+th {
+padding: 15px;
+text-align: center;
+font-weight: 600;
+font-size: 0.9rem;
+white-space: nowrap;
+}
+
+td {
+padding: 15px;
+border-bottom: 1px solid var(--border);
+font-size: 0.95rem;
+text-align: center;
+vertical-align: middle;
+background: white;
+}
+
+tbody tr:hover td {
+background: #f8fbfe;
+}
+
+tbody tr:last-child td {
+border-bottom: none;
+}
+
+.loading {
+text-align: center;
+padding: 40px !important;
+color: var(--text-light);
+}
+
+/* ===== الشارات ===== */
+.blocked-badge {
+background: #fee2e2;
+color: var(--accent);
+padding: 4px 12px;
+border-radius: 30px;
+font-size: 0.8rem;
+font-weight: 600;
+display: inline-block;
+}
+
+.active-badge {
+background: #d1fae5;
+color: var(--success);
+padding: 4px 12px;
+border-radius: 30px;
+font-size: 0.8rem;
+font-weight: 600;
+display: inline-block;
+}
+
+.admin-badge {
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+padding: 4px 12px;
+border-radius: 30px;
+font-size: 0.8rem;
+font-weight: 600;
+display: inline-block;
+}
+
+/* ===== الأزرار ===== */
+.action-btn {
+padding: 8px 16px;
+border: none;
+border-radius: 8px;
+font-size: 0.85rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.3s ease;
+margin: 2px;
+display: inline-flex;
+align-items: center;
+gap: 5px;
+}
+
+.view-btn {
+background: #e8f0f8;
+color: var(--primary);
+}
+
+.view-btn:hover {
+background: var(--primary);
+color: white;
+}
+
+.block-btn {
+background: #fef3c7;
+color: var(--warning);
+}
+
+.block-btn:hover {
+background: var(--warning);
+color: white;
+}
+
+.block-btn.blocked {
+background: #d1fae5;
+color: var(--success);
+}
+
+.delete-btn {
+background: #fee2e2;
+color: var(--accent);
+}
+
+.delete-btn:hover {
+background: var(--accent);
+color: white;
+}
+
+/* ===== الصور المصغرة ===== */
+.thumbnail {
+width: 50px;
+height: 50px;
+border-radius: 10px;
+object-fit: cover;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid var(--border);
+}
+
+.thumbnail:hover {
+transform: scale(1.5);
+border-color: var(--primary);
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+z-index: 10;
+}
+
+/* ===== مودال التفاصيل ===== */
+.details-modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+backdrop-filter: blur(5px);
+z-index: 10000;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.details-modal.show {
+display: flex;
+}
+
+.details-content {
+background: white;
+width: 90%;
+max-width: 700px;
+max-height: 80vh;
+border-radius: 20px;
+overflow-y: auto;
+box-shadow: var(--shadow-lg);
+}
+
+.details-header {
+background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+color: white;
+padding: 20px 25px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+.details-header h3 {
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.close-details {
+background: rgba(255,255,255,0.2);
+border: none;
+color: white;
+width: 35px;
+height: 35px;
+border-radius: 50%;
+cursor: pointer;
+font-size: 1.2rem;
+transition: all 0.3s ease;
+}
+
+.close-details:hover {
+background: rgba(255,255,255,0.3);
+transform: rotate(90deg);
+}
+
+.details-body {
+padding: 25px;
+}
+
+.info-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 15px;
+margin-bottom: 20px;
+}
+
+.info-item {
+background: #f8fbfe;
+padding: 15px;
+border-radius: 12px;
+border: 1px solid var(--border);
+}
+
+.info-label {
+display: block;
+color: var(--text-light);
+font-size: 0.8rem;
+margin-bottom: 5px;
+font-weight: 600;
+}
+
+.info-value {
+display: block;
+color: var(--text-dark);
+font-size: 1rem;
+font-weight: 600;
+}
+
+.posts-list {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.post-card {
+background: #f8fbfe;
+padding: 15px;
+border-radius: 12px;
+border: 1px solid var(--border);
+}
+
+.post-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+}
+
+.post-date {
+color: var(--text-light);
+font-size: 0.8rem;
+}
+
+.post-text {
+color: var(--text-dark);
+margin-bottom: 10px;
+font-size: 0.95rem;
+white-space: pre-wrap;
+}
+
+.post-stats {
+display: flex;
+gap: 15px;
+font-size: 0.9rem;
+color: var(--text-light);
+}
+
+.post-images {
+display: flex;
+gap: 8px;
+margin-top: 10px;
+flex-wrap: wrap;
+}
+
+.post-thumb {
+width: 60px;
+height: 60px;
+border-radius: 8px;
+object-fit: cover;
+cursor: pointer;
+transition: all 0.3s ease;
+border: 2px solid var(--border);
+}
+
+.post-thumb:hover {
+transform: scale(1.5);
+z-index: 10;
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ===== قسم التعليقات في التفاصيل ===== */
+.comments-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 10px;
+}
+
+.comment-item {
+background: white;
+padding: 12px;
+border-radius: 10px;
+border: 1px solid var(--border);
+}
+
+.comment-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 5px;
+}
+
+.comment-author {
+font-weight: 600;
+color: var(--primary);
+font-size: 0.9rem;
+}
+
+.comment-time {
+color: var(--text-light);
+font-size: 0.75rem;
+}
+
+.comment-text {
+color: var(--text-dark);
+font-size: 0.9rem;
+margin-bottom: 5px;
+}
+
+.comment-reply {
+margin-right: 20px;
+padding-right: 10px;
+border-right: 2px solid var(--border);
+margin-top: 8px;
+}
+
+.comment-reply .comment-item {
+background: #f8fbfe;
+}
+
+/* ===== التجاوب ===== */
+@media (max-width: 768px) {
+body { padding: 10px; }
+.admin-header { flex-direction: column; text-align: center; }
+.stats-grid { grid-template-columns: 1fr; }
+.tabs-container { flex-direction: column; }
+.tab-btn { width: 100%; }
+.section-header { flex-direction: column; align-items: stretch; }
+.search-box input { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="admin-container">
+<!-- شاشة دخول الأدمن -->
+<div class="admin-login" id="adminLogin">
+<div class="login-box">
+<h1>نَماء</h1>
+<p class="subtitle">لوحة التحكم · الدخول للإدارة</p>
+<input type="text" id="adminUsername" placeholder="اسم المستخدم" value="admin">
+<input type="password" id="adminPassword" placeholder="كلمة المرور" value="admin123">
+<button onclick="handleAdminLogin()">دخول</button>
+<div class="error-message" id="loginError">❌ اسم المستخدم أو كلمة المرور غير صحيحة</div>
+</div>
+</div>
+
+<!-- المحتوى الرئيسي -->
+<div class="admin-content" id="adminContent">
+<!-- الهيدر -->
+<div class="admin-header">
+<h1>
+👋 لوحة التحكم
+<span id="statsDate">2026</span>
+</h1>
+<div class="admin-header-left">
+<button class="logout-btn" onclick="logoutAdmin()">
+🚪 تسجيل الخروج
+</button>
+</div>
+</div>
+
+<!-- بطاقات الإحصائيات -->
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon">👥</div>
+<div class="stat-value" id="totalUsers">0</div>
+<div class="stat-label">إجمالي المستخدمين</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">📝</div>
+<div class="stat-value" id="totalPosts">0</div>
+<div class="stat-label">إجمالي المنشورات</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">💬</div>
+<div class="stat-value" id="totalComments">0</div>
+<div class="stat-label">إجمالي التعليقات</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🔄</div>
+<div class="stat-value" id="totalReplies">0</div>
+<div class="stat-label">إجمالي الردود</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">❤️</div>
+<div class="stat-value" id="totalLikes">0</div>
+<div class="stat-label">إجمالي الإعجابات</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🚫</div>
+<div class="stat-value" id="blockedUsersCount">0</div>
+<div class="stat-label">المستخدمين المحظورين</div>
+</div>
+</div>
+
+<!-- أزرار التبديل -->
+<div class="tabs-container">
+<button class="tab-btn active" onclick="switchTab('users')">
+👥 المستخدمين
+</button>
+<button class="tab-btn" onclick="switchTab('posts')">
+📝 المنشورات
+</button>
+<button class="tab-btn" onclick="switchTab('stats')">
+📊 إحصائيات متقدمة
+</button>
+</div>
+
+<!-- قسم المستخدمين -->
+<div class="section show" id="usersSection">
+<div class="section-header">
+<h2>
+👥 قائمة المستخدمين
+<span class="section-count" id="usersCount">0</span>
+</h2>
+<div class="search-box">
+<input type="text" id="searchUsers" placeholder="بحث عن مستخدم..." onkeyup="filterUsers()">
+</div>
+</div>
+<div class="table-responsive">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>الاسم</th>
+<th>رقم الموبايل</th>
+<th>تاريخ الميلاد</th>
+<th>العمر</th>
+<th>المحافظة</th>
+<th>الوظيفة</th>
+<th>عدد المنشورات</th>
+<th>التعليقات</th>
+<th>الردود</th>
+<th>تاريخ التسجيل</th>
+<th>آخر نشاط</th>
+<th>الحالة</th>
+<th>الإجراءات</th>
+</tr>
+</thead>
+<tbody id="usersTableBody">
+<tr><td colspan="14" class="loading">جاري التحميل...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- قسم المنشورات -->
+<div class="section" id="postsSection">
+<div class="section-header">
+<h2>
+📝 جميع المنشورات
+<span class="section-count" id="postsCount">0</span>
+</h2>
+<div class="search-box">
+<input type="text" id="searchPosts" placeholder="بحث عن منشور..." onkeyup="filterPosts()">
+</div>
+</div>
+<div class="table-responsive">
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>الكاتب</th>
+<th>رقم الموبايل</th>
+<th>المحتوى</th>
+<th>الصور</th>
+<th>التعليقات</th>
+<th>الردود</th>
+<th>الإعجابات</th>
+<th>التاريخ</th>
+<th>الإجراءات</th>
+</tr>
+</thead>
+<tbody id="postsTableBody">
+<tr><td colspan="10" class="loading">جاري التحميل...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- قسم الإحصائيات المتقدمة -->
+<div class="section" id="statsSection">
+<div class="section-header">
+<h2>📊 إحصائيات متقدمة</h2>
+</div>
+<div class="stats-grid" style="margin-bottom: 20px;">
+<div class="stat-card">
+<div class="stat-icon">📊</div>
+<div class="stat-value" id="avgPostsPerUser">0</div>
+<div class="stat-label">متوسط المنشورات لكل مستخدم</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">💬</div>
+<div class="stat-value" id="avgCommentsPerPost">0</div>
+<div class="stat-label">متوسط التعليقات لكل منشور</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">🔄</div>
+<div class="stat-value" id="avgRepliesPerComment">0</div>
+<div class="stat-label">متوسط الردود لكل تعليق</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">❤️</div>
+<div class="stat-value" id="avgLikesPerPost">0</div>
+<div class="stat-label">متوسط الإعجابات لكل منشور</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">📈</div>
+<div class="stat-value" id="engagementRate">0%</div>
+<div class="stat-label">معدل التفاعل</div>
+</div>
+</div>
+<div class="table-responsive">
+<table>
+<thead>
+<tr>
+<th>المستخدم</th>
+<th>رقم الموبايل</th>
+<th>المنشورات</th>
+<th>التعليقات</th>
+<th>الردود</th>
+<th>إجمالي التفاعلات</th>
+<th>آخر نشاط</th>
+<th>الإجراءات</th>
+</tr>
+</thead>
+<tbody id="statsTableBody">
+<tr><td colspan="8" class="loading">جاري التحميل...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- مودال عرض تفاصيل المستخدم -->
+<div class="details-modal" id="userDetailsModal">
+<div class="details-content">
+<div class="details-header">
+<h3>
+👤 تفاصيل المستخدم
+<span id="modalUserName"></span>
+</h3>
+<button class="close-details" onclick="closeUserDetails()">✕</button>
+</div>
+<div class="details-body" id="userDetailsBody"></div>
+</div>
+</div>
+
+<!-- مودال عرض تفاصيل المنشور -->
+<div class="details-modal" id="postDetailsModal">
+<div class="details-content">
+<div class="details-header">
+<h3>
+📝 تفاصيل المنشور
+</h3>
+<button class="close-details" onclick="closePostDetails()">✕</button>
+</div>
+<div class="details-body" id="postDetailsBody"></div>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getDatabase, ref, onValue, remove, set, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o",
+authDomain: "talk-19c55.firebaseapp.com",
+databaseURL: "https://talk-19c55-default-rtdb.firebaseio.com",
+projectId: "talk-19c55",
+storageBucket: "talk-19c55.firebasestorage.app",
+messagingSenderId: "908101479029",
+appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// عناصر الصفحة
+const adminLogin = document.getElementById('adminLogin');
+const adminContent = document.getElementById('adminContent');
+const loginError = document.getElementById('loginError');
+const usersTableBody = document.getElementById('usersTableBody');
+const postsTableBody = document.getElementById('postsTableBody');
+const statsTableBody = document.getElementById('statsTableBody');
+const totalUsers = document.getElementById('totalUsers');
+const totalPosts = document.getElementById('totalPosts');
+const totalComments = document.getElementById('totalComments');
+const totalReplies = document.getElementById('totalReplies');
+const totalLikes = document.getElementById('totalLikes');
+const blockedUsersCount = document.getElementById('blockedUsersCount');
+const usersCount = document.getElementById('usersCount');
+const postsCount = document.getElementById('postsCount');
+
+// متغيرات عامة
+let allUsers = [];
+let allPosts = [];
+let blockedUsers = [];
+
+// التحقق من تسجيل الدخول
+const adminLoggedIn = localStorage.getItem('admin_logged_in');
+if (adminLoggedIn === 'true') {
+showAdminContent();
+loadAllData();
+}
+
+// دوال تسجيل الدخول
+window.handleAdminLogin = () => {
+const username = document.getElementById('adminUsername').value;
+const password = document.getElementById('adminPassword').value;
+
+if (username === 'admin' && password === 'admin123') {
+localStorage.setItem('admin_logged_in', 'true');
+showAdminContent();
+loadAllData();
+loginError.classList.remove('show');
+} else {
+loginError.classList.add('show');
+}
+};
+
+function showAdminContent() {
+adminLogin.classList.add('hidden');
+adminContent.classList.add('show');
+}
+
+window.logoutAdmin = () => {
+localStorage.removeItem('admin_logged_in');
+location.reload();
+};
+
+// تحميل البيانات
+function loadAllData() {
+loadUsers();
+loadPosts();
+}
+
+function loadUsers() {
+onValue(ref(db, 'users'), (snapshot) => {
+const data = snapshot.val();
+if (!data) {
+allUsers = [];
+updateUsersTable();
+updateStats();
+return;
+}
+
+allUsers = Object.entries(data).map(([phone, user]) => ({
+phone,
+...user,
+blocked: false
+}));
+
+loadBlockedUsers();
+});
+}
+
+function loadBlockedUsers() {
+onValue(ref(db, 'blockedUsers'), (snapshot) => {
+const data = snapshot.val();
+blockedUsers = data ? Object.keys(data) : [];
+
+allUsers = allUsers.map(user => ({
+...user,
+blocked: blockedUsers.includes(user.phone)
+}));
+
+updateUsersTable();
+updateStats();
+});
+}
+
+function loadPosts() {
+onValue(ref(db, 'posts'), (snapshot) => {
+const data = snapshot.val();
+if (!data) {
+allPosts = [];
+updatePostsTable();
+updateStats();
+return;
+}
+
+allPosts = Object.entries(data).map(([id, post]) => ({
+id,
+...post,
+comments: post.comments || []
+}));
+
+updatePostsTable();
+updateStats();
+});
+}
+
+// حساب الإحصائيات
+function calculateStats() {
+let commentsCount = 0;
+let repliesCount = 0;
+let likesCount = 0;
+
+allPosts.forEach(post => {
+likesCount += post.likes || 0;
+if (post.comments) {
+post.comments.forEach(comment => {
+commentsCount++;
+if (comment.replies) {
+repliesCount += comment.replies.length;
+}
+});
+}
+});
+
+return { commentsCount, repliesCount, likesCount };
+}
+
+// تحديث الإحصائيات
+function updateStats() {
+const stats = calculateStats();
+totalComments.textContent = stats.commentsCount;
+totalReplies.textContent = stats.repliesCount;
+totalLikes.textContent = stats.likesCount;
+totalUsers.textContent = allUsers.length;
+totalPosts.textContent = allPosts.length;
+blockedUsersCount.textContent = blockedUsers.length;
+
+// المتوسطات
+const avgPostsPerUser = allUsers.length ? (allPosts.length / allUsers.length).toFixed(1) : 0;
+document.getElementById('avgPostsPerUser').textContent = avgPostsPerUser;
+
+const avgCommentsPerPost = allPosts.length ? (stats.commentsCount / allPosts.length).toFixed(1) : 0;
+document.getElementById('avgCommentsPerPost').textContent = avgCommentsPerPost;
+
+const avgRepliesPerComment = stats.commentsCount ? (stats.repliesCount / stats.commentsCount).toFixed(1) : 0;
+document.getElementById('avgRepliesPerComment').textContent = avgRepliesPerComment;
+
+const avgLikesPerPost = allPosts.length ? (stats.likesCount / allPosts.length).toFixed(1) : 0;
+document.getElementById('avgLikesPerPost').textContent = avgLikesPerPost;
+
+// معدل التفاعل (مجموع التفاعلات / عدد المنشورات)
+const totalInteractions = stats.commentsCount + stats.repliesCount + stats.likesCount;
+const engagementRate = allPosts.length ? ((totalInteractions / allPosts.length) * 100).toFixed(1) : 0;
+document.getElementById('engagementRate').textContent = engagementRate + '%';
+
+updateStatsTable();
+}
+
+// تحديث جدول المستخدمين
+function updateUsersTable() {
+usersCount.textContent = allUsers.length;
+
+if (allUsers.length === 0) {
+usersTableBody.innerHTML = '<tr><td colspan="14" style="text-align:center;padding:40px;">لا يوجد مستخدمين بعد</td></tr>';
+return;
+}
+
+usersTableBody.innerHTML = allUsers.map((user, index) => {
+let age = '?';
+if (user.birthdate) {
+const birthDate = new Date(user.birthdate);
+const today = new Date();
+age = today.getFullYear() - birthDate.getFullYear();
+const m = today.getMonth() - birthDate.getMonth();
+if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+}
+
+const userPosts = allPosts.filter(p => p.authorPhone === user.phone);
+let userComments = 0;
+let userReplies = 0;
+
+userPosts.forEach(post => {
+if (post.comments) {
+post.comments.forEach(comment => {
+if (comment.author === user.name) userComments++;
+if (comment.replies) {
+comment.replies.forEach(reply => {
+if (reply.author === user.name) userReplies++;
+});
+}
+});
+}
+});
+
+const lastActivity = userPosts.length > 0 
+? new Date(Math.max(...userPosts.map(p => p.timestamp))).toLocaleDateString('ar-EG')
+: 'لا يوجد';
+
+const isBlocked = user.blocked;
+const regDate = user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG') : 'غير معروف';
+
+return `<tr>
+<td>${index + 1}</td>
+<td>${user.name || 'غير معروف'}</td>
+<td dir="ltr">${user.phone || 'غير معروف'}</td>
+<td>${user.birthdate || 'غير محدد'}</td>
+<td>${age}</td>
+<td>${user.governorate || 'غير محدد'}</td>
+<td>${user.job || 'غير محدد'}</td>
+<td>${userPosts.length}</td>
+<td>${userComments}</td>
+<td>${userReplies}</td>
+<td>${regDate}</td>
+<td>${lastActivity}</td>
+<td>${isBlocked ? '<span class="blocked-badge">محظور</span>' : '<span class="active-badge">نشط</span>'}</td>
+<td>
+<button class="action-btn view-btn" onclick="viewUserDetails('${user.phone}')">عرض</button>
+<button class="action-btn block-btn ${isBlocked ? 'blocked' : ''}" onclick="toggleBlockUser('${user.phone}', ${!isBlocked})">
+${isBlocked ? 'فك الحظر' : 'حظر'}
+</button>
+<button class="action-btn delete-btn" onclick="deleteUser('${user.phone}')">حذف</button>
+</td>
+</tr>`;
+}).join('');
+}
+
+// تحديث جدول المنشورات
+function updatePostsTable() {
+postsCount.textContent = allPosts.length;
+
+if (allPosts.length === 0) {
+postsTableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;">لا يوجد منشورات بعد</td></tr>';
+return;
+}
+
+postsTableBody.innerHTML = allPosts.map((post, index) => {
+let commentsCount = 0;
+let repliesCount = 0;
+
+if (post.comments) {
+post.comments.forEach(comment => {
+commentsCount++;
+if (comment.replies) {
+repliesCount += comment.replies.length;
+}
+});
+}
+
+const imagesHTML = post.images && post.images.length > 0 
+? `<img src="${post.images[0]}" class="thumbnail" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, 0)">${post.images.length > 1 ? `<br><small>+${post.images.length-1}</small>` : ''}`
+: 'لا توجد';
+
+return `<tr>
+<td>${index + 1}</td>
+<td>${post.author || 'غير معروف'}</td>
+<td dir="ltr">${post.authorPhone || 'غير معروف'}</td>
+<td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${post.desc || ''}">${post.desc || 'بدون نص'}</td>
+<td>${imagesHTML}</td>
+<td>${commentsCount}</td>
+<td>${repliesCount}</td>
+<td>${post.likes || 0}</td>
+<td>${post.timestamp ? new Date(post.timestamp).toLocaleDateString('ar-EG') : 'غير معروف'}</td>
+<td>
+<button class="action-btn view-btn" onclick="viewPostDetails('${post.id}')">عرض</button>
+<button class="action-btn delete-btn" onclick="deletePost('${post.id}')">حذف</button>
+</td>
+</tr>`;
+}).join('');
+}
+
+// تحديث جدول الإحصائيات
+function updateStatsTable() {
+const userStats = allUsers.map(user => {
+const userPosts = allPosts.filter(p => p.authorPhone === user.phone);
+let userComments = 0;
+let userReplies = 0;
+
+userPosts.forEach(post => {
+if (post.comments) {
+post.comments.forEach(comment => {
+if (comment.author === user.name) userComments++;
+if (comment.replies) {
+comment.replies.forEach(reply => {
+if (reply.author === user.name) userReplies++;
+});
+}
+});
+}
+});
+
+const lastActivity = userPosts.length > 0 
+? new Date(Math.max(...userPosts.map(p => p.timestamp))).toLocaleDateString('ar-EG')
+: user.registeredAt ? new Date(user.registeredAt).toLocaleDateString('ar-EG') : 'لا يوجد';
+
+return {
+name: user.name,
+phone: user.phone,
+postsCount: userPosts.length,
+commentsCount: userComments,
+repliesCount: userReplies,
+totalInteractions: userPosts.length + userComments + userReplies + userPosts.reduce((s, p) => s + (p.likes || 0), 0),
+lastActivity
+};
+}).filter(stat => stat.postsCount > 0 || stat.commentsCount > 0 || stat.repliesCount > 0)
+.sort((a, b) => b.totalInteractions - a.totalInteractions);
+
+if (userStats.length === 0) {
+statsTableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;">لا توجد بيانات نشطة</td></tr>';
+return;
+}
+
+statsTableBody.innerHTML = userStats.map(stat => `<tr>
+<td>${stat.name}</td>
+<td dir="ltr">${stat.phone}</td>
+<td>${stat.postsCount}</td>
+<td>${stat.commentsCount}</td>
+<td>${stat.repliesCount}</td>
+<td>${stat.totalInteractions}</td>
+<td>${stat.lastActivity}</td>
+<td>
+<button class="action-btn view-btn" onclick="viewUserDetails('${stat.phone}')">عرض</button>
+</td>
+</tr>`).join('');
+}
+
+// دوال البحث
+window.filterUsers = () => {
+const search = document.getElementById('searchUsers').value.toLowerCase();
+const filtered = allUsers.filter(user => 
+user.name?.toLowerCase().includes(search) ||
+user.phone?.includes(search) ||
+user.governorate?.toLowerCase().includes(search) ||
+user.job?.toLowerCase().includes(search)
+);
+
+if (filtered.length === 0) {
+usersTableBody.innerHTML = '<tr><td colspan="14" style="text-align:center;padding:40px;">لا توجد نتائج</td></tr>';
+return;
+}
+
+usersTableBody.innerHTML = filtered.map((user, index) => {
+const userPosts = allPosts.filter(p => p.authorPhone === user.phone);
+let userComments = 0;
+let userReplies = 0;
+
+userPosts.forEach(post => {
+if (post.comments) {
+post.comments.forEach(comment => {
+if (comment.author === user.name) userComments++;
+if (comment.replies) {
+comment.replies.forEach(reply => {
+if (reply.author === user.name) userReplies++;
+});
+}
+});
+}
+});
+
+const isBlocked = user.blocked;
+
+return `<tr>
+<td>${index + 1}</td>
+<td>${user.name}</td>
+<td dir="ltr">${user.phone}</td>
+<td>${user.birthdate || 'غير محدد'}</td>
+<td>${user.governorate || 'غير محدد'}</td>
+<td>${user.job || 'غير محدد'}</td>
+<td>${userPosts.length}</td>
+<td>${userComments}</td>
+<td>${userReplies}</td>
+<td>${new Date(user.registeredAt).toLocaleDateString('ar-EG')}</td>
+<td>${isBlocked ? '<span class="blocked-badge">محظور</span>' : '<span class="active-badge">نشط</span>'}</td>
+<td>
+<button class="action-btn view-btn" onclick="viewUserDetails('${user.phone}')">عرض</button>
+<button class="action-btn block-btn ${isBlocked ? 'blocked' : ''}" onclick="toggleBlockUser('${user.phone}', ${!isBlocked})">
+${isBlocked ? 'فك الحظر' : 'حظر'}
+</button>
+<button class="action-btn delete-btn" onclick="deleteUser('${user.phone}')">حذف</button>
+</td>
+</tr>`;
+}).join('');
+};
+
+window.filterPosts = () => {
+const search = document.getElementById('searchPosts').value.toLowerCase();
+const filtered = allPosts.filter(post => 
+post.author?.toLowerCase().includes(search) ||
+post.authorPhone?.includes(search) ||
+post.desc?.toLowerCase().includes(search)
+);
+
+if (filtered.length === 0) {
+postsTableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;">لا توجد نتائج</td></tr>';
+return;
+}
+
+postsTableBody.innerHTML = filtered.map((post, index) => {
+let commentsCount = 0;
+let repliesCount = 0;
+
+if (post.comments) {
+post.comments.forEach(comment => {
+commentsCount++;
+if (comment.replies) {
+repliesCount += comment.replies.length;
+}
+});
+}
+
+const imagesHTML = post.images && post.images.length > 0 
+? `<img src="${post.images[0]}" class="thumbnail" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, 0)">${post.images.length > 1 ? `<br><small>+${post.images.length-1}</small>` : ''}`
+: 'لا توجد';
+
+return `<tr>
+<td>${index + 1}</td>
+<td>${post.author}</td>
+<td dir="ltr">${post.authorPhone}</td>
+<td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${post.desc || ''}">${post.desc || 'بدون نص'}</td>
+<td>${imagesHTML}</td>
+<td>${commentsCount}</td>
+<td>${repliesCount}</td>
+<td>${post.likes || 0}</td>
+<td>${new Date(post.timestamp).toLocaleDateString('ar-EG')}</td>
+<td>
+<button class="action-btn view-btn" onclick="viewPostDetails('${post.id}')">عرض</button>
+<button class="action-btn delete-btn" onclick="deletePost('${post.id}')">حذف</button>
+</td>
+</tr>`;
+}).join('');
+};
+
+// دوال الإجراءات
+window.toggleBlockUser = (phone, block) => {
+const action = block ? 'حظر' : 'فك حظر';
+if (confirm(`هل أنت متأكد من ${action} المستخدم ${phone}؟`)) {
+if (block) {
+set(ref(db, `blockedUsers/${phone}`), {
+blocked: true,
+timestamp: Date.now(),
+blockedBy: 'admin'
+}).then(() => {
+alert(`✅ تم حظر المستخدم ${phone} بنجاح`);
+});
+} else {
+remove(ref(db, `blockedUsers/${phone}`)).then(() => {
+alert(`✅ تم فك حظر المستخدم ${phone} بنجاح`);
+});
+}
+}
+};
+
+window.deleteUser = (phone) => {
+if (confirm(`⚠️ هل أنت متأكد من حذف المستخدم ${phone} نهائياً؟`)) {
+// حذف جميع منشورات المستخدم
+allPosts.forEach(post => {
+if (post.authorPhone === phone) {
+remove(ref(db, `posts/${post.id}`));
+}
+});
+
+// حذف المستخدم
+remove(ref(db, `users/${phone}`));
+remove(ref(db, `blockedUsers/${phone}`));
+
+alert('✅ تم حذف المستخدم وجميع منشوراته بنجاح');
+}
+};
+
+window.deletePost = (postId) => {
+if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) {
+remove(ref(db, `posts/${postId}`)).then(() => {
+alert('✅ تم حذف المنشور بنجاح');
+});
+}
+};
+
+// عرض تفاصيل المستخدم
+window.viewUserDetails = (phone) => {
+const user = allUsers.find(u => u.phone === phone);
+if (!user) return;
+
+const userPosts = allPosts.filter(p => p.authorPhone === phone);
+const modal = document.getElementById('userDetailsModal');
+const body = document.getElementById('userDetailsBody');
+const userName = document.getElementById('modalUserName');
+
+userName.textContent = user.name;
+
+let age = '?';
+if (user.birthdate) {
+const birthDate = new Date(user.birthdate);
+const today = new Date();
+age = today.getFullYear() - birthDate.getFullYear();
+const m = today.getMonth() - birthDate.getMonth();
+if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+}
+
+let totalComments = 0;
+let totalReplies = 0;
+let totalLikes = 0;
+
+userPosts.forEach(post => {
+totalLikes += post.likes || 0;
+if (post.comments) {
+post.comments.forEach(comment => {
+if (comment.author === user.name) totalComments++;
+if (comment.replies) {
+comment.replies.forEach(reply => {
+if (reply.author === user.name) totalReplies++;
+});
+}
+});
+}
+});
+
+const postsHTML = userPosts.map(post => {
+let postComments = post.comments?.filter(c => c.author === user.name) || [];
+let postReplies = 0;
+post.comments?.forEach(c => {
+if (c.replies) {
+postReplies += c.replies.filter(r => r.author === user.name).length;
+}
+});
+
+return `
+<div class="post-card">
+<div class="post-header">
+<span class="post-date">${new Date(post.timestamp).toLocaleDateString('ar-EG')}</span>
+</div>
+<div class="post-text">${post.desc || 'بدون نص'}</div>
+<div class="post-stats">
+<span>❤️ ${post.likes || 0}</span>
+<span>💬 ${post.comments?.length || 0} تعليق</span>
+</div>
+${post.images && post.images.length > 0 ? `
+<div class="post-images">
+${post.images.slice(0, 3).map(img => `<img src="${img}" class="post-thumb" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, 0)">`).join('')}
+${post.images.length > 3 ? `<span>+${post.images.length-3}</span>` : ''}
+</div>` : ''}
+</div>
+`;
+}).join('');
+
+body.innerHTML = `
+<div class="info-grid">
+<div class="info-item">
+<span class="info-label">👤 الاسم</span>
+<span class="info-value">${user.name}</span>
+</div>
+<div class="info-item">
+<span class="info-label">📱 رقم الموبايل</span>
+<span class="info-value">${user.phone}</span>
+</div>
+<div class="info-item">
+<span class="info-label">🎂 تاريخ الميلاد</span>
+<span class="info-value">${user.birthdate || 'غير محدد'} (${age} سنة)</span>
+</div>
+<div class="info-item">
+<span class="info-label">📍 المحافظة</span>
+<span class="info-value">${user.governorate || 'غير محدد'}</span>
+</div>
+<div class="info-item">
+<span class="info-label">💼 الوظيفة</span>
+<span class="info-value">${user.job || 'غير محدد'}</span>
+</div>
+<div class="info-item">
+<span class="info-label">📊 إحصائيات</span>
+<span class="info-value">
+📝 ${userPosts.length} منشور<br>
+💬 ${totalComments} تعليق<br>
+🔄 ${totalReplies} رد<br>
+❤️ ${totalLikes} إعجاب
+</span>
+</div>
+</div>
+<h4 style="margin:15px 0;color:var(--text-dark);">📝 المنشورات (${userPosts.length})</h4>
+<div class="posts-list">
+${postsHTML || '<p style="color:var(--text-light);text-align:center;">لا يوجد منشورات</p>'}
+</div>
+`;
+
+modal.classList.add('show');
+};
+
+// عرض تفاصيل المنشور
+window.viewPostDetails = (postId) => {
+const post = allPosts.find(p => p.id === postId);
+if (!post) return;
+
+const modal = document.getElementById('postDetailsModal');
+const body = document.getElementById('postDetailsBody');
+
+let commentsHTML = '';
+if (post.comments && post.comments.length > 0) {
+commentsHTML = '<div class="comments-list">';
+post.comments.forEach(comment => {
+commentsHTML += `
+<div class="comment-item">
+<div class="comment-header">
+<span class="comment-author">${comment.author}</span>
+<span class="comment-time">${new Date(comment.timestamp).toLocaleDateString('ar-EG')}</span>
+</div>
+<div class="comment-text">${comment.text}</div>
+<div class="comment-stats" style="font-size:0.8rem;color:var(--text-light);margin-bottom:8px;">
+❤️ ${comment.likes || 0}
+</div>
+`;
+if (comment.replies && comment.replies.length > 0) {
+commentsHTML += '<div class="comment-reply">';
+comment.replies.forEach(reply => {
+commentsHTML += `
+<div class="comment-item">
+<div class="comment-header">
+<span class="comment-author">${reply.author}</span>
+<span class="comment-time">${new Date(reply.timestamp).toLocaleDateString('ar-EG')}</span>
+</div>
+<div class="comment-text">${reply.text}</div>
+</div>
+`;
+});
+commentsHTML += '</div>';
+}
+commentsHTML += '</div>';
+});
+commentsHTML += '</div>';
+} else {
+commentsHTML = '<p style="color:var(--text-light);text-align:center;">لا توجد تعليقات</p>';
+}
+
+const imagesHTML = post.images && post.images.length > 0 ? `
+<div style="margin:15px 0;">
+<h4 style="margin-bottom:10px;">📸 الصور (${post.images.length})</h4>
+<div style="display:flex;gap:10px;flex-wrap:wrap;">
+${post.images.map((img, i) => `<img src="${img}" style="width:100px;height:100px;object-fit:cover;border-radius:10px;border:2px solid var(--border);cursor:pointer;" onclick="openImageViewer(${JSON.stringify(post.images).replace(/"/g, '&quot;')}, ${i})">`).join('')}
+</div>
+</div>
+` : '';
+
+body.innerHTML = `
+<div class="info-grid">
+<div class="info-item">
+<span class="info-label">👤 الكاتب</span>
+<span class="info-value">${post.author}</span>
+</div>
+<div class="info-item">
+<span class="info-label">📱 رقم الموبايل</span>
+<span class="info-value">${post.authorPhone}</span>
+</div>
+<div class="info-item">
+<span class="info-label">📅 التاريخ</span>
+<span class="info-value">${new Date(post.timestamp).toLocaleDateString('ar-EG')}</span>
+</div>
+<div class="info-item">
+<span class="info-label">❤️ الإعجابات</span>
+<span class="info-value">${post.likes || 0}</span>
+</div>
+</div>
+${post.desc ? `<div style="background:#f8fbfe;padding:15px;border-radius:12px;margin:15px 0;border:1px solid var(--border);"><strong>📝 المحتوى:</strong><br>${post.desc}</div>` : ''}
+${imagesHTML}
+<h4 style="margin:15px 0;">💬 التعليقات (${post.comments?.length || 0})</h4>
+${commentsHTML}
+`;
+
+modal.classList.add('show');
+};
+
+window.closeUserDetails = () => {
+document.getElementById('userDetailsModal').classList.remove('show');
+};
+
+window.closePostDetails = () => {
+document.getElementById('postDetailsModal').classList.remove('show');
+};
+
+// التبديل بين الأقسام
+window.switchTab = (tab) => {
+document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+document.querySelectorAll('.section').forEach(section => section.classList.remove('show'));
+
+if (tab === 'users') {
+document.querySelectorAll('.tab-btn')[0].classList.add('active');
+document.getElementById('usersSection').classList.add('show');
+} else if (tab === 'posts') {
+document.querySelectorAll('.tab-btn')[1].classList.add('active');
+document.getElementById('postsSection').classList.add('show');
+} else if (tab === 'stats') {
+document.querySelectorAll('.tab-btn')[2].classList.add('active');
+document.getElementById('statsSection').classList.add('show');
+updateStatsTable();
+}
+};
+
+// عرض الصور المكبرة
+window.openImageViewer = (images, index) => {
+const viewer = window.open('', '_blank');
+viewer.document.write(`
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>عرض الصور</title>
+<style>
+body { margin:0; background:#000; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+img { max-width:100%; max-height:100vh; object-fit:contain; }
+</style>
+</head>
+<body>
+<img src="${images[index]}">
+</body>
+</html>
+`);
+};
+
+// إغلاق المودال عند النقر خارج المحتوى
+window.onclick = (e) => {
+const userModal = document.getElementById('userDetailsModal');
+const postModal = document.getElementById('postDetailsModal');
+if (e.target === userModal) {
+userModal.classList.remove('show');
+}
+if (e.target === postModal) {
+postModal.classList.remove('show');
+}
+};
+
+// تحديث التاريخ
+document.getElementById('statsDate').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
