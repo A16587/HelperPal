@@ -261,7 +261,6 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .post-actions { display: flex; gap: 20px; padding-top: 15px; border-top: 1px solid var(--border-color); }
 .action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.3s; padding: 8px 12px; border-radius: 20px; }
 .action-btn:hover { background: var(--bg-primary); }
-.action-btn.liked { color: var(--danger); }
 .comments-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
 .comments-section.show { display: block; }
 .comments-section.hide { display: none; }
@@ -272,26 +271,148 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .comment-send-btn img { width: 20px; height: 20px; object-fit: contain; }
 .comment-send-btn:hover { background: var(--accent-secondary); transform: scale(1.1); }
 .comment-list { display: flex; flex-direction: column; gap: 12px; }
-.comment-item { background: var(--bg-tertiary); padding: 12px 15px; border-radius: 15px; border: 1px solid var(--border-color); margin-bottom: 8px; position: relative; }
+
+/* ===== تعديلات الردود - بدون مسافات جانبية ===== */
+.comment-item {
+    background: var(--bg-tertiary);
+    padding: 12px 15px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 8px;
+    position: relative;
+}
 .comment-item:last-child { margin-bottom: 0; }
-.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.comment-author { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
-.comment-date { font-size: 0.75rem; color: var(--text-muted); }
-.comment-text { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 8px; white-space: pre-wrap; }
-.comment-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-.comment-action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 15px; transition: 0.3s; }
-.comment-action-btn:hover { background: var(--accent-light); color: var(--accent-primary); }
-.comment-action-btn.liked { color: var(--danger); }
-.delete-comment-btn { position: absolute; top: 10px; left: 10px; background: var(--danger-light); color: var(--danger); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0.7; }
-.delete-comment-btn:hover { opacity: 1; background: var(--danger-lighter); transform: scale(1.1); }
-.reply-container { margin-top: 10px; padding-right: 20px; }
-.reply-input-wrapper { display: flex; gap: 8px; margin-top: 8px; }
-.reply-input { flex: 1; padding: 8px 12px; border: 1px solid var(--border-light); border-radius: 20px; background: var(--input-bg-focus); color: var(--text-primary); font-size: 0.85rem; outline: none; }
-.reply-input:focus { border-color: var(--accent-primary); }
-.reply-send-btn { background: var(--accent-primary); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; padding: 0; }
-.reply-send-btn img { width: 18px; height: 18px; object-fit: contain; }
-.reply-send-btn:hover { background: var(--accent-secondary); transform: scale(1.05); }
-.replies-list { margin-top: 10px; padding-right: 20px; border-right: 2px solid var(--border-color); }
+
+/* الردود - بدون مسافة جانبية */
+.comment-item.reply-item {
+    background: var(--bg-secondary);
+    border-right: 3px solid var(--accent-primary);
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.comment-author {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+.comment-author .reply-badge {
+    font-size: 0.7rem;
+    color: var(--accent-primary);
+    margin-right: 5px;
+    opacity: 0.8;
+}
+.comment-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.comment-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    white-space: pre-wrap;
+}
+.comment-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.comment-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+.comment-action-btn:hover {
+    background: var(--accent-light);
+    color: var(--accent-primary);
+}
+.delete-comment-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--danger-light);
+    color: var(--danger);
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    opacity: 0.7;
+}
+.delete-comment-btn:hover {
+    opacity: 1;
+    background: var(--danger-lighter);
+    transform: scale(1.1);
+}
+.reply-container {
+    margin-top: 10px;
+}
+.reply-input-wrapper {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+.reply-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    background: var(--input-bg-focus);
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    outline: none;
+}
+.reply-input:focus {
+    border-color: var(--accent-primary);
+}
+.reply-send-btn {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    padding: 0;
+    flex-shrink: 0;
+}
+.reply-send-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+.reply-send-btn:hover {
+    background: var(--accent-secondary);
+    transform: scale(1.05);
+}
+.replies-list {
+    margin-top: 8px;
+}
+
 .modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay); backdrop-filter: blur(5px); align-items: center; justify-content: center; z-index: 2000; }
 .modal-content { background: var(--bg-secondary); padding: 30px; border-radius: 25px; width: 90%; max-width: 420px; position: relative; }
 .close-modal { position: absolute; top: 15px; left: 15px; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
@@ -379,7 +500,9 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <button onclick="handleLogin()">تسجيل ودخول</button>
 </div>
 </div>
+
 <div class="mobile-profile-icon" id="mobileProfileIcon" onclick="toggleMobileProfile()"><img src="profile.png" alt="الملف الشخصي"></div>
+
 <div class="main-container" id="mainView">
 <div class="right-sidebar" id="rightSidebar">
 <div class="unified-card">
@@ -390,6 +513,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <div class="profile-name"><h3 id="displayName">الاسم</h3><p onclick="openModal()"><span>✎</span> تعديل البروفايل</p></div>
 </div>
 </div>
+
 <div class="post-section">
 <h3>📝 مشاركة جديدة</h3>
 <textarea id="postDesc" placeholder="اكتب ما يدور في ذهنك..."></textarea>
@@ -402,6 +526,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <button class="sidebar-btn" id="notificationsToggle" onclick="toggleNotifications()"><span>🔔</span><span>الإشعارات</span><span class="notification-badge" id="notificationBadge">0</span></button>
 <button class="sidebar-btn" id="messagesToggle" onclick="toggleMessages()"><span>💬</span><span>الرسائل</span><span class="notification-badge" id="messageBadge">0</span></button>
 </div>
+
 <div class="quick-links-section">
 <div class="quick-links-title">📌 روابط سريعة</div>
 <div class="quick-links-grid">
@@ -411,9 +536,11 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <a href="terms.html" class="quick-link-item"><div class="quick-link-icon">📄</div><div class="quick-link-text">شروط الاستخدام</div></a>
 </div>
 </div>
+
 <div class="my-posts-section" id="myPostsSection"><h4 class="section-title">📌 منشوراتي <span class="section-count" id="myPostsCount">0</span></h4><div class="my-posts-list" id="myPostsList"></div></div>
 <div class="notifications-section" id="notificationsSection"><h4 class="section-title">🔔 الإشعارات <span class="section-count"id="notificationsCount">0</span></h4><div class="notifications-list" id="notificationsList"></div></div>
 <div class="messages-section" id="messagesSection"><h4 class="section-title">💬 المحادثات <span class="section-count" id="messagesCount">0</span></h4><div class="messages-list" id="messagesList"></div></div>
+
 <div class="profile-section" style="border-bottom:none;border-top:1px solid var(--border-color);">
 <div class="profile-info">
 <div class="info-row"><span class="info-label">الاسم</span><span class="info-value" id="infoName"></span></div>
@@ -427,21 +554,30 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 </div>
 </div>
 </div>
+
 <div class="left-content">
 <div class="feed-header"><h2 id="feedTitle">أحدث المشاركات</h2><span id="postsCount">٠ منشور</span></div>
 <div class="posts-grid" id="postsContainer"></div>
 </div>
 </div>
+
 <div class="mobile-bottom-bar" id="mobileBottomBar">
 <div class="mobile-input-wrapper"><input type="text" id="mobilePostInput" placeholder="اكتب مشاركتك..."><button class="mobile-image-btn" id="mobileImageBtn" onclick="toggleMobileImagePicker()"><img src="camera.png" alt="كاميرا"></button></div>
 <button class="mobile-send-btn" onclick="publishMobilePost()"><img src="send.png" alt="إرسال"></button>
 </div>
+
 <div class="mobile-image-preview" id="mobileImagePreview"><div class="mobile-preview-header"><span>الوسائط المختارة</span><button class="mobile-preview-close" onclick="toggleMobileImagePicker()">✕</button></div><div class="mobile-preview-grid" id="mobilePreviewGrid"></div></div>
+
 <div class="modal" id="profileModal"><div class="modal-content"><span class="close-modal" onclick="closeModal('profileModal')">✕</span><h2>تعديل البيانات</h2><div class="dark-mode-toggle"><div class="dark-mode-toggle-label"><span class="dark-mode-toggle-icon" id="darkModeIcon">☀️</span><span>الوضع المظلم</span></div><label class="toggle-switch"><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" checked><span class="toggle-slider"></span></label></div><input type="text" id="editName" placeholder="الاسم"><input type="tel" id="editPhone" placeholder="رقم الموبايل"><input type="date" id="editBirthdate"><select id="editGovernorate"><option value="">اختر المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>أسوان</option><option>أسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>شمال سيناء</option><option>الشرقية</option><option>سوهاج</option></select><input type="text" id="editJob" placeholder="الوظيفة"><div style="display:flex;gap:10px;margin-top:15px;"><button class="save-btn" onclick="saveProfile()">حفظ</button></div></div></div>
+
 <div class="confirm-modal" id="confirmModal"><div class="confirm-content"><h3>تأكيد تسجيل الخروج</h3><p>هل توافق على تسجيل الخروج من الموقع؟<br>سيتم حذف بياناتك وسيطلب منك إعادة التسجيل من جديد.</p><div class="confirm-buttons"><button class="confirm-yes" onclick="confirmLogout()">نعم، خروج</button><button class="confirm-no" onclick="closeConfirmModal()">لا، إلغاء</button></div></div></div>
+
 <div class="media-viewer-modal" id="mediaViewerModal"><div class="media-viewer-header"><span class="media-counter" id="mediaViewerCounter"></span><button class="media-viewer-close" onclick="closeMediaViewer()">✕</button></div><button class="media-nav-btn media-prev-btn" onclick="navigateMedia(-1)">←</button><button class="media-nav-btn media-next-btn" onclick="navigateMedia(1)">→</button><div class="media-viewer-container" id="mediaViewerContainer"></div></div>
+
 <div class="chat-modal" id="chatModal"><div class="chat-container"><div class="chat-header"><button class="chat-back-btn" id="chatBackBtn" onclick="closeChat()">←</button><div class="chat-header-avatar" id="chatAvatar">م</div><div class="chat-header-info"><h3 id="chatUserName">اسم المستخدم</h3><p>متصل الآن</p></div><button class="chat-close" onclick="closeChat()">✕</button></div><div class="chat-messages" id="chatMessages"></div><div class="chat-input-area"><input type="text" class="chat-input" id="chatInput" placeholder="اكتب رسالتك..."><button class="chat-send-btn" onclick="sendChatMessage()"><img src="send.png" alt="إرسال"></button></div></div></div>
+
 <div class="new-message-modal" id="newMessageModal"><div class="new-message-container"><div class="new-message-header"><h3>📝 رسالة جديدة</h3><button class="new-message-close" onclick="closeNewMessageModal()">✕</button></div><div class="new-message-recipient" id="newMessageRecipient"></div><textarea class="new-message-textarea" id="newMessageText" placeholder="اكتب رسالتك هنا..."></textarea><button class="new-message-send-btn" onclick="sendNewMessage()"><img src="send.png" alt="إرسال"><span>إرسال الرسالة</span></button></div></div>
+
 <input type="file" id="mobileFileUpload" accept="image/*,video/*" multiple style="display:none;">
 
 <script type="module">
@@ -717,7 +853,7 @@ window.removeMobileFile = i => {
     } 
 };
 
-// ===== نشر المشاركات مع دعم الفيديو =====
+// ===== نشر المشاركات مع دعم الفيديو (بدون لايكات) =====
 window.publishPost = () => { 
     const desc = els.postDesc.value.trim(); 
     if (!desc && !selectedFiles.length) return alert('اكتب شيئاً أو اختر صور/فيديوهات'); 
@@ -731,10 +867,8 @@ window.publishPost = () => {
         author: currentUser.name, 
         authorPhone: currentUser.phone, 
         desc, 
-        media: mediaData, // تغيير الاسم من images إلى media
+        media: mediaData,
         timestamp: Date.now(), 
-        likes: 0, 
-        likedBy: [], 
         comments: [] 
     }).then(() => { 
         els.postDesc.value = ''; 
@@ -759,8 +893,6 @@ window.publishMobilePost = () => {
         desc: text || '', 
         media: mediaData, 
         timestamp: Date.now(), 
-        likes: 0, 
-        likedBy: [], 
         comments: [] 
     }).then(() => { 
         els.mobilePostInput.value = ''; 
@@ -783,7 +915,6 @@ window.openMediaViewer = (media, index) => {
 window.closeMediaViewer = () => { 
     els.mediaViewerModal.classList.remove('show'); 
     document.body.style.overflow = ''; 
-    // إيقاف جميع الفيديوهات عند الإغلاق
     const videos = els.mediaViewerContainer.querySelectorAll('video');
     videos.forEach(v => v.pause());
 };
@@ -820,7 +951,7 @@ function renderMediaViewer() {
     els.mediaViewerContainer.appendChild(slide); 
 }
 
-// ===== بقية الدوال (المحادثات، الإشعارات، التعليقات) كما هي مع تعديلات بسيطة للأسماء =====
+// ===== دوال المحادثات =====
 function getChatRoomId(u1, u2) { return [u1, u2].sort().join('_'); }
 
 window.openNewMessageModal = target => { 
@@ -1168,8 +1299,8 @@ function renderNotifications() {
     els.notificationsList.innerHTML = !allNotifications.length ? 
         '<div class="no-items">لا توجد إشعارات بعد 🔔</div>' : 
         allNotifications.map(n => { 
-            const icons = { like: '❤️', comment: '💬', reply: '↩️', message: '💬' }, 
-                  actions = { like: 'أعجب بمنشورك', comment: 'علق على منشورك', reply: 'رد على تعليقك', message: 'أرسل لك رسالة' }; 
+            const icons = { comment: '💬', reply: '↩️', message: '💬' }, 
+                  actions = { comment: 'علق على منشورك', reply: 'رد على تعليقك', message: 'أرسل لك رسالة' }; 
             return `<div class="notification-item ${!n.read ? 'unread' : ''}" onclick="navigateToNotification('${n.id}')">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <span class="notification-icon">${icons[n.type] || '🔔'}</span>
@@ -1229,7 +1360,7 @@ function createNotification(from, to, type, postId, preview, text = '') {
     }); 
 }
 
-// ===== دوال التعليقات والردود =====
+// ===== دوال التعليقات والردود (بدون لايكات) =====
 window.toggleComments = postId => { 
     commentsOpenState[postId] = !commentsOpenState[postId]; 
     updatePostCommentsUI(postId); 
@@ -1275,40 +1406,6 @@ function updateCommentInTree(comments, id, updater) {
     }); 
 }
 
-// ===== دالة الإعجاب بالتعليقات فقط =====
-window.toggleCommentLike = (postId, commentId) => { 
-    const post = allPosts.find(p => p.id === postId); 
-    if (!post) return; 
-    const comment = findCommentInTree(post.comments || [], commentId); 
-    if (!comment) return; 
-    
-    // التحقق من أن هذا تعليق وليس رد
-    const isMainComment = post.comments.some(c => c.id === commentId);
-    
-    if (!isMainComment) {
-        alert('يمكن الإعجاب بالتعليقات فقط، وليس الردود');
-        return;
-    }
-    
-    const likedBy = comment.likedBy || [], 
-          isLiked = likedBy.includes(currentUser.name); 
-    const [newLikedBy, newLikes] = isLiked ? 
-        [likedBy.filter(n => n !== currentUser.name), (comment.likes || 0) - 1] : 
-        [[...likedBy, currentUser.name], (comment.likes || 0) + 1]; 
-    
-    if (!isLiked) 
-        createNotification(currentUser.name, comment.author, 'commentLike', postId, 
-                          post.desc?.substring(0, 50) || 'منشور', comment.text); 
-    
-    update(ref(db, `posts/${postId}`), { 
-        comments: updateCommentInTree(post.comments || [], commentId, c => ({ 
-            ...c, 
-            likes: newLikes, 
-            likedBy: newLikedBy 
-        })) 
-    }).then(() => renderPosts()); 
-};
-
 // ===== دالة إضافة تعليق جديد =====
 window.addComment = postId => { 
     const input = $(`comment-input-${postId}`), 
@@ -1320,8 +1417,6 @@ window.addComment = postId => {
         author: currentUser.name, 
         text, 
         timestamp: Date.now(), 
-        likes: 0, 
-        likedBy: [], 
         replies: [] 
     }; 
     
@@ -1381,21 +1476,7 @@ window.toggleReplyInput = (commentId, show) => {
     } 
 };
 
-window.toggleLike = postId => { 
-    const post = allPosts.find(p => p.id === postId); 
-    if (!post) return; 
-    const likedBy = post.likedBy || [], 
-          isLiked = likedBy.includes(currentUser.name); 
-    const [newLikedBy, newLikes] = isLiked ? 
-        [likedBy.filter(n => n !== currentUser.name), (post.likes || 0) - 1] : 
-        [[...likedBy, currentUser.name], (post.likes || 0) + 1]; 
-    if (!isLiked) 
-        createNotification(currentUser.name, post.author, 'like', postId, 
-                          post.desc?.substring(0, 50) || 'منشور'); 
-    update(ref(db, `posts/${postId}`), { likes: newLikes, likedBy: newLikedBy }); 
-};
-
-// ===== تحميل وعرض المنشورات مع دعم الفيديو =====
+// ===== تحميل وعرض المنشورات مع دعم الفيديو (بدون لايكات) =====
 function loadPosts() { 
     onValue(ref(db, 'posts'), s => { 
         const data = s.val(); 
@@ -1412,24 +1493,23 @@ function loadPosts() {
     }); 
 }
 
-// ===== دالة عرض التعليقات والردود المتداخلة =====
+// ===== دالة عرض التعليقات والردود المتداخلة - بدون مسافات جانبية =====
 function renderComment(c, postId, level = 0) { 
-    const isMainComment = level === 0;
-    const isLiked = isMainComment && (c.likedBy || []).includes(currentUser.name);
     const isAuthor = c.author === currentUser.name; 
-    const maxIndent = 60;
+    const isReply = level > 0;
     
-    return `<div class="comment-item" id="comment-item-${c.id}" style="margin-right:${Math.min(level * 15, maxIndent)}px;">
+    // نحدد إذا كان هذا رد أم تعليق أصلي
+    const replyClass = isReply ? 'reply-item' : '';
+    const replyBadge = isReply ? '<span class="reply-badge">↪️ رد</span>' : '';
+    
+    return `<div class="comment-item ${replyClass}" id="comment-item-${c.id}" style="margin-right:0;">
         ${isAuthor ? `<button class="delete-comment-btn" onclick="deleteUserComment('${postId}', ${c.id})" title="حذف">🗑</button>` : ''}
         <div class="comment-header">
-            <span class="comment-author">${c.author}</span>
+            <span class="comment-author">${c.author} ${replyBadge}</span>
             <span class="comment-date">${new Date(c.timestamp).toLocaleDateString('ar-EG')}</span>
         </div>
         <div class="comment-text">${c.text}</div>
         <div class="comment-actions">
-            ${isMainComment ? 
-                `<button class="comment-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleCommentLike('${postId}', ${c.id})">${isLiked ? '❤️' : '🤍'} ${c.likes || 0}</button>` : 
-                ''}
             <button class="comment-action-btn" onclick="toggleReplyInput(${c.id}, true)">💬 رد</button>
         </div>
         <div id="reply-container-${c.id}" class="reply-container" style="display:none;">
@@ -1447,8 +1527,7 @@ function renderComment(c, postId, level = 0) {
 function renderPosts() { 
     els.postsContainer.innerHTML = ''; 
     allPosts.forEach(post => { 
-        const isLiked = (post.likedBy || []).includes(currentUser.name), 
-              comments = post.comments || []; 
+        const comments = post.comments || []; 
         if (commentsOpenState[post.id] === undefined) commentsOpenState[post.id] = false; 
         
         let mediaHTML = ''; 
@@ -1503,7 +1582,6 @@ function renderPosts() {
             ${post.desc ? `<div class="post-desc">${post.desc}</div>` : ''}
             ${mediaHTML}
             <div class="post-actions">
-                <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">${isLiked ? '❤️' : '🤍'} ${post.likes || 0}</button>
                 <button class="action-btn" id="comments-btn-${post.id}" onclick="toggleComments('${post.id}')">💬 تعليق ${comments.length > 0 ? `(${comments.length})` : ''}</button>
             </div>
             <div class="comments-section ${commentsOpenState[post.id] ? 'show' : 'hide'}" id="comments-section-${post.id}">
