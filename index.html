@@ -1,10 +1,88 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>Helper Pal · مجتمع التطور</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Helper Pal · Community Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ===== FULL PROTECTION SYSTEM ===== -->
+<script>
+(function(){
+    'use strict';
+
+    // 1. Disable Right Click
+    document.addEventListener('contextmenu', function(e){ e.preventDefault(); return false; }, true);
+
+    // 2. Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S
+    document.addEventListener('keydown', function(e){
+        if(
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j')) ||
+            (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c')) ||
+            (e.ctrlKey && (e.key === 'U' || e.key === 'u')) ||
+            (e.ctrlKey && (e.key === 'S' || e.key === 's')) ||
+            (e.ctrlKey && (e.key === 'A' || e.key === 'a')) ||
+            (e.ctrlKey && (e.key === 'P' || e.key === 'p')) ||
+            e.key === 'F5' && e.ctrlKey
+        ){
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }, true);
+
+    // 3. Detect DevTools Open via size difference
+    var devtoolsOpen = false;
+    function detectDevTools(){
+        var widthDiff = window.outerWidth - window.innerWidth > 160;
+        var heightDiff = window.outerHeight - window.innerHeight > 160;
+        if((widthDiff || heightDiff) && !devtoolsOpen){
+            devtoolsOpen = true;
+            document.body.innerHTML = '<div style="background:#000;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;font-size:2rem;font-family:sans-serif;text-align:center;padding:20px;">🚫 Developer tools are not allowed.<br><br><button onclick="location.reload()" style="font-size:1rem;padding:10px 30px;cursor:pointer;border-radius:20px;border:none;background:#3b82f6;color:white;margin-top:20px;">Back</button></div>';
+        } else if(!widthDiff && !heightDiff && devtoolsOpen){
+            devtoolsOpen = false;
+            location.reload();
+        }
+    }
+    setInterval(detectDevTools, 500);
+
+    // 4. Debugger loop trap - slows down devtools dramatically
+    (function antiDebug(){
+        try {
+            var start = new Date();
+            debugger;
+            var end = new Date();
+            if(end - start > 100){
+                document.body.innerHTML = '<div style="background:#000;color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;font-size:2rem;font-family:sans-serif;text-align:center;padding:20px;">🚫 Access Denied</div>';
+            }
+        } catch(e){}
+        setTimeout(antiDebug, 3000);
+    })();
+
+    // 5. Disable text selection via CSS (will inject after DOM ready)
+    document.addEventListener('DOMContentLoaded', function(){
+        var style = document.createElement('style');
+        style.innerHTML = '* { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; } input, textarea { -webkit-user-select: text !important; -moz-user-select: text !important; user-select: text !important; }';
+        document.head.appendChild(style);
+    });
+
+    // 6. Disable drag
+    document.addEventListener('dragstart', function(e){ e.preventDefault(); return false; }, true);
+
+    // 7. Console warning
+    var consoleMsg = '%cSTOP! 🚫\n%cThis is a protected application. Unauthorized access is prohibited.';
+    setTimeout(function(){
+        try {
+            console.clear();
+            console.log(consoleMsg, 'color:red;font-size:40px;font-weight:bold;', 'color:orange;font-size:16px;');
+        } catch(e){}
+    }, 1000);
+
+})();
+</script>
+
 <style>
 :root {
 --bg-primary: #f0f5fa; --bg-secondary: #ffffff; --bg-tertiary: #f8fbfe;
@@ -48,10 +126,34 @@
 --badge-bg: #ef4444; --section-count-bg: linear-gradient(145deg, #1e3a5f, #1a3552);
 --highlight-bg: #1e3a5f; --highlight-border: #3b82f6; --highlight-shadow: rgba(59,130,246,0.3);
 }
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
 
-/* ===== شاشة الترحيب باللوجو ===== */
+.main-container,
+.left-content,
+.right-sidebar,
+.posts-grid,
+.feed-header,
+.post-item,
+.quick-links-grid,
+.my-posts-list,
+.notifications-list,
+.messages-list,
+.comment-list,
+.replies-list {
+    direction: ltr !important;
+}
+.post-author,
+.post-actions,
+.comment-actions,
+.info-row,
+.modal-content input,
+.modal-content select,
+.auth-container input,
+.auth-container select {
+    direction: ltr !important;
+}
+
 .splash-screen {
     position: fixed;
     inset: 0;
@@ -82,7 +184,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 }
 .splash-title {
     color: white;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2rem, 6vw, 3.8rem);
     margin-bottom: 12px;
     letter-spacing: 3px;
@@ -91,7 +193,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 }
 .splash-subtitle {
     color: #c9b27e;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(1.05rem, 3.5vw, 1.35rem);
     opacity: 0.95;
     font-weight: 500;
@@ -102,7 +204,6 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
     100% { transform: translateY(0px); }
 }
 
-/* باقي التصميم */
 .auth-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 1; visibility: visible; transition: all 0.5s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; padding: 20px; }
 .auth-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .auth-container { background: var(--bg-secondary); backdrop-filter: blur(10px); width: 90%; max-width: 450px; margin: auto; padding: 50px 40px; border-radius: 40px; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.1) inset; text-align: center; animation: slideUpFade 0.6s ease-out; }
@@ -114,15 +215,18 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .auth-container input:focus, .auth-container select:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 4px rgba(59,130,246,0.15); transform: scale(1.02); }
 .auth-container button { width: 100%; padding: 18px; background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 20px; box-shadow: 0 10px 20px rgba(59,130,246,0.3); }
 .auth-container button:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(59,130,246,0.4); }
+
 .main-container { display: none; width: 100%; max-width: 100%; margin: 0; gap: 0; padding: 0; min-height: 100vh; opacity: 1; transition: opacity 0.5s; }
 .main-container.show { display: flex !important; }
+
 @media (min-width: 769px) {
-.main-container { display: flex !important; }
-.right-sidebar { width: 30%; position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 20px 10px 20px 20px; background: var(--bg-primary); }
-.left-content { width: 70%; padding: 20px 20px 20px 10px; height: 100vh; overflow-y: auto; }
+.main-container { display: flex !important; flex-direction: row-reverse !important; }
+.right-sidebar { width: 30%; position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 20px 20px 20px 10px; background: var(--bg-primary); }
+.left-content { width: 70%; padding: 20px 10px 20px 20px; height: 100vh; overflow-y: auto; }
 .mobile-profile-icon, .mobile-back-btn, .mobile-bottom-bar, .chat-back-btn { display: none !important; }
 .unified-card { border-radius: 20px; height: auto; min-height: calc(100vh - 40px); }
 }
+
 @media (max-width: 768px) {
 .main-container { flex-direction: column; padding: 0; gap: 0; }
 .right-sidebar { width: 100%; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; padding: 0; overflow-y: auto; }
@@ -157,6 +261,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .mobile-back-btn span { font-size: 1.4rem; line-height: 1; }
 .chat-back-btn { display: none; background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
 }
+
 .unified-card { background: var(--bg-secondary); border-radius: 25px; padding: 0; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); overflow: hidden; }
 .profile-section { padding: 25px; background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary)); border-bottom: 1px solid var(--border-color); }
 .profile-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
@@ -172,6 +277,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .edit-profile-btn:hover { background: var(--accent-lighter); }
 .logout-profile-btn { background: var(--danger-light); color: var(--danger); border: none; padding: 12px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 10px; }
 .logout-profile-btn:hover { background: var(--danger-lighter); }
+
 .quick-links-section { padding: 20px; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color); }
 .quick-links-title { color: var(--text-primary); font-size: 1rem; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .quick-links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -179,6 +285,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .quick-link-item:hover { background: var(--accent-light); border-color: var(--accent-primary); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59,130,246,0.15); }
 .quick-link-icon { width: 45px; height: 45px; background: linear-gradient(145deg, var(--accent-lightest), var(--accent-lighter)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
 .quick-link-text { color: var(--text-primary); font-size: 0.85rem; font-weight: 600; }
+
 .post-section { padding: 25px; border-bottom: 1px solid var(--border-color); }
 .post-section h3 { color: var(--text-primary); margin-bottom: 15px; font-size: 1.1rem; }
 .post-section textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border-light); border-radius: 15px; background: var(--input-bg); color: var(--text-primary); resize: none; min-height: 100px; font-size: 1rem; }
@@ -195,16 +302,50 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .publish-btn { background: var(--accent-primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; margin-bottom: 10px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .publish-btn img { width: 20px; height: 20px; object-fit: contain; }
 .publish-btn:hover { background: var(--accent-secondary); }
+
 .sidebar-btn { background: var(--sidebar-btn-bg); color: var(--accent-primary); border: none; padding: 14px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
 .sidebar-btn:hover { background: var(--sidebar-btn-hover); }
 .sidebar-btn.active { background: var(--sidebar-btn-active); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.25); }
+
+.modal-language-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--bg-tertiary);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+.modal-language-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+.modal-language-label .lang-icon { font-size: 1.3rem; }
+.modal-language-selector select {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
 .notification-badge { background: var(--badge-bg); color: white; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; margin-right: auto; display: none; }
 .notification-badge.show { display: inline-block; }
+
 .my-posts-section, .notifications-section, .messages-section { display: none; padding: 25px; background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary)); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); max-height: 400px; overflow-y: auto; }
 .my-posts-section.show, .notifications-section.show, .messages-section.show { display: block; animation: slideDown 0.3s ease; }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 .section-title { color: var(--text-primary); margin-bottom: 15px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
 .section-count { background: var(--section-count-bg); color: var(--accent-primary); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+
 .my-post-item, .notification-item, .message-chat-item { background: var(--bg-secondary); padding: 18px; border-radius: 18px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: 0.3s; cursor: pointer; position: relative; }
 .my-post-item:hover, .notification-item:hover, .message-chat-item:hover { transform: translateX(-5px); box-shadow: 0 6px 20px rgba(0,59,94,0.08); }
 .my-post-item:last-child, .notification-item:last-child, .message-chat-item:last-child { margin-bottom: 0; }
@@ -220,6 +361,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .no-items { text-align: center; color: var(--text-muted); padding: 40px 20px; background: var(--bg-secondary); border-radius: 18px; border: 2px dashed var(--border-color); font-size: 1rem; }
 .delete-post-btn { position: absolute; top: 15px; left: 15px; background: var(--danger-light); color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0.7; }
 .delete-post-btn:hover { opacity: 1; background: var(--danger-lighter); transform: scale(1.1); }
+
 .feed-header { background: var(--bg-secondary); padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); }
 .posts-grid { display: flex; flex-direction: column; gap: 20px; }
 .post-item { background: var(--bg-secondary); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
@@ -231,6 +373,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .post-dm-btn { background: linear-gradient(145deg, var(--accent-primary), var(--accent-secondary)); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
 .post-dm-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
 .post-desc { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; margin-bottom: 15px; white-space: pre-wrap; }
+
 .post-media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 15px 0; border-radius: 16px; overflow: hidden; }
 .post-media-wrapper { position: relative; width: 100%; padding-bottom: 100%; overflow: hidden; cursor: pointer; border-radius: 12px; background: var(--image-bg); }
 .post-media-wrapper img, .post-media-wrapper video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
@@ -240,6 +383,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .single-media-wrapper { width: 100%; max-height: 400px; border-radius: 16px; overflow: hidden; cursor: pointer; margin: 15px 0; background: var(--video-bg); position: relative; }
 .single-media-wrapper img, .single-media-wrapper video { width: 100%; height: auto; max-height: 400px; object-fit: contain; transition: transform 0.3s; }
 .single-media-wrapper:hover img, .single-media-wrapper:hover video { transform: scale(1.02); }
+
 .media-viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; flex-direction: column; }
 .media-viewer-modal.show { display: flex; }
 .media-viewer-header { position: absolute; top: 20px; right: 20px; left: 20px; display: flex; justify-content: space-between; align-items: center; color: white; z-index: 10001; }
@@ -258,9 +402,11 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .media-nav-btn { width: 40px; height: 40px; font-size: 1.5rem; }
 .media-viewer-header { top: 10px; right: 10px; left: 10px; }
 }
+
 .post-actions { display: flex; gap: 20px; padding-top: 15px; border-top: 1px solid var(--border-color); }
 .action-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; transition: 0.3s; padding: 8px 12px; border-radius: 20px; }
 .action-btn:hover { background: var(--bg-primary); }
+
 .comments-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color); }
 .comments-section.show { display: block; }
 .comments-section.hide { display: none; }
@@ -272,7 +418,6 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .comment-send-btn:hover { background: var(--accent-secondary); transform: scale(1.1); }
 .comment-list { display: flex; flex-direction: column; gap: 12px; }
 
-/* ===== تعديلات الردود - بدون مسافات جانبية ===== */
 .comment-item {
     background: var(--bg-tertiary);
     padding: 12px 15px;
@@ -282,15 +427,12 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
     position: relative;
 }
 .comment-item:last-child { margin-bottom: 0; }
-
-/* الردود - بدون مسافة جانبية */
 .comment-item.reply-item {
     background: var(--bg-secondary);
-    border-right: 3px solid var(--accent-primary);
+    border-left: 3px solid var(--accent-primary);
     margin-top: 8px;
     margin-bottom: 0;
 }
-
 .comment-header {
     display: flex;
     justify-content: space-between;
@@ -305,7 +447,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 .comment-author .reply-badge {
     font-size: 0.7rem;
     color: var(--accent-primary);
-    margin-right: 5px;
+    margin-left: 5px;
     opacity: 0.8;
 }
 .comment-date {
@@ -414,10 +556,11 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 }
 
 .modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay); backdrop-filter: blur(5px); align-items: center; justify-content: center; z-index: 2000; }
-.modal-content { background: var(--bg-secondary); padding: 30px; border-radius: 25px; width: 90%; max-width: 420px; position: relative; }
+.modal-content { background: var(--bg-secondary); padding: 30px; border-radius: 25px; width: 90%; max-width: 420px; position: relative; max-height: 90vh; overflow-y: auto; }
 .close-modal { position: absolute; top: 15px; left: 15px; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
 .modal-content h2 { color: var(--text-primary); margin-bottom: 20px; font-size: 1.3rem; }
 .modal-content input, .modal-content select { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid var(--border-light); border-radius: 15px; background: var(--input-bg); color: var(--text-primary); }
+
 .dark-mode-toggle { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-tertiary); border-radius: 15px; margin-bottom: 15px; border: 1px solid var(--border-color); }
 .dark-mode-toggle-label { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 600; }
 .dark-mode-toggle-icon { font-size: 1.3rem; }
@@ -428,6 +571,7 @@ body { background: var(--bg-primary); min-height: 100vh; overflow-x: hidden; tra
 input:checked + .toggle-slider { background-color: var(--accent-primary); }
 input:checked + .toggle-slider:before { transform: translateX(28px); }
 .save-btn { background: var(--accent-primary); color: white; flex: 1; padding: 12px; border: none; border-radius: 15px; font-weight: 600; cursor: pointer; }
+
 .confirm-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); backdrop-filter: blur(5px); align-items: center; justify-content: center; z-index: 3000; }
 .confirm-modal.show { display: flex; }
 .confirm-content { background: var(--bg-secondary); padding: 35px; border-radius: 25px; width: 90%; max-width: 380px; text-align: center; }
@@ -438,6 +582,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 .confirm-yes:hover { background: var(--accent-secondary); }
 .confirm-no { flex: 1; padding: 14px; background: var(--accent-light); color: var(--accent-primary); border: none; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
 .confirm-no:hover { background: var(--accent-lighter); }
+
 .chat-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); z-index: 3000; align-items: center; justify-content: center; }
 .chat-modal.show { display: flex; }
 .chat-container { background: var(--bg-secondary); width: 90%; max-width: 500px; height: 80vh; border-radius: 25px; overflow: hidden; display: flex; flex-direction: column; }
@@ -458,6 +603,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 .chat-send-btn { background: var(--accent-primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; padding: 0; }
 .chat-send-btn img { width: 22px; height: 22px; object-fit: contain; }
 .chat-send-btn:hover { background: var(--accent-secondary); transform: scale(1.05); }
+
 .new-message-modal { display: none; position: fixed; inset: 0; background: var(--modal-overlay-dark); z-index: 4000; align-items: center; justify-content: center; }
 .new-message-modal.show { display: flex; }
 .new-message-container { background: var(--bg-secondary); width: 90%; max-width: 400px; border-radius: 25px; padding: 25px; }
@@ -470,16 +616,18 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 .new-message-send-btn { background: var(--accent-primary); color: white; border: none; padding: 14px; width: 100%; border-radius: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
 .new-message-send-btn img { width: 20px; height: 20px; object-fit: contain; }
 .new-message-send-btn:hover { background: var(--accent-secondary); }
-.right-sidebar::-webkit-scrollbar, .left-content::-webkit-scrollbar, .my-posts-section::-webkit-scrollbar, .notifications-section::-webkit-scrollbar, .messages-section::-webkit-scrollbar, .comments-section::-webkit-scrollbar, .chat-messages::-webkit-scrollbar { width: 6px; }
-.right-sidebar::-webkit-scrollbar-track, .left-content::-webkit-scrollbar-track, .my-posts-section::-webkit-scrollbar-track, .notifications-section::-webkit-scrollbar-track, .messages-section::-webkit-scrollbar-track, .comments-section::-webkit-scrollbar-track, .chat-messages::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
-.right-sidebar::-webkit-scrollbar-thumb, .left-content::-webkit-scrollbar-thumb, .my-posts-section::-webkit-scrollbar-thumb, .notifications-section::-webkit-scrollbar-thumb, .messages-section::-webkit-scrollbar-thumb, .comments-section::-webkit-scrollbar-thumb, .chat-messages::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
-.right-sidebar::-webkit-scrollbar-thumb:hover, .left-content::-webkit-scrollbar-thumb:hover, .my-posts-section::-webkit-scrollbar-thumb:hover, .notifications-section::-webkit-scrollbar-thumb:hover, .messages-section::-webkit-scrollbar-thumb:hover, .comments-section::-webkit-scrollbar-thumb:hover, .chat-messages::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+.right-sidebar::-webkit-scrollbar, .left-content::-webkit-scrollbar, .my-posts-section::-webkit-scrollbar, .notifications-section::-webkit-scrollbar, .messages-section::-webkit-scrollbar, .comments-section::-webkit-scrollbar, .chat-messages::-webkit-scrollbar, .modal-content::-webkit-scrollbar { width: 6px; }
+.right-sidebar::-webkit-scrollbar-track, .left-content::-webkit-scrollbar-track, .my-posts-section::-webkit-scrollbar-track, .notifications-section::-webkit-scrollbar-track, .messages-section::-webkit-scrollbar-track, .comments-section::-webkit-scrollbar-track, .chat-messages::-webkit-scrollbar-track, .modal-content::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
+.right-sidebar::-webkit-scrollbar-thumb, .left-content::-webkit-scrollbar-thumb, .my-posts-section::-webkit-scrollbar-thumb, .notifications-section::-webkit-scrollbar-thumb, .messages-section::-webkit-scrollbar-thumb, .comments-section::-webkit-scrollbar-thumb, .chat-messages::-webkit-scrollbar-thumb, .modal-content::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 10px; }
+.right-sidebar::-webkit-scrollbar-thumb:hover, .left-content::-webkit-scrollbar-thumb:hover, .my-posts-section::-webkit-scrollbar-thumb:hover, .notifications-section::-webkit-scrollbar-thumb:hover, .messages-section::-webkit-scrollbar-thumb:hover, .comments-section::-webkit-scrollbar-thumb:hover, .chat-messages::-webkit-scrollbar-thumb:hover, .modal-content::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
 .post-item.highlight { animation: highlightPost 1s ease; border-color: var(--highlight-border); box-shadow: 0 0 20px var(--highlight-shadow); }
 @keyframes highlightPost { 0%, 100% { background: var(--bg-secondary); } 50% { background: var(--highlight-bg); } }
 </style>
 </head>
 <body>
-<!-- ===== شاشة الترحيب باللوجو ===== -->
+<!-- Splash Screen -->
 <div class="splash-screen" id="splashScreen">
     <div class="splash-content">
         <img src="logo.jpg" alt="Helper Pal Logo" class="splash-logo">
@@ -488,1168 +636,622 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
     </div>
 </div>
 
+<!-- Auth Screen -->
 <div class="auth-screen" id="authScreen">
 <div class="auth-container">
 <h1>Helper Pal</h1>
-<p class="subtitle">أنشئ حسابك الآن للانضمام إلى المجتمع</p>
-<input type="text" id="loginName" placeholder="الاسم الكامل">
-<input type="tel" id="loginPhone" placeholder="رقم الموبايل">
-<input type="date" id="loginBirthdate">
-<select id="loginGovernorate"><option value="">اختر المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>أسوان</option><option>أسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>شمال سيناء</option><option>الشرقية</option><option>سوهاج</option></select>
-<input type="text" id="loginJob" placeholder="الوظيفة">
-<button onclick="handleLogin()">تسجيل ودخول</button>
+<p class="subtitle" id="authSubtitle">Create your account now to join the community</p>
+<input type="text" id="loginName" placeholder="Full Name">
+<input type="tel" id="loginPhone" placeholder="Phone Number">
+<input type="date" id="loginBirthdate" placeholder="Birth Date">
+<select id="loginGovernorate">
+    <option value="">Select Governorate</option>
+    <option>Cairo</option><option>Giza</option><option>Alexandria</option>
+    <option>Dakahlia</option><option>Red Sea</option><option>Beheira</option>
+    <option>Faiyum</option><option>Gharbia</option><option>Ismailia</option>
+    <option>Menofia</option><option>Minya</option><option>Qalyubia</option>
+    <option>New Valley</option><option>Suez</option><option>Aswan</option>
+    <option>Asyut</option><option>Beni Suef</option><option>Port Said</option>
+    <option>Damietta</option><option>South Sinai</option><option>Kafr El Sheikh</option>
+    <option>Matrouh</option><option>Luxor</option><option>North Sinai</option>
+    <option>Sharqia</option><option>Sohag</option>
+</select>
+<input type="text" id="loginJob" placeholder="Job Title">
+<button onclick="handleLogin()">Register & Login</button>
 </div>
 </div>
 
-<div class="mobile-profile-icon" id="mobileProfileIcon" onclick="toggleMobileProfile()"><img src="profile.png" alt="الملف الشخصي"></div>
+<!-- Mobile Profile Icon -->
+<div class="mobile-profile-icon" id="mobileProfileIcon" onclick="toggleMobileProfile()"><img src="profile.png" alt="Profile"></div>
 
+<!-- Main View -->
 <div class="main-container" id="mainView">
-<div class="right-sidebar" id="rightSidebar">
-<div class="unified-card">
-<div class="mobile-back-btn" id="mobileBackBtn" onclick="closeMobileProfile()"><span>←</span> الرجوع للرئيسية</div>
-<div class="profile-section">
-<div class="profile-header">
-<div class="profile-avatar" id="avatarDisplay">م</div>
-<div class="profile-name"><h3 id="displayName">الاسم</h3><p onclick="openModal()"><span>✎</span> تعديل البروفايل</p></div>
-</div>
+    <!-- Profile Sidebar (RIGHT) -->
+    <div class="right-sidebar" id="rightSidebar">
+        <div class="unified-card">
+            <div class="mobile-back-btn" id="mobileBackBtn" onclick="closeMobileProfile()"><span>←</span> <span id="backToHomeText">Back to Home</span></div>
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="avatarDisplay">U</div>
+                    <div class="profile-name">
+                        <h3 id="displayName">Username</h3>
+                        <p onclick="openModal()"><span>✎</span> <span id="editProfileText">Edit Profile</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="post-section">
+                <h3 id="newPostTitle">📝 New Post</h3>
+                <textarea id="postDesc" placeholder="What's on your mind..."></textarea>
+                <div class="file-upload-container">
+                    <label class="file-upload-btn"><img src="camera.png" alt="Camera" style="width:24px;height:24px;"><span id="addMediaText">Add Photos or Videos</span><input type="file" class="file-upload-input" id="fileUpload" accept="image/*,video/*" multiple></label>
+                    <div class="file-preview-container" id="filePreviewContainer"></div>
+                </div>
+                <button class="publish-btn" onclick="publishPost()"><img src="send.png" alt="Send"><span id="publishText">Publish Post</span></button>
+                <button class="sidebar-btn" id="myPostsToggle" onclick="toggleMyPosts()"><span>📋</span><span id="myPostsText">My Posts</span></button>
+                <button class="sidebar-btn" id="notificationsToggle" onclick="toggleNotifications()"><span>🔔</span><span id="notificationsText">Notifications</span><span class="notification-badge" id="notificationBadge">0</span></button>
+                <button class="sidebar-btn" id="messagesToggle" onclick="toggleMessages()"><span>💬</span><span id="messagesText">Messages</span><span class="notification-badge" id="messageBadge">0</span></button>
+            </div>
+            <div class="quick-links-section">
+                <div class="quick-links-title">📌 <span id="quickLinksText">Quick Links</span></div>
+                <div class="quick-links-grid">
+                    <a href="contact.html" class="quick-link-item"><div class="quick-link-icon">📧</div><div class="quick-link-text" id="contactText">Contact Us</div></a>
+                    <a href="faq.html" class="quick-link-item"><div class="quick-link-icon">❓</div><div class="quick-link-text" id="faqText">FAQ</div></a>
+                    <a href="privacy-policy.html" class="quick-link-item"><div class="quick-link-icon">🔒</div><div class="quick-link-text" id="privacyText">Privacy Policy</div></a>
+                    <a href="terms.html" class="quick-link-item"><div class="quick-link-icon">📄</div><div class="quick-link-text" id="termsText">Terms of Use</div></a>
+                    <a href="vision.html" class="quick-link-item" style="background: linear-gradient(145deg, var(--accent-lightest), var(--accent-lighter)); border: 3px solid var(--accent-primary); grid-column: span 2; padding: 20px 12px; transition: all 0.25s ease-in-out;">
+                        <div class="quick-link-icon" style="background: var(--accent-primary); color: white; width: 55px; height: 55px; font-size: 1.8rem;">👁️</div>
+                        <div class="quick-link-text" style="font-weight: 700; color: var(--accent-primary); font-size: 1.1rem;" id="visionText">Vision Helper Pal</div>
+                    </a>
+                </div>
+            </div>
+            <div class="my-posts-section" id="myPostsSection">
+                <h4 class="section-title">📌 <span id="myPostsSectionTitle">My Posts</span> <span class="section-count" id="myPostsCount">0</span></h4>
+                <div class="my-posts-list" id="myPostsList"></div>
+            </div>
+            <div class="notifications-section" id="notificationsSection">
+                <h4 class="section-title">🔔 <span id="notificationsSectionTitle">Notifications</span> <span class="section-count" id="notificationsCount">0</span></h4>
+                <div class="notifications-list" id="notificationsList"></div>
+            </div>
+            <div class="messages-section" id="messagesSection">
+                <h4 class="section-title">💬 <span id="messagesSectionTitle">Chats</span> <span class="section-count" id="messagesCount">0</span></h4>
+                <div class="messages-list" id="messagesList"></div>
+            </div>
+            <div class="profile-section" style="border-bottom:none;border-top:1px solid var(--border-color);">
+                <div class="profile-info">
+                    <div class="info-row"><span class="info-label" id="nameLabel">Name</span><span class="info-value" id="infoName"></span></div>
+                    <div class="info-row"><span class="info-label" id="phoneLabel">Phone</span><span class="info-value" id="infoPhone"></span></div>
+                    <div class="info-row"><span class="info-label" id="birthdateLabel">Birth Date</span><span class="info-value" id="infoBirthdate"></span></div>
+                    <div class="info-row"><span class="info-label" id="governorateLabel">Governorate</span><span class="info-value" id="infoGovernorate"></span></div>
+                    <div class="info-row"><span class="info-label" id="jobLabel">Job</span><span class="info-value" id="infoJob"></span></div>
+                </div>
+                <button class="edit-profile-btn" onclick="openModal()">✎ <span id="editDataText">Edit Profile</span></button>
+                <button class="logout-profile-btn" onclick="showLogoutConfirm()">🚪 <span id="logoutText">Logout</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feed (LEFT) -->
+    <div class="left-content">
+        <div class="feed-header">
+            <h2 id="feedTitle">Latest Posts</h2>
+            <span id="postsCount">0 posts</span>
+        </div>
+        <div class="posts-grid" id="postsContainer"></div>
+    </div>
 </div>
 
-<div class="post-section">
-<h3>📝 مشاركة جديدة</h3>
-<textarea id="postDesc" placeholder="اكتب ما يدور في ذهنك..."></textarea>
-<div class="file-upload-container">
-<label class="file-upload-btn"><img src="camera.png" alt="كاميرا" style="width:24px;height:24px;"><span>إضافة صور أو فيديوهات</span><input type="file" class="file-upload-input" id="fileUpload" accept="image/*,video/*" multiple></label>
-<div class="file-preview-container" id="filePreviewContainer"></div>
-</div>
-<button class="publish-btn" onclick="publishPost()"><img src="send.png" alt="إرسال"><span>انشر المشاركة</span></button>
-<button class="sidebar-btn" id="myPostsToggle" onclick="toggleMyPosts()"><span>📋</span><span>منشوراتي</span></button>
-<button class="sidebar-btn" id="notificationsToggle" onclick="toggleNotifications()"><span>🔔</span><span>الإشعارات</span><span class="notification-badge" id="notificationBadge">0</span></button>
-<button class="sidebar-btn" id="messagesToggle" onclick="toggleMessages()"><span>💬</span><span>الرسائل</span><span class="notification-badge" id="messageBadge">0</span></button>
-</div>
-
-<div class="quick-links-section">
-<div class="quick-links-title">📌 روابط سريعة</div>
-<div class="quick-links-grid">
-<a href="contact.html" class="quick-link-item"><div class="quick-link-icon">📧</div><div class="quick-link-text">تواصل معنا</div></a>
-<a href="faq.html" class="quick-link-item"><div class="quick-link-icon">❓</div><div class="quick-link-text">الأسئلة الشائعة</div></a>
-<a href="privacy-policy.html" class="quick-link-item"><div class="quick-link-icon">🔒</div><div class="quick-link-text">سياسة الخصوصية</div></a>
-<a href="terms.html" class="quick-link-item"><div class="quick-link-icon">📄</div><div class="quick-link-text">شروط الاستخدام</div></a>
-</div>
-</div>
-
-<div class="my-posts-section" id="myPostsSection"><h4 class="section-title">📌 منشوراتي <span class="section-count" id="myPostsCount">0</span></h4><div class="my-posts-list" id="myPostsList"></div></div>
-<div class="notifications-section" id="notificationsSection"><h4 class="section-title">🔔 الإشعارات <span class="section-count"id="notificationsCount">0</span></h4><div class="notifications-list" id="notificationsList"></div></div>
-<div class="messages-section" id="messagesSection"><h4 class="section-title">💬 المحادثات <span class="section-count" id="messagesCount">0</span></h4><div class="messages-list" id="messagesList"></div></div>
-
-<div class="profile-section" style="border-bottom:none;border-top:1px solid var(--border-color);">
-<div class="profile-info">
-<div class="info-row"><span class="info-label">الاسم</span><span class="info-value" id="infoName"></span></div>
-<div class="info-row"><span class="info-label">رقم الموبايل</span><span class="info-value" id="infoPhone"></span></div>
-<div class="info-row"><span class="info-label">تاريخ الميلاد</span><span class="info-value" id="infoBirthdate"></span></div>
-<div class="info-row"><span class="info-label">المحافظة</span><span class="info-value" id="infoGovernorate"></span></div>
-<div class="info-row"><span class="info-label">الوظيفة</span><span class="info-value" id="infoJob"></span></div>
-</div>
-<button class="edit-profile-btn" onclick="openModal()">✎ تعديل البيانات</button>
-<button class="logout-profile-btn" onclick="showLogoutConfirm()">🚪 تسجيل خروج</button>
-</div>
-</div>
-</div>
-
-<div class="left-content">
-<div class="feed-header"><h2 id="feedTitle">أحدث المشاركات</h2><span id="postsCount">٠ منشور</span></div>
-<div class="posts-grid" id="postsContainer"></div>
-</div>
-</div>
-
+<!-- Mobile Bottom Bar -->
 <div class="mobile-bottom-bar" id="mobileBottomBar">
-<div class="mobile-input-wrapper"><input type="text" id="mobilePostInput" placeholder="اكتب مشاركتك..."><button class="mobile-image-btn" id="mobileImageBtn" onclick="toggleMobileImagePicker()"><img src="camera.png" alt="كاميرا"></button></div>
-<button class="mobile-send-btn" onclick="publishMobilePost()"><img src="send.png" alt="إرسال"></button>
+    <div class="mobile-input-wrapper">
+        <input type="text" id="mobilePostInput" placeholder="Write your post...">
+        <button class="mobile-image-btn" id="mobileImageBtn" onclick="toggleMobileImagePicker()"><img src="camera.png" alt="Camera"></button>
+    </div>
+    <button class="mobile-send-btn" onclick="publishMobilePost()"><img src="send.png" alt="Send"></button>
 </div>
 
-<div class="mobile-image-preview" id="mobileImagePreview"><div class="mobile-preview-header"><span>الوسائط المختارة</span><button class="mobile-preview-close" onclick="toggleMobileImagePicker()">✕</button></div><div class="mobile-preview-grid" id="mobilePreviewGrid"></div></div>
+<!-- Mobile Image Preview -->
+<div class="mobile-image-preview" id="mobileImagePreview">
+    <div class="mobile-preview-header">
+        <span id="selectedMediaText">Selected Media</span>
+        <button class="mobile-preview-close" onclick="toggleMobileImagePicker()">✕</button>
+    </div>
+    <div class="mobile-preview-grid" id="mobilePreviewGrid"></div>
+</div>
 
-<div class="modal" id="profileModal"><div class="modal-content"><span class="close-modal" onclick="closeModal('profileModal')">✕</span><h2>تعديل البيانات</h2><div class="dark-mode-toggle"><div class="dark-mode-toggle-label"><span class="dark-mode-toggle-icon" id="darkModeIcon">☀️</span><span>الوضع المظلم</span></div><label class="toggle-switch"><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" checked><span class="toggle-slider"></span></label></div><input type="text" id="editName" placeholder="الاسم"><input type="tel" id="editPhone" placeholder="رقم الموبايل"><input type="date" id="editBirthdate"><select id="editGovernorate"><option value="">اختر المحافظة</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option><option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option><option>المنوفية</option><option>المنيا</option><option>القليوبية</option><option>الوادي الجديد</option><option>السويس</option><option>أسوان</option><option>أسيوط</option><option>بني سويف</option><option>بورسعيد</option><option>دمياط</option><option>جنوب سيناء</option><option>كفر الشيخ</option><option>مطروح</option><option>الأقصر</option><option>شمال سيناء</option><option>الشرقية</option><option>سوهاج</option></select><input type="text" id="editJob" placeholder="الوظيفة"><div style="display:flex;gap:10px;margin-top:15px;"><button class="save-btn" onclick="saveProfile()">حفظ</button></div></div></div>
+<!-- Profile Modal -->
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('profileModal')">✕</span>
+        <h2 id="editProfileModalTitle">Edit Profile</h2>
+        <div class="dark-mode-toggle">
+            <div class="dark-mode-toggle-label">
+                <span class="dark-mode-toggle-icon" id="darkModeIcon">☀️</span>
+                <span id="darkModeText">Dark Mode</span>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+        <div class="modal-language-selector">
+            <div class="modal-language-label">
+                <span class="lang-icon">🌐</span>
+                <span id="languageLabelText">Language</span>
+            </div>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">🇬🇧 English</option>
+                <option value="ar">🇸🇦 العربية</option>
+            </select>
+        </div>
+        <input type="text" id="editName" placeholder="Name">
+        <input type="tel" id="editPhone" placeholder="Phone Number">
+        <input type="date" id="editBirthdate">
+        <select id="editGovernorate">
+            <option value="">Select Governorate</option>
+            <option>Cairo</option><option>Giza</option><option>Alexandria</option>
+            <option>Dakahlia</option><option>Red Sea</option><option>Beheira</option>
+            <option>Faiyum</option><option>Gharbia</option><option>Ismailia</option>
+            <option>Menofia</option><option>Minya</option><option>Qalyubia</option>
+            <option>New Valley</option><option>Suez</option><option>Aswan</option>
+            <option>Asyut</option><option>Beni Suef</option><option>Port Said</option>
+            <option>Damietta</option><option>South Sinai</option><option>Kafr El Sheikh</option>
+            <option>Matrouh</option><option>Luxor</option><option>North Sinai</option>
+            <option>Sharqia</option><option>Sohag</option>
+        </select>
+        <input type="text" id="editJob" placeholder="Job">
+        <div style="display:flex;gap:10px;margin-top:15px;">
+            <button class="save-btn" onclick="saveProfile()" id="saveBtnText">Save</button>
+        </div>
+    </div>
+</div>
 
-<div class="confirm-modal" id="confirmModal"><div class="confirm-content"><h3>تأكيد تسجيل الخروج</h3><p>هل توافق على تسجيل الخروج من الموقع؟<br>سيتم حذف بياناتك وسيطلب منك إعادة التسجيل من جديد.</p><div class="confirm-buttons"><button class="confirm-yes" onclick="confirmLogout()">نعم، خروج</button><button class="confirm-no" onclick="closeConfirmModal()">لا، إلغاء</button></div></div></div>
+<!-- Confirm Modal -->
+<div class="confirm-modal" id="confirmModal">
+    <div class="confirm-content">
+        <h3 id="confirmTitle">Confirm Logout</h3>
+        <p id="confirmMessage">Are you sure you want to logout?<br>Your data will be deleted and you'll need to register again.</p>
+        <div class="confirm-buttons">
+            <button class="confirm-yes" onclick="confirmLogout()" id="confirmYesText">Yes, Logout</button>
+            <button class="confirm-no" onclick="closeConfirmModal()" id="confirmNoText">No, Cancel</button>
+        </div>
+    </div>
+</div>
 
-<div class="media-viewer-modal" id="mediaViewerModal"><div class="media-viewer-header"><span class="media-counter" id="mediaViewerCounter"></span><button class="media-viewer-close" onclick="closeMediaViewer()">✕</button></div><button class="media-nav-btn media-prev-btn" onclick="navigateMedia(-1)">←</button><button class="media-nav-btn media-next-btn" onclick="navigateMedia(1)">→</button><div class="media-viewer-container" id="mediaViewerContainer"></div></div>
+<!-- Media Viewer Modal -->
+<div class="media-viewer-modal" id="mediaViewerModal">
+    <div class="media-viewer-header">
+        <span class="media-counter" id="mediaViewerCounter"></span>
+        <button class="media-viewer-close" onclick="closeMediaViewer()">✕</button>
+    </div>
+    <button class="media-nav-btn media-prev-btn" onclick="navigateMedia(-1)">←</button>
+    <button class="media-nav-btn media-next-btn" onclick="navigateMedia(1)">→</button>
+    <div class="media-viewer-container" id="mediaViewerContainer"></div>
+</div>
 
-<div class="chat-modal" id="chatModal"><div class="chat-container"><div class="chat-header"><button class="chat-back-btn" id="chatBackBtn" onclick="closeChat()">←</button><div class="chat-header-avatar" id="chatAvatar">م</div><div class="chat-header-info"><h3 id="chatUserName">اسم المستخدم</h3><p>متصل الآن</p></div><button class="chat-close" onclick="closeChat()">✕</button></div><div class="chat-messages" id="chatMessages"></div><div class="chat-input-area"><input type="text" class="chat-input" id="chatInput" placeholder="اكتب رسالتك..."><button class="chat-send-btn" onclick="sendChatMessage()"><img src="send.png" alt="إرسال"></button></div></div></div>
+<!-- Chat Modal -->
+<div class="chat-modal" id="chatModal">
+    <div class="chat-container">
+        <div class="chat-header">
+            <button class="chat-back-btn" id="chatBackBtn" onclick="closeChat()">←</button>
+            <div class="chat-header-avatar" id="chatAvatar">U</div>
+            <div class="chat-header-info">
+                <h3 id="chatUserName">Username</h3>
+                <p id="onlineStatus">Online now</p>
+            </div>
+            <button class="chat-close" onclick="closeChat()">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+            <button class="chat-send-btn" onclick="sendChatMessage()"><img src="send.png" alt="Send"></button>
+        </div>
+    </div>
+</div>
 
-<div class="new-message-modal" id="newMessageModal"><div class="new-message-container"><div class="new-message-header"><h3>📝 رسالة جديدة</h3><button class="new-message-close" onclick="closeNewMessageModal()">✕</button></div><div class="new-message-recipient" id="newMessageRecipient"></div><textarea class="new-message-textarea" id="newMessageText" placeholder="اكتب رسالتك هنا..."></textarea><button class="new-message-send-btn" onclick="sendNewMessage()"><img src="send.png" alt="إرسال"><span>إرسال الرسالة</span></button></div></div>
+<!-- New Message Modal -->
+<div class="new-message-modal" id="newMessageModal">
+    <div class="new-message-container">
+        <div class="new-message-header">
+            <h3 id="newMessageTitle">📝 New Message</h3>
+            <button class="new-message-close" onclick="closeNewMessageModal()">✕</button>
+        </div>
+        <div class="new-message-recipient" id="newMessageRecipient"></div>
+        <textarea class="new-message-textarea" id="newMessageText" placeholder="Write your message here..."></textarea>
+        <button class="new-message-send-btn" onclick="sendNewMessage()"><img src="send.png" alt="Send"><span id="sendMessageText">Send Message</span></button>
+    </div>
+</div>
 
+<!-- Hidden File Upload -->
 <input type="file" id="mobileFileUpload" accept="image/*,video/*" multiple style="display:none;">
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove, set, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
-
-const firebaseConfig = { 
-    apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o", 
-    authDomain: "talk-19c55.firebaseapp.com", 
-    databaseURL: "https://talk-19c55-default-rtdb.firebaseio.com", 
-    projectId: "talk-19c55", 
-    storageBucket: "talk-19c55.firebasestorage.app", 
-    messagingSenderId: "908101479029", 
-    appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c" 
+const firebaseConfig = {
+    apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o",
+    authDomain: "talk-19c55.firebaseapp.com",
+    databaseURL: "https://talk-19c55-default-rtdb.firebaseio.com",
+    projectId: "talk-19c55",
+    storageBucket: "talk-19c55.firebasestorage.app",
+    messagingSenderId: "908101479029",
+    appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const $ = id => document.getElementById(id);
 
-const els = { 
-    authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'), 
-    mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'), 
-    loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'), 
-    loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'), 
-    infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'), 
-    infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'), 
-    editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'), 
-    editGovernorate: $('editGovernorate'), editJob: $('editJob'), postsContainer: $('postsContainer'), 
-    postsCount: $('postsCount'), mobilePostInput: $('mobilePostInput'), postDesc: $('postDesc'), 
-    fileUpload: $('fileUpload'), filePreviewContainer: $('filePreviewContainer'), 
-    myPostsList: $('myPostsList'), myPostsSection: $('myPostsSection'), myPostsToggle: $('myPostsToggle'), 
-    myPostsCount: $('myPostsCount'), notificationsList: $('notificationsList'), 
-    notificationsSection: $('notificationsSection'), notificationsToggle: $('notificationsToggle'), 
-    notificationsCount: $('notificationsCount'), notificationBadge: $('notificationBadge'), 
-    messagesList: $('messagesList'), messagesSection: $('messagesSection'), messagesToggle: $('messagesToggle'), 
-    messagesCount: $('messagesCount'), messageBadge: $('messageBadge'), mobileImageBtn: $('mobileImageBtn'), 
-    mobileFileUpload: $('mobileFileUpload'), mobileImagePreview: $('mobileImagePreview'), 
-    mobilePreviewGrid: $('mobilePreviewGrid'), mediaViewerModal: $('mediaViewerModal'), 
-    mediaViewerContainer: $('mediaViewerContainer'), mediaViewerCounter: $('mediaViewerCounter'), 
-    chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'), 
-    chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'), 
-    newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'), 
-    confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon'), 
-    splashScreen: $('splashScreen') 
+const els = {
+    authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'),
+    mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'),
+    loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'),
+    loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'),
+    infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'),
+    infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'),
+    editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'),
+    editGovernorate: $('editGovernorate'), editJob: $('editJob'), postsContainer: $('postsContainer'),
+    postsCount: $('postsCount'), mobilePostInput: $('mobilePostInput'), postDesc: $('postDesc'),
+    fileUpload: $('fileUpload'), filePreviewContainer: $('filePreviewContainer'),
+    myPostsList: $('myPostsList'), myPostsSection: $('myPostsSection'), myPostsToggle: $('myPostsToggle'),
+    myPostsCount: $('myPostsCount'), notificationsList: $('notificationsList'),
+    notificationsSection: $('notificationsSection'), notificationsToggle: $('notificationsToggle'),
+    notificationsCount: $('notificationsCount'), notificationBadge: $('notificationBadge'),
+    messagesList: $('messagesList'), messagesSection: $('messagesSection'), messagesToggle: $('messagesToggle'),
+    messagesCount: $('messagesCount'), messageBadge: $('messageBadge'), mobileImageBtn: $('mobileImageBtn'),
+    mobileFileUpload: $('mobileFileUpload'), mobileImagePreview: $('mobileImagePreview'),
+    mobilePreviewGrid: $('mobilePreviewGrid'), mediaViewerModal: $('mediaViewerModal'),
+    mediaViewerContainer: $('mediaViewerContainer'), mediaViewerCounter: $('mediaViewerCounter'),
+    chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'),
+    chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'),
+    newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'),
+    confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon'),
+    splashScreen: $('splashScreen'), languageSelect: $('languageSelect'),
+    authSubtitle: $('authSubtitle'), backToHomeText: $('backToHomeText'), editProfileText: $('editProfileText'),
+    newPostTitle: $('newPostTitle'), addMediaText: $('addMediaText'), publishText: $('publishText'),
+    myPostsText: $('myPostsText'), notificationsText: $('notificationsText'), messagesText: $('messagesText'),
+    quickLinksText: $('quickLinksText'), contactText: $('contactText'), faqText: $('faqText'),
+    privacyText: $('privacyText'), termsText: $('termsText'), visionText: $('visionText'),
+    myPostsSectionTitle: $('myPostsSectionTitle'), notificationsSectionTitle: $('notificationsSectionTitle'),
+    messagesSectionTitle: $('messagesSectionTitle'), nameLabel: $('nameLabel'), phoneLabel: $('phoneLabel'),
+    birthdateLabel: $('birthdateLabel'), governorateLabel: $('governorateLabel'), jobLabel: $('jobLabel'),
+    editDataText: $('editDataText'), logoutText: $('logoutText'), feedTitle: $('feedTitle'),
+    selectedMediaText: $('selectedMediaText'), editProfileModalTitle: $('editProfileModalTitle'),
+    darkModeText: $('darkModeText'), saveBtnText: $('saveBtnText'), confirmTitle: $('confirmTitle'),
+    confirmMessage: $('confirmMessage'), confirmYesText: $('confirmYesText'), confirmNoText: $('confirmNoText'),
+    onlineStatus: $('onlineStatus'), newMessageTitle: $('newMessageTitle'), sendMessageText: $('sendMessageText'),
+    languageLabelText: $('languageLabelText')
 };
 
-// ===== إخفاء شاشة الترحيب بعد 3 ثواني =====
+const translations = {
+    en: {
+        authSubtitle: "Create your account now to join the community",
+        backToHomeText: "Back to Home", editProfileText: "Edit Profile",
+        newPostTitle: "📝 New Post", addMediaText: "Add Photos or Videos",
+        publishText: "Publish Post", myPostsText: "My Posts",
+        notificationsText: "Notifications", messagesText: "Messages",
+        quickLinksText: "Quick Links", contactText: "Contact Us",
+        faqText: "FAQ", privacyText: "Privacy Policy", termsText: "Terms of Use",
+        visionText: "Vision Helper Pal", myPostsSectionTitle: "My Posts",
+        notificationsSectionTitle: "Notifications", messagesSectionTitle: "Chats",
+        nameLabel: "Name", phoneLabel: "Phone", birthdateLabel: "Birth Date",
+        governorateLabel: "Governorate", jobLabel: "Job", editDataText: "Edit Profile",
+        logoutText: "Logout", feedTitle: "Latest Posts", selectedMediaText: "Selected Media",
+        editProfileModalTitle: "Edit Profile", darkModeText: "Dark Mode",
+        languageLabelText: "Language", saveBtnText: "Save",
+        confirmTitle: "Confirm Logout",
+        confirmMessage: "Are you sure you want to logout?\nYour data will be deleted and you'll need to register again.",
+        confirmYesText: "Yes, Logout", confirmNoText: "No, Cancel",
+        onlineStatus: "Online now", newMessageTitle: "📝 New Message", sendMessageText: "Send Message",
+        postsCount: (c) => `${c} post${c !== 1 ? 's' : ''}`,
+        commentPlaceholder: "Write your comment...", replyPlaceholder: "Write your reply...",
+        noPosts: "Be the first to share 🌱", noNotifications: "No notifications yet 🔔",
+        noMessages: "No chats yet 💬", noPostsOrComments: "No posts or comments yet 🌱",
+        deletePost: "Delete", deleteComment: "Delete", reply: "Reply",
+        hideComments: "💬 Hide Comments",
+        showComments: (c) => `💬 Comment${c > 0 ? ` (${c})` : ''}`,
+        startChat: "Start the conversation now 💬",
+        cantMessageYourself: "You cannot message yourself",
+        writeMessage: "Write your message here...",
+        writeSomething: "Write something or choose media",
+        allFieldsRequired: "All fields are required",
+        blockedMessage: "🚫 You have been blocked by admin.",
+        messageSent: "✅ Message sent", postDeleted: "✅ Post deleted",
+        commentDeleted: "✅ Comment deleted", confirmDelete: "Are you sure you want to delete this?",
+        goToPost: "🔍 View in post", comment: "comment", on: "on", repliedTo: "Replied to",
+        mediaCount: (c) => `${c} media`
+    },
+    ar: {
+        authSubtitle: "أنشئ حسابك الآن للانضمام إلى المجتمع",
+        backToHomeText: "الرجوع للرئيسية", editProfileText: "تعديل البروفايل",
+        newPostTitle: "📝 مشاركة جديدة", addMediaText: "إضافة صور أو فيديوهات",
+        publishText: "انشر المشاركة", myPostsText: "منشوراتي",
+        notificationsText: "الإشعارات", messagesText: "الرسائل",
+        quickLinksText: "روابط سريعة", contactText: "تواصل معنا",
+        faqText: "الأسئلة الشائعة", privacyText: "سياسة الخصوصية", termsText: "شروط الاستخدام",
+        visionText: "رؤيتنا", myPostsSectionTitle: "منشوراتي",
+        notificationsSectionTitle: "الإشعارات", messagesSectionTitle: "المحادثات",
+        nameLabel: "الاسم", phoneLabel: "رقم الموبايل", birthdateLabel: "تاريخ الميلاد",
+        governorateLabel: "المحافظة", jobLabel: "الوظيفة", editDataText: "تعديل البيانات",
+        logoutText: "تسجيل خروج", feedTitle: "أحدث المشاركات", selectedMediaText: "الوسائط المختارة",
+        editProfileModalTitle: "تعديل البيانات", darkModeText: "الوضع المظلم",
+        languageLabelText: "اللغة", saveBtnText: "حفظ",
+        confirmTitle: "تأكيد تسجيل الخروج",
+        confirmMessage: "هل توافق على تسجيل الخروج من الموقع؟\nسيتم حذف بياناتك وسيطلب منك إعادة التسجيل من جديد.",
+        confirmYesText: "نعم، خروج", confirmNoText: "لا، إلغاء",
+        onlineStatus: "متصل الآن", newMessageTitle: "📝 رسالة جديدة", sendMessageText: "إرسال الرسالة",
+        postsCount: (c) => { if(c===0) return '٠ منشور'; if(c===1) return 'منشور واحد'; if(c===2) return 'منشوران'; if(c>=3&&c<=10) return `${c} منشورات`; return `${c} منشور`; },
+        commentPlaceholder: "اكتب تعليقك...", replyPlaceholder: "اكتب ردك...",
+        noPosts: "كن أول من يشارك 🌱", noNotifications: "لا توجد إشعارات بعد 🔔",
+        noMessages: "لا توجد محادثات بعد 💬", noPostsOrComments: "لا توجد منشورات أو تعليقات بعد 🌱",
+        deletePost: "حذف", deleteComment: "حذف", reply: "رد",
+        hideComments: "💬 إخفاء التعليقات",
+        showComments: (c) => { if(c===0) return '💬 تعليق'; if(c===1) return '💬 تعليق واحد'; if(c===2) return '💬 تعليقان'; return `💬 ${c} تعليقات`; },
+        startChat: "ابدأ المحادثة الآن 💬",
+        cantMessageYourself: "لا يمكنك مراسلة نفسك",
+        writeMessage: "اكتب رسالتك هنا...",
+        writeSomething: "اكتب شيئاً أو اختر صور/فيديوهات",
+        allFieldsRequired: "جميع الحقول مطلوبة",
+        blockedMessage: "🚫 لقد تم حظرك من قبل الإدارة.",
+        messageSent: "✅ تم إرسال الرسالة", postDeleted: "✅ تم حذف المنشور",
+        commentDeleted: "✅ تم الحذف", confirmDelete: "هل أنت متأكد من الحذف؟",
+        goToPost: "🔍 عرض في المنشور", comment: "تعليق", reply: "رد", on: "على", repliedTo: "رد على",
+        mediaCount: (c) => `${c} وسائط`
+    }
+};
+
+let currentLanguage = 'en';
+
+function changeLanguage(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('helperpal_language', lang);
+    if (lang === 'ar') { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+    else { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+    if (els.languageSelect) els.languageSelect.value = lang;
+    updateUILanguage();
+    if (currentUser) {
+        renderPosts();
+        if (els.myPostsSection.classList.contains('show')) renderMyPosts();
+        if (els.notificationsSection.classList.contains('show')) renderNotifications();
+        if (els.messagesSection.classList.contains('show')) renderMessages();
+    }
+}
+
+function updateUILanguage() {
+    const t = translations[currentLanguage];
+    const keys = ['authSubtitle','backToHomeText','editProfileText','newPostTitle','addMediaText','publishText','myPostsText','notificationsText','messagesText','quickLinksText','contactText','faqText','privacyText','termsText','visionText','myPostsSectionTitle','notificationsSectionTitle','messagesSectionTitle','nameLabel','phoneLabel','birthdateLabel','governorateLabel','jobLabel','editDataText','logoutText','feedTitle','selectedMediaText','editProfileModalTitle','darkModeText','languageLabelText','saveBtnText','confirmTitle','confirmMessage','confirmYesText','confirmNoText','onlineStatus','newMessageTitle','sendMessageText'];
+    keys.forEach(k => { if (els[k] && t[k]) els[k].textContent = t[k]; });
+    if (els.postDesc) els.postDesc.placeholder = t.writeSomething;
+    if (els.mobilePostInput) els.mobilePostInput.placeholder = t.writeSomething;
+    if (els.newMessageText) els.newMessageText.placeholder = t.writeMessage;
+    if (els.chatInput) els.chatInput.placeholder = t.writeMessage;
+    updatePostsCount();
+}
+
+function updatePostsCount() {
+    if (els.postsCount && allPosts) els.postsCount.textContent = translations[currentLanguage].postsCount(allPosts.length);
+}
+
 window.addEventListener('load', function() {
     if (els.splashScreen) {
         setTimeout(function() {
             els.splashScreen.style.opacity = '0';
-            setTimeout(function() {
-                els.splashScreen.style.display = 'none';
-            }, 800);
+            setTimeout(function() { els.splashScreen.style.display = 'none'; }, 800);
         }, 3000);
     }
+    const savedLang = localStorage.getItem('helperpal_language') || 'en';
+    if (els.languageSelect) els.languageSelect.value = savedLang;
+    changeLanguage(savedLang);
 });
 
-let currentUser = null, allPosts = [], allNotifications = [], allMessages = [], 
-    selectedFiles = [], mobileSelectedFiles = [], currentViewerMedia = [], 
-    currentViewerIndex = 0, currentChatUser = null, currentChatRoomId = null, 
+let currentUser = null, allPosts = [], allNotifications = [], allMessages = [],
+    selectedFiles = [], mobileSelectedFiles = [], currentViewerMedia = [],
+    currentViewerIndex = 0, currentChatUser = null, currentChatRoomId = null,
     newMessageTargetUser = null, commentsOpenState = {};
 
-// ===== دوال الوضع المظلم =====
-function loadDarkMode() { 
-    const saved = localStorage.getItem('helperpal_theme'), 
-          isDark = saved !== 'light'; 
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); 
-    els.darkModeToggle.checked = isDark; 
-    els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; 
+function loadDarkMode() {
+    const saved = localStorage.getItem('helperpal_theme'), isDark = saved !== 'light';
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+    if (els.darkModeToggle) els.darkModeToggle.checked = isDark;
+    if (els.darkModeIcon) els.darkModeIcon.textContent = isDark ? '☀️' : '🌙';
 }
-
-window.toggleDarkMode = () => { 
-    const isDark = els.darkModeToggle.checked; 
-    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : ''); 
-    els.darkModeIcon.textContent = isDark ? '☀️' : '🌙'; 
-    localStorage.setItem('helperpal_theme', isDark ? 'dark' : 'light'); 
+window.toggleDarkMode = () => {
+    const isDark = els.darkModeToggle.checked;
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
+    els.darkModeIcon.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('helperpal_theme', isDark ? 'dark' : 'light');
 };
 
-// ===== التحقق من المستخدم =====
-const savedUser = localStorage.getItem('helperpal_user'); 
-if (savedUser) { 
-    currentUser = JSON.parse(savedUser); 
-    loadDarkMode(); 
-    checkIfBlocked(currentUser.phone); 
-} else { 
-    loadDarkMode(); 
-    showAuthScreen(); 
+const savedUser = localStorage.getItem('helperpal_user');
+if (savedUser) { currentUser = JSON.parse(savedUser); loadDarkMode(); checkIfBlocked(currentUser.phone); }
+else { loadDarkMode(); showAuthScreen(); }
+
+function checkIfBlocked(phone) {
+    get(child(ref(db), `blockedUsers/${phone}`)).then(s => {
+        if (s.exists()) { alert(translations[currentLanguage].blockedMessage); localStorage.removeItem('helperpal_user'); showAuthScreen(); }
+        else { showMainView(); loadPosts(); loadNotifications(); loadMessages(); }
+    });
 }
 
-function checkIfBlocked(phone) { 
-    get(child(ref(db), `blockedUsers/${phone}`)).then(s => { 
-        if (s.exists()) { 
-            alert('🚫 لقد تم حظرك من قبل الإدارة.'); 
-            localStorage.removeItem('helperpal_user'); 
-            showAuthScreen(); 
-        } else { 
-            showMainView(); 
-            loadPosts(); 
-            loadNotifications(); 
-            loadMessages(); 
-        } 
-    }); 
+function showAuthScreen() {
+    els.authScreen.classList.remove('hidden');
+    els.mainView.classList.remove('show');
+    els.mobileProfileIcon.style.display = 'none';
+    els.mobileBottomBar.style.display = 'none';
 }
 
-function showAuthScreen() { 
-    els.authScreen.classList.remove('hidden'); 
-    els.mainView.classList.remove('show'); 
-    els.mobileProfileIcon.style.display = 'none'; 
-    els.mobileBottomBar.style.display = 'none'; 
+function showMainView() {
+    els.authScreen.classList.add('hidden');
+    els.mainView.classList.add('show');
+    els.mobileBottomBar.style.display = 'flex';
+    els.mobileProfileIcon.style.display = 'flex';
+    if (window.innerWidth <= 768) $('chatBackBtn').style.display = 'block';
+    updateProfileUI();
 }
 
-function showMainView() { 
-    els.authScreen.classList.add('hidden'); 
-    els.mainView.classList.add('show'); 
-    els.mobileBottomBar.style.display = 'flex'; 
-    els.mobileProfileIcon.style.display = 'flex'; 
-    if (window.innerWidth <= 768) $('chatBackBtn').style.display = 'block'; 
-    updateProfileUI(); 
-}
-
-// ===== تسجيل الدخول =====
-window.handleLogin = () => { 
-    const { loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob } = els; 
-    const [name, phone, birthdate, governorate, job] = [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].map(e => e.value.trim()); 
-    if (!name || !phone || !birthdate || !governorate || !job) return alert('الرجاء إدخال جميع البيانات'); 
-    get(child(ref(db), `blockedUsers/${phone}`)).then(s => { 
-        if (s.exists()) return alert('🚫 لقد تم حظرك.'); 
-        const userData = { name, phone, birthdate, governorate, job, registeredAt: Date.now(), lastLogin: Date.now() }; 
-        set(ref(db, `users/${phone}`), userData).then(() => { 
-            currentUser = userData; 
-            localStorage.setItem('helperpal_user', JSON.stringify(currentUser)); 
-            showMainView(); 
-            loadPosts(); 
-            loadNotifications(); 
-            loadMessages(); 
-            [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].forEach(e => e.value = ''); 
-        }); 
-    }); 
+window.handleLogin = () => {
+    const { loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob } = els;
+    const [name, phone, birthdate, governorate, job] = [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].map(e => e.value.trim());
+    if (!name || !phone || !birthdate || !governorate || !job) { alert(translations[currentLanguage].allFieldsRequired); return; }
+    get(child(ref(db), `blockedUsers/${phone}`)).then(s => {
+        if (s.exists()) { alert(translations[currentLanguage].blockedMessage); return; }
+        const userData = { name, phone, birthdate, governorate, job, registeredAt: Date.now(), lastLogin: Date.now() };
+        set(ref(db, `users/${phone}`), userData).then(() => {
+            currentUser = userData;
+            localStorage.setItem('helperpal_user', JSON.stringify(currentUser));
+            showMainView(); loadPosts(); loadNotifications(); loadMessages();
+            [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].forEach(e => e.value = '');
+        });
+    });
 };
 
-function updateProfileUI() { 
-    els.displayName.textContent = els.infoName.textContent = currentUser.name; 
-    els.infoPhone.textContent = currentUser.phone; 
-    els.infoBirthdate.textContent = currentUser.birthdate ? new Date(currentUser.birthdate).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) : 'غير محدد'; 
-    els.infoGovernorate.textContent = currentUser.governorate; 
-    els.infoJob.textContent = currentUser.job; 
-    els.avatarDisplay.textContent = currentUser.name.charAt(0).toUpperCase(); 
-    [els.editName, els.editPhone, els.editJob].forEach((e, i) => e.value = [currentUser.name, currentUser.phone, currentUser.job][i]); 
-    els.editBirthdate.value = currentUser.birthdate || ''; 
-    els.editGovernorate.value = currentUser.governorate || ''; 
+function updateProfileUI() {
+    if (!currentUser) return;
+    els.displayName.textContent = els.infoName.textContent = currentUser.name;
+    els.infoPhone.textContent = currentUser.phone;
+    els.infoBirthdate.textContent = currentUser.birthdate ? new Date(currentUser.birthdate).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Not set';
+    els.infoGovernorate.textContent = currentUser.governorate;
+    els.infoJob.textContent = currentUser.job;
+    els.avatarDisplay.textContent = currentUser.name.charAt(0).toUpperCase();
+    if (els.editName) els.editName.value = currentUser.name;
+    if (els.editPhone) els.editPhone.value = currentUser.phone;
+    if (els.editJob) els.editJob.value = currentUser.job;
+    if (els.editBirthdate) els.editBirthdate.value = currentUser.birthdate || '';
+    if (els.editGovernorate) els.editGovernorate.value = currentUser.governorate || '';
 }
 
-// ===== دوال الموبايل =====
 window.toggleMobileProfile = () => { if (window.innerWidth <= 768) els.rightSidebar.classList.add('show'); };
 window.closeMobileProfile = () => { if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show'); };
-
-// ===== دوال المودال =====
-window.openModal = () => { loadDarkMode(); $('profileModal').style.display = 'flex'; };
+window.openModal = () => { loadDarkMode(); if (els.languageSelect) els.languageSelect.value = currentLanguage; $('profileModal').style.display = 'flex'; };
 window.closeModal = id => $(id).style.display = 'none';
-
-window.saveProfile = () => { 
-    const [newName, newPhone, newBirthdate, newGovernorate, newJob] = [els.editName, els.editPhone, els.editBirthdate, els.editGovernorate, els.editJob].map(e => e.value.trim()); 
-    if (!newName || !newPhone || !newBirthdate || !newGovernorate || !newJob) return alert('جميع الحقول مطلوبة'); 
-    const updatedUser = { ...currentUser, name: newName, phone: newPhone, birthdate: newBirthdate, governorate: newGovernorate, job: newJob }; 
-    set(ref(db, `users/${newPhone}`), updatedUser).then(() => { 
-        currentUser = updatedUser; 
-        localStorage.setItem('helperpal_user', JSON.stringify(currentUser)); 
-        updateProfileUI(); 
-        closeModal('profileModal'); 
-    }); 
+window.saveProfile = () => {
+    const [newName, newPhone, newBirthdate, newGovernorate, newJob] = [els.editName, els.editPhone, els.editBirthdate, els.editGovernorate, els.editJob].map(e => e.value.trim());
+    if (!newName || !newPhone || !newBirthdate || !newGovernorate || !newJob) { alert(translations[currentLanguage].allFieldsRequired); return; }
+    const updatedUser = { ...currentUser, name: newName, phone: newPhone, birthdate: newBirthdate, governorate: newGovernorate, job: newJob };
+    set(ref(db, `users/${newPhone}`), updatedUser).then(() => { currentUser = updatedUser; localStorage.setItem('helperpal_user', JSON.stringify(currentUser)); updateProfileUI(); closeModal('profileModal'); });
 };
-
 window.showLogoutConfirm = () => els.confirmModal.classList.add('show');
 window.closeConfirmModal = () => els.confirmModal.classList.remove('show');
+window.confirmLogout = () => { localStorage.removeItem('helperpal_user'); currentUser = null; closeConfirmModal(); showAuthScreen(); };
 
-window.confirmLogout = () => { 
-    localStorage.removeItem('helperpal_user'); 
-    currentUser = null; 
-    closeConfirmModal(); 
-    showAuthScreen(); 
-};
-
-// ===== دوال رفع الملفات (صور وفيديوهات) =====
-els.fileUpload.addEventListener('change', e => { 
-    if (!e.target.files) return; 
-    [...e.target.files].forEach(file => { 
-        const reader = new FileReader(); 
-        reader.onload = ev => { 
-            const fileData = {
-                data: ev.target.result,
-                type: file.type.startsWith('video/') ? 'video' : 'image',
-                name: file.name
-            };
-            selectedFiles.push(fileData); 
-            renderFilePreviews(); 
-        }; 
-        reader.readAsDataURL(file); 
-    }); 
-    e.target.value = ''; 
+els.fileUpload.addEventListener('change', e => {
+    if (!e.target.files) return;
+    [...e.target.files].forEach(file => {
+        const reader = new FileReader();
+        reader.onload = ev => { selectedFiles.push({ data: ev.target.result, type: file.type.startsWith('video/') ? 'video' : 'image', name: file.name }); renderFilePreviews(); };
+        reader.readAsDataURL(file);
+    });
+    e.target.value = '';
 });
-
-function renderFilePreviews() { 
+function renderFilePreviews() {
     els.filePreviewContainer.innerHTML = selectedFiles.map((file, i) => {
-        if (file.type === 'video') {
-            return `<div class="file-preview-item">
-                <video src="${file.data}" muted></video>
-                <button class="file-remove-btn" onclick="removeFile(${i})">✕</button>
-                <span class="file-type-badge">🎥</span>
-            </div>`;
-        } else {
-            return `<div class="file-preview-item">
-                <img src="${file.data}">
-                <button class="file-remove-btn" onclick="removeFile(${i})">✕</button>
-                <span class="file-type-badge">📷</span>
-            </div>`;
-        }
-    }).join(''); 
+        if (file.type === 'video') return `<div class="file-preview-item"><video src="${file.data}" muted></video><button class="file-remove-btn" onclick="removeFile(${i})">✕</button><span class="file-type-badge">🎥</span></div>`;
+        return `<div class="file-preview-item"><img src="${file.data}"><button class="file-remove-btn" onclick="removeFile(${i})">✕</button><span class="file-type-badge">📷</span></div>`;
+    }).join('');
 }
-
 window.removeFile = i => { selectedFiles.splice(i, 1); renderFilePreviews(); };
 
-window.toggleMobileImagePicker = () => { 
-    if (els.mobileImagePreview.classList.contains('show')) { 
-        els.mobileImagePreview.classList.remove('show'); 
-        els.mobileImageBtn.classList.remove('active'); 
-    } else els.mobileFileUpload.click(); 
+window.toggleMobileImagePicker = () => {
+    if (els.mobileImagePreview.classList.contains('show')) { els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); }
+    else els.mobileFileUpload.click();
 };
-
-els.mobileFileUpload.addEventListener('change', e => { 
-    if (!e.target.files) return; 
-    [...e.target.files].forEach(file => { 
-        const reader = new FileReader(); 
-        reader.onload = ev => { 
-            const fileData = {
-                data: ev.target.result,
-                type: file.type.startsWith('video/') ? 'video' : 'image',
-                name: file.name
-            };
-            mobileSelectedFiles.push(fileData); 
-            renderMobileFilePreviews(); 
-        }; 
-        reader.readAsDataURL(file); 
-    }); 
-    e.target.value = ''; 
-    els.mobileImagePreview.classList.add('show'); 
-    els.mobileImageBtn.classList.add('active'); 
-});
-
-function renderMobileFilePreviews() { 
-    els.mobilePreviewGrid.innerHTML = mobileSelectedFiles.map((file, i) => {
-        if (file.type === 'video') {
-            return `<div class="mobile-preview-item">
-                <video src="${file.data}" muted></video>
-                <button class="mobile-preview-remove" onclick="removeMobileFile(${i})">✕</button>
-            </div>`;
-        } else {
-            return `<div class="mobile-preview-item">
-                <img src="${file.data}">
-                <button class="mobile-preview-remove" onclick="removeMobileFile(${i})">✕</button>
-            </div>`;
-        }
-    }).join(''); 
-}
-
-window.removeMobileFile = i => { 
-    mobileSelectedFiles.splice(i, 1); 
-    renderMobileFilePreviews(); 
-    if (!mobileSelectedFiles.length) { 
-        els.mobileImagePreview.classList.remove('show'); 
-        els.mobileImageBtn.classList.remove('active'); 
-    } 
-};
-
-// ===== نشر المشاركات مع دعم الفيديو (بدون لايكات) =====
-window.publishPost = () => { 
-    const desc = els.postDesc.value.trim(); 
-    if (!desc && !selectedFiles.length) return alert('اكتب شيئاً أو اختر صور/فيديوهات'); 
-    
-    const mediaData = selectedFiles.map(f => ({
-        data: f.data,
-        type: f.type
-    }));
-    
-    push(ref(db, 'posts'), { 
-        author: currentUser.name, 
-        authorPhone: currentUser.phone, 
-        desc, 
-        media: mediaData,
-        timestamp: Date.now(), 
-        comments: [] 
-    }).then(() => { 
-        els.postDesc.value = ''; 
-        selectedFiles = []; 
-        renderFilePreviews(); 
-        if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show'); 
-    }); 
-};
-
-window.publishMobilePost = () => { 
-    const text = els.mobilePostInput.value.trim(); 
-    if (!text && !mobileSelectedFiles.length) return alert('اكتب شيئاً أو اختر صور/فيديوهات'); 
-    
-    const mediaData = mobileSelectedFiles.map(f => ({
-        data: f.data,
-        type: f.type
-    }));
-    
-    push(ref(db, 'posts'), { 
-        author: currentUser.name, 
-        authorPhone: currentUser.phone, 
-        desc: text || '', 
-        media: mediaData, 
-        timestamp: Date.now(), 
-        comments: [] 
-    }).then(() => { 
-        els.mobilePostInput.value = ''; 
-        mobileSelectedFiles = []; 
-        els.mobileImagePreview.classList.remove('show'); 
-        els.mobileImageBtn.classList.remove('active'); 
-        renderMobileFilePreviews(); 
-    }); 
-};
-
-// ===== عرض الوسائط (صور وفيديوهات) =====
-window.openMediaViewer = (media, index) => { 
-    currentViewerMedia = media; 
-    currentViewerIndex = index; 
-    renderMediaViewer(); 
-    els.mediaViewerModal.classList.add('show'); 
-    document.body.style.overflow = 'hidden'; 
-};
-
-window.closeMediaViewer = () => { 
-    els.mediaViewerModal.classList.remove('show'); 
-    document.body.style.overflow = ''; 
-    const videos = els.mediaViewerContainer.querySelectorAll('video');
-    videos.forEach(v => v.pause());
-};
-
-window.navigateMedia = dir => { 
-    const newIndex = currentViewerIndex + dir; 
-    if (newIndex >= 0 && newIndex < currentViewerMedia.length) { 
-        currentViewerIndex = newIndex; 
-        renderMediaViewer(); 
-    } 
-};
-
-function renderMediaViewer() { 
-    if (!currentViewerMedia.length) return; 
-    els.mediaViewerContainer.innerHTML = ''; 
-    els.mediaViewerCounter.textContent = `${currentViewerIndex + 1} / ${currentViewerMedia.length}`; 
-    
-    const slide = document.createElement('div'); 
-    slide.className = 'media-viewer-slide active'; 
-    
-    const media = currentViewerMedia[currentViewerIndex];
-    if (media.type === 'video') {
-        const video = document.createElement('video');
-        video.src = media.data;
-        video.controls = true;
-        video.autoplay = true;
-        slide.appendChild(video);
-    } else {
-        const img = document.createElement('img');
-        img.src = media.data;
-        slide.appendChild(img);
-    }
-    
-    els.mediaViewerContainer.appendChild(slide); 
-}
-
-// ===== دوال المحادثات =====
-function getChatRoomId(u1, u2) { return [u1, u2].sort().join('_'); }
-
-window.openNewMessageModal = target => { 
-    if (target === currentUser.name) return alert('لا يمكنك مراسلة نفسك'); 
-    newMessageTargetUser = target; 
-    els.newMessageRecipient.textContent = `📩 إلى: ${target}`; 
-    els.newMessageText.value = ''; 
-    els.newMessageModal.classList.add('show'); 
-};
-
-window.closeNewMessageModal = () => { 
-    els.newMessageModal.classList.remove('show'); 
-    newMessageTargetUser = null; 
-};
-
-window.sendNewMessage = () => { 
-    const text = els.newMessageText.value.trim(); 
-    if (!text || !newMessageTargetUser) return alert('اكتب رسالة أولاً'); 
-    const chatRoomId = getChatRoomId(currentUser.name, newMessageTargetUser); 
-    push(ref(db, `messages/${chatRoomId}`), { 
-        from: currentUser.name, 
-        to: newMessageTargetUser, 
-        text, 
-        timestamp: Date.now(), 
-        read: false 
-    }); 
-    push(ref(db, 'notifications'), { 
-        fromUser: currentUser.name, 
-        toUser: newMessageTargetUser, 
-        type: 'message', 
-        messagePreview: text.substring(0, 50), 
-        timestamp: Date.now(), 
-        read: false 
-    }); 
-    closeNewMessageModal(); 
-    alert('✅ تم إرسال الرسالة'); 
-    openChat(newMessageTargetUser); 
-};
-
-window.openChat = target => { 
-    if (target === currentUser.name) return; 
-    currentChatUser = target; 
-    currentChatRoomId = getChatRoomId(currentUser.name, target); 
-    els.chatUserName.textContent = target; 
-    els.chatAvatar.textContent = target.charAt(0); 
-    els.chatModal.classList.add('show'); 
-    loadChatMessages(); 
-    markMessagesAsRead(target); 
-};
-
-window.closeChat = () => { 
-    els.chatModal.classList.remove('show'); 
-    currentChatUser = null; 
-    currentChatRoomId = null; 
-};
-
-function markMessagesAsRead(target) { 
-    const chatRoomId = getChatRoomId(currentUser.name, target); 
-    get(child(ref(db), `messages/${chatRoomId}`)).then(s => { 
-        if (!s.exists()) return; 
-        const updates = {}; 
-        s.forEach(c => { 
-            const msg = c.val(); 
-            if (msg.to === currentUser.name && !msg.read) 
-                updates[`messages/${chatRoomId}/${c.key}/read`] = true; 
-        }); 
-        if (Object.keys(updates).length) update(ref(db), updates); 
-    }); 
-}
-
-function loadChatMessages() { 
-    if (!currentChatRoomId) return; 
-    onValue(ref(db, `messages/${currentChatRoomId}`), s => { 
-        const data = s.val(); 
-        els.chatMessages.innerHTML = ''; 
-        if (!data) { 
-            els.chatMessages.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:40px 20px;">ابدأ المحادثة الآن 💬</p>'; 
-            return; 
-        } 
-        Object.values(data).sort((a, b) => a.timestamp - b.timestamp).forEach(msg => { 
-            const div = document.createElement('div'); 
-            div.className = `message-bubble ${msg.from === currentUser.name ? 'sent' : 'received'}`; 
-            div.innerHTML = `<div>${msg.text}</div><div class="message-time">${new Date(msg.timestamp).toLocaleTimeString('ar-EG', {hour:'2-digit',minute:'2-digit'})}</div>`; 
-            els.chatMessages.appendChild(div); 
-        }); 
-        els.chatMessages.scrollTop = els.chatMessages.scrollHeight; 
-    }); 
-}
-
-window.sendChatMessage = () => { 
-    const text = els.chatInput.value.trim(); 
-    if (!text || !currentChatRoomId) return; 
-    push(ref(db, `messages/${currentChatRoomId}`), { 
-        from: currentUser.name, 
-        to: currentChatUser, 
-        text, 
-        timestamp: Date.now(), 
-        read: false 
-    }); 
-    push(ref(db, 'notifications'), { 
-        fromUser: currentUser.name, 
-        toUser: currentChatUser, 
-        type: 'message', 
-        messagePreview: text.substring(0, 50), 
-        timestamp: Date.now(), 
-        read: false 
-    }); 
-    els.chatInput.value = ''; 
-};
-
-function loadMessages() { 
-    onValue(ref(db, 'messages'), s => { 
-        const data = s.val(); 
-        if (!data || !currentUser) { 
-            allMessages = []; 
-            updateMessageBadge(); 
-            if (els.messagesSection.classList.contains('show')) renderMessages(); 
-            return; 
-        } 
-        const chatMap = {}; 
-        Object.entries(data).forEach(([roomId, messages]) => { 
-            const users = roomId.split('_'), 
-                  otherUser = users.find(u => u !== currentUser.name); 
-            if (!otherUser) return; 
-            const msgs = Object.values(messages).sort((a, b) => b.timestamp - a.timestamp), 
-                  lastMsg = msgs[0], 
-                  unreadCount = msgs.filter(m => m.to === currentUser.name && !m.read).length; 
-            chatMap[otherUser] = { user: otherUser, lastMessage: lastMsg, unreadCount, totalMessages: msgs.length }; 
-        }); 
-        allMessages = Object.values(chatMap).sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp); 
-        updateMessageBadge(); 
-        if (els.messagesSection.classList.contains('show')) renderMessages(); 
-    }); 
-}
-
-function updateMessageBadge() { 
-    const totalUnread = allMessages.reduce((sum, c) => sum + c.unreadCount, 0); 
-    els.messagesCount.textContent = allMessages.length; 
-    if (totalUnread > 0) { 
-        els.messageBadge.textContent = totalUnread; 
-        els.messageBadge.classList.add('show'); 
-    } else els.messageBadge.classList.remove('show'); 
-}
-
-function renderMessages() { 
-    els.messagesList.innerHTML = !allMessages.length ? 
-        '<div class="no-items">لا توجد محادثات بعد 💬</div>' : 
-        allMessages.map(c => 
-            `<div class="message-chat-item ${c.unreadCount > 0 ? 'unread' : ''}" onclick="openChat('${c.user}')">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="message-icon">💬</span>
-                    <div class="message-content">
-                        <div class="message-chat-name">${c.user}</div>
-                        <div class="message-chat-preview">${c.lastMessage.text}</div>
-                        <div class="message-chat-time">${getTimeAgo(c.lastMessage.timestamp)}</div>
-                    </div>
-                    ${c.unreadCount > 0 ? `<span style="background:var(--badge-bg);color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;">${c.unreadCount}</span>` : ''}
-                </div>
-            </div>`
-        ).join(''); 
-}
-
-// ===== دوال التبديل بين الأقسام =====
-window.toggleMyPosts = () => toggleSection(els.myPostsSection, els.myPostsToggle, renderMyPosts);
-window.toggleNotifications = () => { 
-    toggleSection(els.notificationsSection, els.notificationsToggle, renderNotifications); 
-    markAllNotificationsAsRead(); 
-};
-window.toggleMessages = () => { 
-    toggleSection(els.messagesSection, els.messagesToggle, renderMessages); 
-    markAllMessagesAsRead(); 
-};
-
-function toggleSection(section, toggle, render) { 
-    const isShowing = section.classList.contains('show'); 
-    [els.myPostsSection, els.notificationsSection, els.messagesSection].forEach(s => s.classList.remove('show')); 
-    [els.myPostsToggle, els.notificationsToggle, els.messagesToggle].forEach(t => t.classList.remove('active')); 
-    if (!isShowing) { 
-        render(); 
-        section.classList.add('show'); 
-        toggle.classList.add('active'); 
-        setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); 
-    } 
-}
-
-function markAllNotificationsAsRead() { 
-    allNotifications.forEach(n => { 
-        if (!n.read) update(ref(db, `notifications/${n.id}`), { read: true }); 
-    }); 
-}
-
-function markAllMessagesAsRead() { 
-    allMessages.forEach(c => { 
-        if (c.unreadCount > 0) markMessagesAsRead(c.user); 
-    }); 
-}
-
-// ===== دوال منشوراتي =====
-function getUserCommentsAndReplies() {
-    const userComments = [];
-    allPosts.forEach(post => {
-        if (post.comments) {
-            const traverse = (items, parentAuthor = null, level = 0) => {
-                items.forEach(item => {
-                    if (item.author === currentUser.name) {
-                        userComments.push({ 
-                            type: level === 0 ? 'comment' : 'reply', 
-                            postId: post.id, 
-                            commentId: item.id, 
-                            postTitle: post.desc?.substring(0, 50) || 'منشور', 
-                            text: item.text, 
-                            timestamp: item.timestamp,
-                            parentAuthor: parentAuthor
-                        });
-                    }
-                    if (item.replies && item.replies.length) {
-                        traverse(item.replies, item.author, level + 1);
-                    }
-                });
-            };
-            traverse(post.comments);
-        }
+els.mobileFileUpload.addEventListener('change', e => {
+    if (!e.target.files) return;
+    [...e.target.files].forEach(file => {
+        const reader = new FileReader();
+        reader.onload = ev => { mobileSelectedFiles.push({ data: ev.target.result, type: file.type.startsWith('video/') ? 'video' : 'image', name: file.name }); renderMobileFilePreviews(); };
+        reader.readAsDataURL(file);
     });
-    return userComments.sort((a, b) => b.timestamp - a.timestamp);
-}
-
-function renderMyPosts() { 
-    const myPosts = allPosts.filter(p => p.author === currentUser.name), 
-          myComments = getUserCommentsAndReplies(); 
-    els.myPostsCount.textContent = myPosts.length; 
-    els.myPostsList.innerHTML = ''; 
-    
-    if (myPosts.length) { 
-        const section = document.createElement('div'); 
-        section.innerHTML = '<h5 style="color:var(--accent-primary);margin:15px 0 10px;font-size:1rem;">📝 منشوراتي</h5>'; 
-        els.myPostsList.appendChild(section); 
-        myPosts.reverse().forEach(p => { 
-            const mediaCount = p.media?.length || 0;
-            const mediaType = mediaCount > 0 ? (p.media[0].type === 'video' ? '🎥' : '📷') : '';
-            
-            const div = document.createElement('div'); 
-            div.className = 'my-post-item'; 
-            div.innerHTML = 
-                `<button class="delete-post-btn" onclick="deletePost('${p.id}')" title="حذف">🗑</button>
-                <div class="my-post-date"><i>${new Date(p.timestamp).toLocaleDateString('ar-EG')}</i></div>
-                <div class="my-post-text">${p.desc || 'منشور بدون نص'}</div>
-                ${mediaCount > 0 ? `<div style="margin-top:10px;color:var(--text-muted);font-size:0.85rem;">${mediaType} ${mediaCount} وسائط</div>` : ''}
-                <div style="margin-top:8px;color:var(--accent-primary);font-size:0.8rem;">💬 ${p.comments?.length || 0} تعليق</div>`; 
-            els.myPostsList.appendChild(div); 
-        }); 
-    } 
-    
-    if (myComments.length) { 
-        const section = document.createElement('div'); 
-        section.innerHTML = '<h5 style="color:var(--accent-primary);margin:20px 0 10px;font-size:1rem;">💬 تعليقاتي وردودي</h5>'; 
-        els.myPostsList.appendChild(section); 
-        myComments.forEach(i => { 
-            const div = document.createElement('div'); 
-            div.className = 'my-post-item'; 
-            div.style.background = 'var(--bg-tertiary)'; 
-            div.innerHTML = 
-                `<button class="delete-post-btn" onclick="deleteUserComment('${i.postId}', ${i.commentId})" title="حذف">🗑</button>
-                <div class="my-post-date">
-                    <i>${new Date(i.timestamp).toLocaleDateString('ar-EG')}</i>
-                    <span style="background:var(--accent-lightest);padding:2px 8px;border-radius:15px;font-size:0.75rem;margin-right:8px;">${i.type === 'comment' ? 'تعليق' : 'رد'}</span>
-                </div>
-                <div class="my-post-text">"${i.text}"</div>
-                <div style="margin-top:8px;color:var(--text-muted);font-size:0.8rem;">
-                    📌 على: ${i.postTitle}
-                    ${i.parentAuthor ? `<br>🔄 رد على: ${i.parentAuthor}` : ''}
-                </div>
-                <div style="margin-top:8px;">
-                    <button class="comment-action-btn" onclick="goToPost('${i.postId}')" style="background:var(--accent-light);padding:5px 12px;">🔍 عرض في المنشور</button>
-                </div>`; 
-            els.myPostsList.appendChild(div); 
-        }); 
-    } 
-    
-    if (!myPosts.length && !myComments.length) 
-        els.myPostsList.innerHTML = '<div class="no-items">لا توجد منشورات أو تعليقات بعد 🌱</div>'; 
-}
-
-window.goToPost = postId => { 
-    const el = $(`post-${postId}`); 
-    if (el) { 
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
-        el.classList.add('highlight'); 
-        setTimeout(() => el.classList.remove('highlight'), 2000); 
-    } 
-};
-
-// ===== دوال الحذف =====
-window.deleteUserComment = (postId, commentId) => { 
-    if (!confirm('هل أنت متأكد من حذف هذا التعليق/الرد؟')) return; 
-    const post = allPosts.find(p => p.id === postId); 
-    if (!post) return; 
-    
-    const deleteFromTree = (items) => {
-        return items.filter(item => {
-            if (item.id === commentId) return false;
-            if (item.replies && item.replies.length) {
-                item.replies = deleteFromTree(item.replies);
-            }
-            return true;
-        });
-    };
-    
-    update(ref(db, `posts/${postId}`), { comments: deleteFromTree(post.comments || []) })
-        .then(() => alert('✅ تم الحذف')); 
-};
-
-window.deletePost = postId => { 
-    if (confirm('هل أنت متأكد من حذف هذا المنشور؟')) 
-        remove(ref(db, `posts/${postId}`)).then(() => alert('✅ تم حذف المنشور')); 
-};
-
-// ===== دوال الإشعارات =====
-function loadNotifications() { 
-    onValue(ref(db, 'notifications'), s => { 
-        const data = s.val(); 
-        if (!data || !currentUser) { 
-            allNotifications = []; 
-            updateNotificationBadge(); 
-            return; 
-        } 
-        allNotifications = Object.entries(data)
-            .map(([id, n]) => ({ id, ...n }))
-            .filter(n => n.toUser === currentUser.name)
-            .sort((a, b) => b.timestamp - a.timestamp); 
-        updateNotificationBadge(); 
-        if (els.notificationsSection.classList.contains('show')) renderNotifications(); 
-    }); 
-}
-
-function updateNotificationBadge() { 
-    const unread = allNotifications.filter(n => !n.read).length; 
-    els.notificationsCount.textContent = allNotifications.length; 
-    if (unread > 0) { 
-        els.notificationBadge.textContent = unread; 
-        els.notificationBadge.classList.add('show'); 
-    } else els.notificationBadge.classList.remove('show'); 
-}
-
-function renderNotifications() { 
-    els.notificationsList.innerHTML = !allNotifications.length ? 
-        '<div class="no-items">لا توجد إشعارات بعد 🔔</div>' : 
-        allNotifications.map(n => { 
-            const icons = { comment: '💬', reply: '↩️', message: '💬' }, 
-                  actions = { comment: 'علق على منشورك', reply: 'رد على تعليقك', message: 'أرسل لك رسالة' }; 
-            return `<div class="notification-item ${!n.read ? 'unread' : ''}" onclick="navigateToNotification('${n.id}')">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="notification-icon">${icons[n.type] || '🔔'}</span>
-                    <div class="notification-content">
-                        <div class="notification-text"><strong>${n.fromUser}</strong> ${actions[n.type] || ''}</div>
-                        <div class="notification-desc">"${n.messagePreview || ''}"</div>
-                        <div class="notification-time">${getTimeAgo(n.timestamp)}</div>
-                    </div>
-                </div>
-            </div>`; 
-        }).join(''); 
-}
-
-function getTimeAgo(ts) { 
-    const diff = Date.now() - ts, 
-          min = Math.floor(diff / 60000); 
-    if (min < 1) return 'الآن'; 
-    if (min < 60) return `منذ ${min} دقيقة`; 
-    const hrs = Math.floor(diff / 3600000); 
-    if (hrs < 24) return `منذ ${hrs} ساعة`; 
-    return `منذ ${Math.floor(diff / 86400000)} يوم`; 
-}
-
-function navigateToNotification(notificationId) { 
-    const n = allNotifications.find(n => n.id === notificationId);
-    if (!n) return;
-    
-    if (n.type === 'message') { 
-        openChat(n.fromUser); 
-        update(ref(db, `notifications/${n.id}`), { read: true }); 
-        return; 
-    } 
-    
-    update(ref(db, `notifications/${n.id}`), { read: true }); 
-    els.notificationsSection.classList.remove('show'); 
-    els.notificationsToggle.classList.remove('active'); 
-    setTimeout(() => { 
-        const el = $(`post-${n.postId}`); 
-        if (el) { 
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
-            el.classList.add('highlight'); 
-            setTimeout(() => el.classList.remove('highlight'), 2000); 
-        } 
-    }, 300); 
-}
-
-function createNotification(from, to, type, postId, preview, text = '') { 
-    if (from === to) return; 
-    push(ref(db, 'notifications'), { 
-        fromUser: from, 
-        toUser: to, 
-        type, 
-        postId, 
-        messagePreview: text || preview, 
-        timestamp: Date.now(), 
-        read: false 
-    }); 
-}
-
-// ===== دوال التعليقات والردود (بدون لايكات) =====
-window.toggleComments = postId => { 
-    commentsOpenState[postId] = !commentsOpenState[postId]; 
-    updatePostCommentsUI(postId); 
-};
-
-function updatePostCommentsUI(postId) { 
-    const section = $(`comments-section-${postId}`), 
-          btn = $(`comments-btn-${postId}`); 
-    if (!section || !btn) return; 
-    if (commentsOpenState[postId]) { 
-        section.classList.remove('hide'); 
-        section.classList.add('show'); 
-        btn.innerHTML = '💬 إخفاء التعليقات'; 
-    } else { 
-        section.classList.remove('show'); 
-        section.classList.add('hide'); 
-        btn.innerHTML = `💬 تعليق ${getCommentsCount(postId) > 0 ? `(${getCommentsCount(postId)})` : ''}`; 
-    } 
-}
-
-function getCommentsCount(postId) { 
-    return allPosts.find(p => p.id === postId)?.comments?.length || 0; 
-}
-
-function findCommentInTree(comments, id) { 
-    for (const c of comments) { 
-        if (c.id === id) return c; 
-        if (c.replies?.length) { 
-            const found = findCommentInTree(c.replies, id); 
-            if (found) return found; 
-        } 
-    } 
-    return null; 
-}
-
-function updateCommentInTree(comments, id, updater) { 
-    return comments.map(c => {
-        if (c.id === id) return updater(c);
-        if (c.replies?.length) {
-            c.replies = updateCommentInTree(c.replies, id, updater);
-        }
-        return c;
-    }); 
-}
-
-// ===== دالة إضافة تعليق جديد =====
-window.addComment = postId => { 
-    const input = $(`comment-input-${postId}`), 
-          text = input.value.trim(); 
-    if (!text) return; 
-    
-    const newComment = { 
-        id: Date.now() + Math.random(), 
-        author: currentUser.name, 
-        text, 
-        timestamp: Date.now(), 
-        replies: [] 
-    }; 
-    
-    const post = allPosts.find(p => p.id === postId); 
-    update(ref(db, `posts/${postId}`), { 
-        comments: [...(post.comments || []), newComment] 
-    }).then(() => { 
-        commentsOpenState[postId] = true; 
-        createNotification(currentUser.name, post.author, 'comment', postId, 
-                          post.desc?.substring(0, 50) || 'منشور', text); 
-        input.value = ''; 
-    }); 
-};
-
-// ===== دالة إضافة رد (على أي مستوى) =====
-window.addReply = (postId, parentCommentId) => { 
-    const input = $(`reply-input-${parentCommentId}`), 
-          text = input.value.trim(); 
-    if (!text) return; 
-    
-    const newReply = { 
-        id: Date.now() + Math.random(), 
-        author: currentUser.name, 
-        text, 
-        timestamp: Date.now(),
-        replies: []
-    }; 
-    
-    const post = allPosts.find(p => p.id === postId); 
-    if (!post) return; 
-    
-    const parentComment = findCommentInTree(post.comments || [], parentCommentId);
-    if (!parentComment) return;
-    
-    update(ref(db, `posts/${postId}`), { 
-        comments: updateCommentInTree(post.comments || [], parentCommentId, c => ({ 
-            ...c, 
-            replies: [...(c.replies || []), newReply] 
-        })) 
-    }).then(() => { 
-        commentsOpenState[postId] = true; 
-        createNotification(currentUser.name, parentComment.author, 'reply', postId, 
-                          post.desc?.substring(0, 50) || 'منشور', text); 
-        input.value = ''; 
-        toggleReplyInput(parentCommentId, false); 
-    }); 
-};
-
-window.toggleReplyInput = (commentId, show) => { 
-    const container = $(`reply-container-${commentId}`); 
-    if (container) { 
-        container.style.display = show ? 'block' : 'none'; 
-        if (show) { 
-            const input = $(`reply-input-${commentId}`); 
-            if (input) input.focus(); 
-        } 
-    } 
-};
-
-// ===== تحميل وعرض المنشورات مع دعم الفيديو (بدون لايكات) =====
-function loadPosts() { 
-    onValue(ref(db, 'posts'), s => { 
-        const data = s.val(); 
-        if (!data) { 
-            els.postsContainer.innerHTML = '<div style="background:var(--bg-secondary);padding:50px;border-radius:20px;text-align:center;color:var(--text-muted);">كن أول من يشارك 🌱</div>'; 
-            els.postsCount.textContent = '٠ منشور'; 
-            allPosts = []; 
-            return; 
-        } 
-        allPosts = Object.entries(data).map(([id, p]) => ({ id, ...p })).reverse(); 
-        els.postsCount.textContent = `${allPosts.length} منشور`; 
-        renderPosts(); 
-        if (els.myPostsSection.classList.contains('show')) renderMyPosts(); 
-    }); 
-}
-
-// ===== دالة عرض التعليقات والردود المتداخلة - بدون مسافات جانبية =====
-function renderComment(c, postId, level = 0) { 
-    const isAuthor = c.author === currentUser.name; 
-    const isReply = level > 0;
-    
-    // نحدد إذا كان هذا رد أم تعليق أصلي
-    const replyClass = isReply ? 'reply-item' : '';
-    const replyBadge = isReply ? '<span class="reply-badge">↪️ رد</span>' : '';
-    
-    return `<div class="comment-item ${replyClass}" id="comment-item-${c.id}" style="margin-right:0;">
-        ${isAuthor ? `<button class="delete-comment-btn" onclick="deleteUserComment('${postId}', ${c.id})" title="حذف">🗑</button>` : ''}
-        <div class="comment-header">
-            <span class="comment-author">${c.author} ${replyBadge}</span>
-            <span class="comment-date">${new Date(c.timestamp).toLocaleDateString('ar-EG')}</span>
-        </div>
-        <div class="comment-text">${c.text}</div>
-        <div class="comment-actions">
-            <button class="comment-action-btn" onclick="toggleReplyInput(${c.id}, true)">💬 رد</button>
-        </div>
-        <div id="reply-container-${c.id}" class="reply-container" style="display:none;">
-            <div class="reply-input-wrapper">
-                <input type="text" class="reply-input" id="reply-input-${c.id}" placeholder="اكتب ردك...">
-                <button class="reply-send-btn" onclick="addReply('${postId}', ${c.id})"><img src="send.png" style="width:18px;height:18px;"></button>
-            </div>
-        </div>
-        ${c.replies?.length ? 
-            `<div class="replies-list">${c.replies.map(r => renderComment(r, postId, level + 1)).join('')}</div>` : 
-            ''}
-    </div>`; 
-}
-
-function renderPosts() { 
-    els.postsContainer.innerHTML = ''; 
-    allPosts.forEach(post => { 
-        const comments = post.comments || []; 
-        if (commentsOpenState[post.id] === undefined) commentsOpenState[post.id] = false; 
-        
-        let mediaHTML = ''; 
-        if (post.media?.length) { 
-            if (post.media.length === 1) {
-                const media = post.media[0];
-                if (media.type === 'video') {
-                    mediaHTML = `<div class="single-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, 0)">
-                        <video src="${media.data}" muted></video>
-                        <div class="video-play-icon">▶</div>
-                    </div>`;
-                } else {
-                    mediaHTML = `<div class="single-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, 0)">
-                        <img src="${media.data}" loading="lazy">
-                    </div>`;
-                }
-            } else { 
-                mediaHTML = '<div class="post-media-grid">'; 
-                post.media.slice(0, 4).forEach((media, i) => { 
-                    if (media.type === 'video') {
-                        mediaHTML += `<div class="post-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, ${i})">
-                            <video src="${media.data}" muted></video>
-                            <div class="video-play-icon">▶</div>
-                            ${i === 3 && post.media.length > 4 ? `<span class="media-counter-badge">+${post.media.length - 4}</span>` : ''}
-                        </div>`;
-                    } else {
-                        mediaHTML += `<div class="post-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, ${i})">
-                            <img src="${media.data}" loading="lazy">
-                            ${i === 3 && post.media.length > 4 ? `<span class="media-counter-badge">+${post.media.length - 4}</span>` : ''}
-                        </div>`;
-                    }
-                }); 
-                mediaHTML += '</div>'; 
-            } 
-        } 
-        
-        const commentsHTML = comments.map(c => renderComment(c, post.id)).join(''); 
-        const div = document.createElement('div'); 
-        div.className = 'post-item'; 
-        div.id = `post-${post.id}`; 
-        div.innerHTML = 
-            `<div class="post-author">
-                <div class="post-avatar">${post.author.charAt(0)}</div>
-                <div class="post-author-info">
-                    <h4>${post.author}</h4>
-                    <p style="font-size:0.85rem;color:var(--text-muted);">${new Date(post.timestamp).toLocaleDateString('ar-EG')}</p>
-                </div>
-                <button class="post-dm-btn" onclick="openNewMessageModal('${post.author}')">
-                    <span>💬</span><span>تواصل على الخاص</span>
-                </button>
-            </div>
-            ${post.desc ? `<div class="post-desc">${post.desc}</div>` : ''}
-            ${mediaHTML}
-            <div class="post-actions">
-                <button class="action-btn" id="comments-btn-${post.id}" onclick="toggleComments('${post.id}')">💬 تعليق ${comments.length > 0 ? `(${comments.length})` : ''}</button>
-            </div>
-            <div class="comments-section ${commentsOpenState[post.id] ? 'show' : 'hide'}" id="comments-section-${post.id}">
-                <div class="comment-input-wrapper">
-                    <input type="text" class="comment-input" id="comment-input-${post.id}" placeholder="اكتب تعليقك...">
-                    <button class="comment-send-btn" onclick="addComment('${post.id}')"><img src="send.png" style="width:20px;height:20px;"></button>
-                </div>
-                <div class="comment-list">
-                    ${commentsHTML || '<p style="text-align:center;color:var(--text-muted);padding:20px;">كن أول من يعلق</p>'}
-                </div>
-            </div>`; 
-        els.postsContainer.appendChild(div); 
-    }); 
-}
-
-// ===== إغلاق المودالات عند النقر خارجها =====
-window.onclick = e => { 
-    if (e.target.classList.contains('modal')) e.target.style.display = 'none'; 
-    if (e.target === els.mediaViewerModal) closeMediaViewer(); 
-    if (e.target === els.chatModal) closeChat(); 
-    if (e.target === els.newMessageModal) closeNewMessageModal(); 
-    if (e.target === els.confirmModal) closeConfirmModal(); 
-    if (window.innerWidth <= 768 && e.target === els.rightSidebar) els.rightSidebar.classList.remove('show'); 
-};
-
-// ===== أحداث لوحة المفاتيح =====
-els.mobilePostInput.addEventListener('keypress', e => { 
-    if (e.key === 'Enter') { 
-        e.preventDefault(); 
-        publishMobilePost(); 
-    } 
+    e.target.value = '';
+    els.mobileImagePreview.classList.add('show');
+    els.mobileImageBtn.classList.add('active');
 });
+function renderMobileFilePreviews() {
+    els.mobilePreviewGrid.innerHTML = mobileSelectedFiles.map((file, i) => {
+        if (file.type === 'video') return `<div class="mobile-preview-item"><video src="${file.data}" muted></video><button class="mobile-preview-remove" onclick="removeMobileFile(${i})">✕</button></div>`;
+        return `<div class="mobile-preview-item"><img src="${file.data}"><button class="mobile-preview-remove" onclick="removeMobileFile(${i})">✕</button></div>`;
+    }).join('');
+}
+window.removeMobileFile = i => { mobileSelectedFiles.splice(i, 1); renderMobileFilePreviews(); if (!mobileSelectedFiles.length) { els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); } };
 
-els.chatInput.addEventListener('keypress', e => { 
-    if (e.key === 'Enter') { 
-        e.preventDefault(); 
-        sendChatMessage(); 
-    } 
-});
+window.publishPost = () => {
+    const desc = els.postDesc.value.trim();
+    if (!desc && !selectedFiles.length) { alert(translations[currentLanguage].writeSomething); return; }
+    push(ref(db, 'posts'), { author: currentUser.name, authorPhone: currentUser.phone, desc, media: selectedFiles.map(f => ({ data: f.data, type: f.type })), timestamp: Date.now(), comments: [] }).then(() => {
+        els.postDesc.value = ''; selectedFiles = []; renderFilePreviews();
+        if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show');
+    });
+};
+window.publishMobilePost = () => {
+    const text = els.mobilePostInput.value.trim();
+    if (!text && !mobileSelectedFiles.length) { alert(translations[currentLanguage].writeSomething); return; }
+    push(ref(db, 'posts'), { author: currentUser.name, authorPhone: currentUser.phone, desc: text || '', media: mobileSelectedFiles.map(f => ({ data: f.data, type: f.type })), timestamp: Date.now(), comments: [] }).then(() => {
+        els.mobilePostInput.value = ''; mobileSelectedFiles = []; els.mobileImagePreview.classList.remove('show'); els.mobileImageBtn.classList.remove('active'); renderMobileFilePreviews();
+    });
+};
 
-els.newMessageText.addEventListener('keypress', e => { 
-    if (e.key === 'Enter' && !e.shiftKey) { 
-        e.preventDefault(); 
-        sendNewMessage(); 
-    } 
-});
+window.openMediaViewer = (media, index) => { currentViewerMedia = media; currentViewerIndex = index; renderMediaViewer(); els.mediaViewerModal.classList.add('show'); document.body.style.overflow = 'hidden'; };
+window.closeMediaViewer = () => { els.mediaViewerModal.classList.remove('show'); document.body.style.overflow = ''; els.mediaViewerContainer.querySelectorAll('video').forEach(v => v.pause()); };
+window.navigateMedia = dir => { const n = currentViewerIndex + dir; if (n >= 0 && n < currentViewerMedia.length) { currentViewerIndex = n; renderMediaViewer(); } };
+function renderMediaViewer() {
+    if (!currentViewerMedia.length) return;
+    els.mediaViewerContainer.innerHTML = '';
+    els.mediaViewerCounter.textContent = `${currentViewerIndex + 1} / ${currentViewerMedia.length}`;
+    const slide = document.createElement('div');
+    slide.className = 'media-viewer-slide active';
+    const media = currentViewerMedia[currentViewerIndex];
+    if (media.type === 'video') { const v = document.createElement('video'); v.src = media.data; v.controls = true; v.autoplay = true; slide.appendChild(v); }
+    else { const img = document.createElement('img'); img.src = media.data; slide.appendChild(img); }
+    els.mediaViewerContainer.appendChild(slide);
+}
 
-document.addEventListener('keydown', e => { 
-    if (els.mediaViewerModal.classList.contains('show')) { 
-        if (e.key === 'Escape') closeMediaViewer(); 
-        else if (e.key === 'ArrowRight') navigateMedia(1); 
-        else if (e.key === 'ArrowLeft') navigateMedia(-1); 
-    } 
-    if (e.key === 'Escape') { 
-        if (els.chatModal.classList.contains('show')) closeChat(); 
-        if (els.newMessageModal.classList.contains('show')) closeNewMessageModal(); 
-        if (els.confirmModal.classList.contains('show')) closeConfirmModal(); 
-    } 
-});
+function getChatRoomId(u1, u2) { return [u1, u2].sort().join('_'); }
+window.openNewMessageModal = target => { if (target === currentUser.name) { alert(translations[currentLanguage].cantMessageYourself); return; } newMessageTargetUser = target; els.newMessageRecipient.textContent = `📩 To: ${target}`; els.newMessageText.value = ''; els.newMessageModal.classList.add('show'); };
+window.closeNewMessageModal = () => { els.newMessageModal.classList.remove('show'); newMessageTargetUser = null; };
+window.sendNewMessage = () => { const text = els.newMessageText.value.trim(); if (!text || !newMessageTargetUser) { alert(translations[currentLanguage].writeMessage); return; } const chatRoomId = getChatRoomId(currentUser.name, newMessageTargetUser); push(ref(db, `messages/${chatRoomId}`), { from: currentUser.name, to: newMessageTargetUser, text, timestamp: Date.now(), read: false }); push(ref(db, 'notifications'), { fromUser: currentUser.name, toUser: newMessageTargetUser, type: 'message', messagePreview: text.substring(0, 50), timestamp: Date.now(), read: false }); closeNewMessageModal(); alert(translations[currentLanguage].messageSent); openChat(newMessageTargetUser); };
+window.openChat = target => { if (target === currentUser.name) return; currentChatUser = target; currentChatRoomId = getChatRoomId(currentUser.name, target); els.chatUserName.textContent = target; els.chatAvatar.textContent = target.charAt(0); els.chatModal.classList.add('show'); loadChatMessages(); markMessagesAsRead(target); };
+window.closeChat = () => { els.chatModal.classList.remove('show'); currentChatUser = null; currentChatRoomId = null; };
+function markMessagesAsRead(target) { const chatRoomId = getChatRoomId(currentUser.name, target); get(child(ref(db), `messages/${chatRoomId}`)).then(s => { if (!s.exists()) return; const updates = {}; s.forEach(c => { const msg = c.val(); if (msg.to === currentUser.name && !msg.read) updates[`messages/${chatRoomId}/${c.key}/read`] = true; }); if (Object.keys(updates).length) update(ref(db), updates); }); }
+function loadChatMessages() { if (!currentChatRoomId) return; onValue(ref(db, `messages/${currentChatRoomId}`), s => { const data = s.val(); els.chatMessages.innerHTML = ''; if (!data) { els.chatMessages.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:40px 20px;">${translations[currentLanguage].startChat}</p>`; return; } Object.values(data).sort((a, b) => a.timestamp - b.timestamp).forEach(msg => { const div = document.createElement('div'); div.className = `message-bubble ${msg.from === currentUser.name ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text}</div><div class="message-time">${new Date(msg.timestamp).toLocaleTimeString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US', {hour:'2-digit',minute:'2-digit'})}</div>`; els.chatMessages.appendChild(div); }); els.chatMessages.scrollTop = els.chatMessages.scrollHeight; }); }
+window.sendChatMessage = () => { const text = els.chatInput.value.trim(); if (!text || !currentChatRoomId) return; push(ref(db, `messages/${currentChatRoomId}`), { from: currentUser.name, to: currentChatUser, text, timestamp: Date.now(), read: false }); push(ref(db, 'notifications'), { fromUser: currentUser.name, toUser: currentChatUser, type: 'message', messagePreview: text.substring(0, 50), timestamp: Date.now(), read: false }); els.chatInput.value = ''; };
+function loadMessages() { onValue(ref(db, 'messages'), s => { const data = s.val(); if (!data || !currentUser) { allMessages = []; updateMessageBadge(); if (els.messagesSection.classList.contains('show')) renderMessages(); return; } const chatMap = {}; Object.entries(data).forEach(([roomId, messages]) => { const users = roomId.split('_'), otherUser = users.find(u => u !== currentUser.name); if (!otherUser) return; const msgs = Object.values(messages).sort((a, b) => b.timestamp - a.timestamp), lastMsg = msgs[0], unreadCount = msgs.filter(m => m.to === currentUser.name && !m.read).length; chatMap[otherUser] = { user: otherUser, lastMessage: lastMsg, unreadCount, totalMessages: msgs.length }; }); allMessages = Object.values(chatMap).sort((a, b) => b.lastMessage.timestamp - a.lastMessage.timestamp); updateMessageBadge(); if (els.messagesSection.classList.contains('show')) renderMessages(); }); }
+function updateMessageBadge() { const totalUnread = allMessages.reduce((sum, c) => sum + c.unreadCount, 0); els.messagesCount.textContent = allMessages.length; if (totalUnread > 0) { els.messageBadge.textContent = totalUnread; els.messageBadge.classList.add('show'); } else els.messageBadge.classList.remove('show'); }
+function renderMessages() { const t = translations[currentLanguage]; els.messagesList.innerHTML = !allMessages.length ? `<div class="no-items">${t.noMessages}</div>` : allMessages.map(c => `<div class="message-chat-item ${c.unreadCount > 0 ? 'unread' : ''}" onclick="openChat('${c.user}')"><div style="display:flex;align-items:center;gap:10px;"><span class="message-icon">💬</span><div class="message-content"><div class="message-chat-name">${c.user}</div><div class="message-chat-preview">${c.lastMessage.text}</div><div class="message-chat-time">${getTimeAgo(c.lastMessage.timestamp)}</div></div>${c.unreadCount > 0 ? `<span style="background:var(--badge-bg);color:white;font-size:0.7rem;padding:2px 8px;border-radius:10px;">${c.unreadCount}</span>` : ''}</div></div>`).join(''); }
+window.toggleMyPosts = () => toggleSection(els.myPostsSection, els.myPostsToggle, renderMyPosts);
+window.toggleNotifications = () => { toggleSection(els.notificationsSection, els.notificationsToggle, renderNotifications); markAllNotificationsAsRead(); };
+window.toggleMessages = () => { toggleSection(els.messagesSection, els.messagesToggle, renderMessages); markAllMessagesAsRead(); };
+function toggleSection(section, toggle, render) { const isShowing = section.classList.contains('show'); [els.myPostsSection, els.notificationsSection, els.messagesSection].forEach(s => s.classList.remove('show')); [els.myPostsToggle, els.notificationsToggle, els.messagesToggle].forEach(t => t.classList.remove('active')); if (!isShowing) { render(); section.classList.add('show'); toggle.classList.add('active'); setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); } }
+function markAllNotificationsAsRead() { allNotifications.forEach(n => { if (!n.read) update(ref(db, `notifications/${n.id}`), { read: true }); }); }
+function markAllMessagesAsRead() { allMessages.forEach(c => { if (c.unreadCount > 0) markMessagesAsRead(c.user); }); }
+function getUserCommentsAndReplies() { const userComments = []; allPosts.forEach(post => { if (post.comments) { const traverse = (items, parentAuthor = null, level = 0) => { items.forEach(item => { if (item.author === currentUser.name) userComments.push({ type: level === 0 ? 'comment' : 'reply', postId: post.id, commentId: item.id, postTitle: post.desc?.substring(0, 50) || 'Post', text: item.text, timestamp: item.timestamp, parentAuthor }); if (item.replies?.length) traverse(item.replies, item.author, level + 1); }); }; traverse(post.comments); } }); return userComments.sort((a, b) => b.timestamp - a.timestamp); }
+function renderMyPosts() { const t = translations[currentLanguage]; const myPosts = allPosts.filter(p => p.author === currentUser.name), myComments = getUserCommentsAndReplies(); els.myPostsCount.textContent = myPosts.length; els.myPostsList.innerHTML = ''; if (myPosts.length) { const section = document.createElement('div'); section.innerHTML = `<h5 style="color:var(--accent-primary);margin:15px 0 10px;font-size:1rem;">📝 ${t.myPostsText}</h5>`; els.myPostsList.appendChild(section); myPosts.reverse().forEach(p => { const mediaCount = p.media?.length || 0; const mediaType = mediaCount > 0 ? (p.media[0].type === 'video' ? '🎥' : '📷') : ''; const div = document.createElement('div'); div.className = 'my-post-item'; div.innerHTML = `<button class="delete-post-btn" onclick="deletePost('${p.id}')" title="${t.deletePost}">🗑</button><div class="my-post-date"><i>${new Date(p.timestamp).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</i></div><div class="my-post-text">${p.desc || 'Post without text'}</div>${mediaCount > 0 ? `<div style="margin-top:10px;color:var(--text-muted);font-size:0.85rem;">${mediaType} ${t.mediaCount(mediaCount)}</div>` : ''}<div style="margin-top:8px;color:var(--accent-primary);font-size:0.8rem;">💬 ${p.comments?.length || 0} ${t.comment}${p.comments?.length !== 1 ? 's' : ''}</div>`; els.myPostsList.appendChild(div); }); } if (myComments.length) { const section = document.createElement('div'); section.innerHTML = `<h5 style="color:var(--accent-primary);margin:20px 0 10px;font-size:1rem;">💬 ${t.comment}s & ${t.reply}s</h5>`; els.myPostsList.appendChild(section); myComments.forEach(i => { const div = document.createElement('div'); div.className = 'my-post-item'; div.style.background = 'var(--bg-tertiary)'; div.innerHTML = `<button class="delete-post-btn" onclick="deleteUserComment('${i.postId}', ${i.commentId})" title="${t.deleteComment}">🗑</button><div class="my-post-date"><i>${new Date(i.timestamp).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</i><span style="background:var(--accent-lightest);padding:2px 8px;border-radius:15px;font-size:0.75rem;margin-right:8px;">${i.type === 'comment' ? t.comment : t.reply}</span></div><div class="my-post-text">"${i.text}"</div><div style="margin-top:8px;color:var(--text-muted);font-size:0.8rem;">📌 ${t.on}: ${i.postTitle}${i.parentAuthor ? `<br>🔄 ${t.repliedTo}: ${i.parentAuthor}` : ''}</div><div style="margin-top:8px;"><button class="comment-action-btn" onclick="goToPost('${i.postId}')" style="background:var(--accent-light);padding:5px 12px;">${t.goToPost}</button></div>`; els.myPostsList.appendChild(div); }); } if (!myPosts.length && !myComments.length) els.myPostsList.innerHTML = `<div class="no-items">${t.noPostsOrComments}</div>`; }
+window.goToPost = postId => { const el = $(`post-${postId}`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 2000); } };
+window.deleteUserComment = (postId, commentId) => { const t = translations[currentLanguage]; if (!confirm(t.confirmDelete)) return; const post = allPosts.find(p => p.id === postId); if (!post) return; const deleteFromTree = (items) => items.filter(item => { if (item.id === commentId) return false; if (item.replies?.length) item.replies = deleteFromTree(item.replies); return true; }); update(ref(db, `posts/${postId}`), { comments: deleteFromTree(post.comments || []) }).then(() => alert(t.commentDeleted)); };
+window.deletePost = postId => { const t = translations[currentLanguage]; if (confirm(t.confirmDelete)) remove(ref(db, `posts/${postId}`)).then(() => alert(t.postDeleted)); };
+function loadNotifications() { onValue(ref(db, 'notifications'), s => { const data = s.val(); if (!data || !currentUser) { allNotifications = []; updateNotificationBadge(); return; } allNotifications = Object.entries(data).map(([id, n]) => ({ id, ...n })).filter(n => n.toUser === currentUser.name).sort((a, b) => b.timestamp - a.timestamp); updateNotificationBadge(); if (els.notificationsSection.classList.contains('show')) renderNotifications(); }); }
+function updateNotificationBadge() { const unread = allNotifications.filter(n => !n.read).length; els.notificationsCount.textContent = allNotifications.length; if (unread > 0) { els.notificationBadge.textContent = unread; els.notificationBadge.classList.add('show'); } else els.notificationBadge.classList.remove('show'); }
+function renderNotifications() { const t = translations[currentLanguage]; els.notificationsList.innerHTML = !allNotifications.length ? `<div class="no-items">${t.noNotifications}</div>` : allNotifications.map(n => { const icons = { comment: '💬', reply: '↩️', message: '💬' }, actions = { comment: currentLanguage === 'ar' ? 'علق على منشورك' : 'commented on your post', reply: currentLanguage === 'ar' ? 'رد على تعليقك' : 'replied to your comment', message: currentLanguage === 'ar' ? 'أرسل لك رسالة' : 'sent you a message' }; return `<div class="notification-item ${!n.read ? 'unread' : ''}" onclick="navigateToNotification('${n.id}')"><div style="display:flex;align-items:center;gap:10px;"><span class="notification-icon">${icons[n.type] || '🔔'}</span><div class="notification-content"><div class="notification-text"><strong>${n.fromUser}</strong> ${actions[n.type] || ''}</div><div class="notification-desc">"${n.messagePreview || ''}"</div><div class="notification-time">${getTimeAgo(n.timestamp)}</div></div></div></div>`; }).join(''); }
+function getTimeAgo(ts) { const diff = Date.now() - ts, mins = Math.floor(diff / 60000); if (currentLanguage === 'ar') { if (mins < 1) return 'الآن'; if (mins < 60) return `منذ ${mins} دقيقة`; const hrs = Math.floor(diff / 3600000); if (hrs < 24) return `منذ ${hrs} ساعة`; return `منذ ${Math.floor(diff / 86400000)} يوم`; } else { if (mins < 1) return 'just now'; if (mins < 60) return `${mins} minute${mins !== 1 ? 's' : ''} ago`; const hrs = Math.floor(diff / 3600000); if (hrs < 24) return `${hrs} hour${hrs !== 1 ? 's' : ''} ago`; const days = Math.floor(diff / 86400000); return `${days} day${days !== 1 ? 's' : ''} ago`; } }
+function navigateToNotification(notificationId) { const n = allNotifications.find(n => n.id === notificationId); if (!n) return; if (n.type === 'message') { openChat(n.fromUser); update(ref(db, `notifications/${n.id}`), { read: true }); return; } update(ref(db, `notifications/${n.id}`), { read: true }); els.notificationsSection.classList.remove('show'); els.notificationsToggle.classList.remove('active'); setTimeout(() => { const el = $(`post-${n.postId}`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('highlight'); setTimeout(() => el.classList.remove('highlight'), 2000); } }, 300); }
+function createNotification(from, to, type, postId, preview, text = '') { if (from === to) return; push(ref(db, 'notifications'), { fromUser: from, toUser: to, type, postId, messagePreview: text || preview, timestamp: Date.now(), read: false }); }
+window.toggleComments = postId => { commentsOpenState[postId] = !commentsOpenState[postId]; updatePostCommentsUI(postId); };
+function updatePostCommentsUI(postId) { const section = $(`comments-section-${postId}`), btn = $(`comments-btn-${postId}`); if (!section || !btn) return; const t = translations[currentLanguage], count = getCommentsCount(postId); if (commentsOpenState[postId]) { section.classList.remove('hide'); section.classList.add('show'); btn.innerHTML = t.hideComments; } else { section.classList.remove('show'); section.classList.add('hide'); btn.innerHTML = t.showComments(count); } }
+function getCommentsCount(postId) { return allPosts.find(p => p.id === postId)?.comments?.length || 0; }
+function findCommentInTree(comments, id) { for (const c of comments) { if (c.id === id) return c; if (c.replies?.length) { const found = findCommentInTree(c.replies, id); if (found) return found; } } return null; }
+function updateCommentInTree(comments, id, updater) { return comments.map(c => { if (c.id === id) return updater(c); if (c.replies?.length) c.replies = updateCommentInTree(c.replies, id, updater); return c; }); }
+window.addComment = postId => { const input = $(`comment-input-${postId}`), text = input.value.trim(); if (!text) return; const newComment = { id: Date.now() + Math.random(), author: currentUser.name, text, timestamp: Date.now(), replies: [] }; const post = allPosts.find(p => p.id === postId); update(ref(db, `posts/${postId}`), { comments: [...(post.comments || []), newComment] }).then(() => { commentsOpenState[postId] = true; createNotification(currentUser.name, post.author, 'comment', postId, post.desc?.substring(0, 50) || 'Post', text); input.value = ''; }); };
+window.addReply = (postId, parentCommentId) => { const input = $(`reply-input-${parentCommentId}`), text = input.value.trim(); if (!text) return; const newReply = { id: Date.now() + Math.random(), author: currentUser.name, text, timestamp: Date.now(), replies: [] }; const post = allPosts.find(p => p.id === postId); if (!post) return; const parentComment = findCommentInTree(post.comments || [], parentCommentId); if (!parentComment) return; update(ref(db, `posts/${postId}`), { comments: updateCommentInTree(post.comments || [], parentCommentId, c => ({ ...c, replies: [...(c.replies || []), newReply] })) }).then(() => { commentsOpenState[postId] = true; createNotification(currentUser.name, parentComment.author, 'reply', postId, post.desc?.substring(0, 50) || 'Post', text); input.value = ''; toggleReplyInput(parentCommentId, false); }); };
+window.toggleReplyInput = (commentId, show) => { const container = $(`reply-container-${commentId}`); if (container) { container.style.display = show ? 'block' : 'none'; if (show) { const input = $(`reply-input-${commentId}`); if (input) input.focus(); } } };
+function loadPosts() { onValue(ref(db, 'posts'), s => { const data = s.val(); if (!data) { els.postsContainer.innerHTML = `<div style="background:var(--bg-secondary);padding:50px;border-radius:20px;text-align:center;color:var(--text-muted);">${translations[currentLanguage].noPosts}</div>`; updatePostsCount(); allPosts = []; return; } allPosts = Object.entries(data).map(([id, p]) => ({ id, ...p })).reverse(); updatePostsCount(); renderPosts(); if (els.myPostsSection.classList.contains('show')) renderMyPosts(); }); }
+function renderComment(c, postId, level = 0) { const t = translations[currentLanguage], isAuthor = c.author === currentUser.name, isReply = level > 0, replyClass = isReply ? 'reply-item' : '', replyBadge = isReply ? `<span class="reply-badge">↪️ ${t.reply}</span>` : ''; return `<div class="comment-item ${replyClass}" id="comment-item-${c.id}">${isAuthor ? `<button class="delete-comment-btn" onclick="deleteUserComment('${postId}', ${c.id})" title="${t.deleteComment}">🗑</button>` : ''}<div class="comment-header"><span class="comment-author">${c.author} ${replyBadge}</span><span class="comment-date">${new Date(c.timestamp).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</span></div><div class="comment-text">${c.text}</div><div class="comment-actions"><button class="comment-action-btn" onclick="toggleReplyInput(${c.id}, true)">💬 ${t.reply}</button></div><div id="reply-container-${c.id}" class="reply-container" style="display:none;"><div class="reply-input-wrapper"><input type="text" class="reply-input" id="reply-input-${c.id}" placeholder="${t.replyPlaceholder}"><button class="reply-send-btn" onclick="addReply('${postId}', ${c.id})"><img src="send.png" style="width:18px;height:18px;"></button></div></div>${c.replies?.length ? `<div class="replies-list">${c.replies.map(r => renderComment(r, postId, level + 1)).join('')}</div>` : ''}</div>`; }
+function renderPosts() { const t = translations[currentLanguage]; els.postsContainer.innerHTML = ''; allPosts.forEach(post => { const comments = post.comments || []; if (commentsOpenState[post.id] === undefined) commentsOpenState[post.id] = false; let mediaHTML = ''; if (post.media?.length) { if (post.media.length === 1) { const media = post.media[0]; mediaHTML = media.type === 'video' ? `<div class="single-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, 0)"><video src="${media.data}" muted></video><div class="video-play-icon">▶</div></div>` : `<div class="single-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, 0)"><img src="${media.data}" loading="lazy"></div>`; } else { mediaHTML = '<div class="post-media-grid">'; post.media.slice(0, 4).forEach((media, i) => { mediaHTML += media.type === 'video' ? `<div class="post-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, ${i})"><video src="${media.data}" muted></video><div class="video-play-icon">▶</div>${i === 3 && post.media.length > 4 ? `<span class="media-counter-badge">+${post.media.length - 4}</span>` : ''}</div>` : `<div class="post-media-wrapper" onclick="openMediaViewer(${JSON.stringify(post.media).replace(/"/g, '&quot;')}, ${i})"><img src="${media.data}" loading="lazy">${i === 3 && post.media.length > 4 ? `<span class="media-counter-badge">+${post.media.length - 4}</span>` : ''}</div>`; }); mediaHTML += '</div>'; } } const div = document.createElement('div'); div.className = 'post-item'; div.id = `post-${post.id}`; div.innerHTML = `<div class="post-author"><div class="post-avatar">${post.author.charAt(0)}</div><div class="post-author-info"><h4>${post.author}</h4><p style="font-size:0.85rem;color:var(--text-muted);">${new Date(post.timestamp).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</p></div><button class="post-dm-btn" onclick="openNewMessageModal('${post.author}')"><span>💬</span><span>${currentLanguage === 'ar' ? 'تواصل على الخاص' : 'Message'}</span></button></div>${post.desc ? `<div class="post-desc">${post.desc}</div>` : ''}${mediaHTML}<div class="post-actions"><button class="action-btn" id="comments-btn-${post.id}" onclick="toggleComments('${post.id}')">${t.showComments(comments.length)}</button></div><div class="comments-section ${commentsOpenState[post.id] ? 'show' : 'hide'}" id="comments-section-${post.id}"><div class="comment-input-wrapper"><input type="text" class="comment-input" id="comment-input-${post.id}" placeholder="${t.commentPlaceholder}"><button class="comment-send-btn" onclick="addComment('${post.id}')"><img src="send.png" style="width:20px;height:20px;"></button></div><div class="comment-list">${comments.map(c => renderComment(c, post.id)).join('') || `<p style="text-align:center;color:var(--text-muted);padding:20px;">${currentLanguage === 'ar' ? 'كن أول من يعلق' : 'Be the first to comment'}</p>`}</div></div>`; els.postsContainer.appendChild(div); }); }
 
-document.addEventListener('keypress', e => { 
-    if (e.target.classList.contains('comment-input') && e.key === 'Enter') 
-        addComment(e.target.id.replace('comment-input-', '')); 
-    if (e.target.classList.contains('reply-input') && e.key === 'Enter') { 
-        const postId = e.target.closest('.post-item')?.id.replace('post-', ''); 
-        if (postId) addReply(postId, parseInt(e.target.id.replace('reply-input-', ''))); 
-    } 
-});
+window.onclick = e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; if (e.target === els.mediaViewerModal) closeMediaViewer(); if (e.target === els.chatModal) closeChat(); if (e.target === els.newMessageModal) closeNewMessageModal(); if (e.target === els.confirmModal) closeConfirmModal(); if (window.innerWidth <= 768 && e.target === els.rightSidebar) els.rightSidebar.classList.remove('show'); };
+els.mobilePostInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); publishMobilePost(); } });
+els.chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); sendChatMessage(); } });
+els.newMessageText.addEventListener('keypress', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendNewMessage(); } });
+document.addEventListener('keydown', e => { if (els.mediaViewerModal.classList.contains('show')) { if (e.key === 'Escape') closeMediaViewer(); else if (e.key === 'ArrowRight') navigateMedia(1); else if (e.key === 'ArrowLeft') navigateMedia(-1); } if (e.key === 'Escape') { if (els.chatModal.classList.contains('show')) closeChat(); if (els.newMessageModal.classList.contains('show')) closeNewMessageModal(); if (els.confirmModal.classList.contains('show')) closeConfirmModal(); } });
+document.addEventListener('keypress', e => { if (e.target.classList.contains('comment-input') && e.key === 'Enter') addComment(e.target.id.replace('comment-input-', '')); if (e.target.classList.contains('reply-input') && e.key === 'Enter') { const postId = e.target.closest('.post-item')?.id.replace('post-', ''); if (postId) addReply(postId, parseInt(e.target.id.replace('reply-input-', ''))); } });
+
+window.changeLanguage = changeLanguage;
 </script>
 </body>
 </html>
