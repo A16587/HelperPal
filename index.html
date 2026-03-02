@@ -584,46 +584,61 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
     </div>
 </div>
 
-<!-- Auth Screen - English Default -->
+<!-- Auth Screen - Phone Verification First -->
 <div class="auth-screen" id="authScreen">
-<div class="auth-container">
-<h1>Helper Pal</h1>
-<p class="subtitle" id="authSubtitle">Create your account now to join the community</p>
-<input type="text" id="loginName" placeholder="Full Name">
-<input type="tel" id="loginPhone" placeholder="Phone Number">
-<input type="date" id="loginBirthdate" placeholder="Birth Date">
-<select id="loginGovernorate">
-    <option value="">Select Governorate</option>
-    <option>Cairo</option>
-    <option>Giza</option>
-    <option>Alexandria</option>
-    <option>Dakahlia</option>
-    <option>Red Sea</option>
-    <option>Beheira</option>
-    <option>Faiyum</option>
-    <option>Gharbia</option>
-    <option>Ismailia</option>
-    <option>Menofia</option>
-    <option>Minya</option>
-    <option>Qalyubia</option>
-    <option>New Valley</option>
-    <option>Suez</option>
-    <option>Aswan</option>
-    <option>Asyut</option>
-    <option>Beni Suef</option>
-    <option>Port Said</option>
-    <option>Damietta</option>
-    <option>South Sinai</option>
-    <option>Kafr El Sheikh</option>
-    <option>Matrouh</option>
-    <option>Luxor</option>
-    <option>North Sinai</option>
-    <option>Sharqia</option>
-    <option>Sohag</option>
-</select>
-<input type="text" id="loginJob" placeholder="Job Title">
-<button onclick="handleLogin()">Register & Login</button>
-</div>
+    <div class="auth-container" id="phoneAuthContainer">
+        <h1>Helper Pal</h1>
+        <p class="subtitle" id="authSubtitle">Enter your phone number to verify</p>
+        <input type="tel" id="phoneNumber" placeholder="Phone Number (e.g., +20123456789)" value="+20">
+        <button onclick="sendOTP()" id="sendOTPBtn">Send Verification Code</button>
+        <p style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">We'll send a 6-digit code via SMS</p>
+    </div>
+    
+    <div class="auth-container" id="otpAuthContainer" style="display: none;">
+        <h1>Helper Pal</h1>
+        <p class="subtitle" id="otpSubtitle">Enter the verification code</p>
+        <input type="text" id="otpCode" placeholder="6-digit code" maxlength="6">
+        <button onclick="verifyOTP()" id="verifyOTPBtn">Verify & Continue</button>
+        <button onclick="resendOTP()" style="background: transparent; color: var(--accent-primary); box-shadow: none; margin-top: 10px;" id="resendOTPBtn">Resend Code</button>
+    </div>
+    
+    <div class="auth-container" id="profileAuthContainer" style="display: none;">
+        <h1>Helper Pal</h1>
+        <p class="subtitle" id="profileSubtitle">Complete your profile</p>
+        <input type="text" id="loginName" placeholder="Full Name">
+        <input type="date" id="loginBirthdate" placeholder="Birth Date">
+        <select id="loginGovernorate">
+            <option value="">Select Governorate</option>
+            <option>Cairo</option>
+            <option>Giza</option>
+            <option>Alexandria</option>
+            <option>Dakahlia</option>
+            <option>Red Sea</option>
+            <option>Beheira</option>
+            <option>Faiyum</option>
+            <option>Gharbia</option>
+            <option>Ismailia</option>
+            <option>Menofia</option>
+            <option>Minya</option>
+            <option>Qalyubia</option>
+            <option>New Valley</option>
+            <option>Suez</option>
+            <option>Aswan</option>
+            <option>Asyut</option>
+            <option>Beni Suef</option>
+            <option>Port Said</option>
+            <option>Damietta</option>
+            <option>South Sinai</option>
+            <option>Kafr El Sheikh</option>
+            <option>Matrouh</option>
+            <option>Luxor</option>
+            <option>North Sinai</option>
+            <option>Sharqia</option>
+            <option>Sohag</option>
+        </select>
+        <input type="text" id="loginJob" placeholder="Job Title">
+        <button onclick="completeProfile()" id="completeProfileBtn">Complete Registration</button>
+    </div>
 </div>
 
 <!-- Mobile Profile Icon -->
@@ -689,7 +704,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
                     <div class="info-row"><span class="info-label" id="jobLabel">Job</span><span class="info-value" id="infoJob"></span></div>
                 </div>
                 <button class="edit-profile-btn" onclick="openModal()">✎ <span id="editDataText">Edit Profile</span></button>
-                <button class="logout-profile-btn" onclick="showLogoutConfirm()">🚪 <span id="logoutText">Logout</span></button>
+                <button class="logout-profile-btn" onclick="logout()">🚪 <span id="logoutText">Logout</span></button>
             </div>
         </div>
     </div>
@@ -753,7 +768,7 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
         </div>
       
         <input type="text" id="editName" placeholder="Name">
-        <input type="tel" id="editPhone" placeholder="Phone Number">
+        <input type="tel" id="editPhone" placeholder="Phone Number" disabled>
         <input type="date" id="editBirthdate">
         <select id="editGovernorate">
             <option value="">Select Governorate</option>
@@ -787,18 +802,6 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
         <input type="text" id="editJob" placeholder="Job">
         <div style="display:flex;gap:10px;margin-top:15px;">
             <button class="save-btn" onclick="saveProfile()" id="saveBtnText">Save</button>
-        </div>
-    </div>
-</div>
-
-<!-- Confirm Modal -->
-<div class="confirm-modal" id="confirmModal">
-    <div class="confirm-content">
-        <h3 id="confirmTitle">Confirm Logout</h3>
-        <p id="confirmMessage">Are you sure you want to logout?<br>Your data will be deleted and you'll need to register again.</p>
-        <div class="confirm-buttons">
-            <button class="confirm-yes" onclick="confirmLogout()" id="confirmYesText">Yes, Logout</button>
-            <button class="confirm-no" onclick="closeConfirmModal()" id="confirmNoText">No, Cancel</button>
         </div>
     </div>
 </div>
@@ -853,6 +856,8 @@ input:checked + .toggle-slider:before { transform: translateX(28px); }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove, set, get, child } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyDv348xdxShxrVVAEtIlCpeBfKqvOfY-0o",
     authDomain: "talk-19c55.firebaseapp.com",
@@ -862,16 +867,21 @@ const firebaseConfig = {
     messagingSenderId: "908101479029",
     appId: "1:908101479029:web:8e3fa4ffa469d4e56a663c"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
+
 const $ = id => document.getElementById(id);
 
 // DOM Elements
 const els = {
     authScreen: $('authScreen'), mainView: $('mainView'), rightSidebar: $('rightSidebar'),
     mobileProfileIcon: $('mobileProfileIcon'), mobileBottomBar: $('mobileBottomBar'),
-    loginName: $('loginName'), loginPhone: $('loginPhone'), loginBirthdate: $('loginBirthdate'),
-    loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), displayName: $('displayName'),
+    phoneNumber: $('phoneNumber'), otpCode: $('otpCode'),
+    loginName: $('loginName'), loginBirthdate: $('loginBirthdate'),
+    loginGovernorate: $('loginGovernorate'), loginJob: $('loginJob'), 
+    displayName: $('displayName'),
     infoName: $('infoName'), infoPhone: $('infoPhone'), infoBirthdate: $('infoBirthdate'),
     infoGovernorate: $('infoGovernorate'), infoJob: $('infoJob'), avatarDisplay: $('avatarDisplay'),
     editName: $('editName'), editPhone: $('editPhone'), editBirthdate: $('editBirthdate'),
@@ -890,7 +900,7 @@ const els = {
     chatModal: $('chatModal'), chatMessages: $('chatMessages'), chatInput: $('chatInput'),
     chatUserName: $('chatUserName'), chatAvatar: $('chatAvatar'), newMessageModal: $('newMessageModal'),
     newMessageRecipient: $('newMessageRecipient'), newMessageText: $('newMessageText'),
-    confirmModal: $('confirmModal'), darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon'),
+    darkModeToggle: $('darkModeToggle'), darkModeIcon: $('darkModeIcon'),
     splashScreen: $('splashScreen'), languageSelect: $('languageSelect'),
     authSubtitle: $('authSubtitle'), backToHomeText: $('backToHomeText'), editProfileText: $('editProfileText'),
     newPostTitle: $('newPostTitle'), addMediaText: $('addMediaText'), publishText: $('publishText'),
@@ -902,16 +912,21 @@ const els = {
     governorateLabel: $('governorateLabel'), jobLabel: $('jobLabel'), editDataText: $('editDataText'),
     logoutText: $('logoutText'), feedTitle: $('feedTitle'), selectedMediaText: $('selectedMediaText'),
     editProfileModalTitle: $('editProfileModalTitle'), darkModeText: $('darkModeText'),
-    saveBtnText: $('saveBtnText'), confirmTitle: $('confirmTitle'), confirmMessage: $('confirmMessage'),
-    confirmYesText: $('confirmYesText'), confirmNoText: $('confirmNoText'), onlineStatus: $('onlineStatus'),
+    saveBtnText: $('saveBtnText'), onlineStatus: $('onlineStatus'),
     newMessageTitle: $('newMessageTitle'), sendMessageText: $('sendMessageText'),
-    languageLabelText: $('languageLabelText')
+    languageLabelText: $('languageLabelText'),
+    phoneAuthContainer: $('phoneAuthContainer'), otpAuthContainer: $('otpAuthContainer'),
+    profileAuthContainer: $('profileAuthContainer'), otpSubtitle: $('otpSubtitle'),
+    profileSubtitle: $('profileSubtitle'), sendOTPBtn: $('sendOTPBtn'),
+    verifyOTPBtn: $('verifyOTPBtn'), resendOTPBtn: $('resendOTPBtn')
 };
 
-// Translations (unchanged)
+// Translations
 const translations = {
     en: {
-        authSubtitle: "Create your account now to join the community",
+        authSubtitle: "Enter your phone number to verify",
+        otpSubtitle: "Enter the verification code",
+        profileSubtitle: "Complete your profile",
         backToHomeText: "Back to Home",
         editProfileText: "Edit Profile",
         newPostTitle: "📝 New Post",
@@ -941,10 +956,6 @@ const translations = {
         darkModeText: "Dark Mode",
         languageLabelText: "Language",
         saveBtnText: "Save",
-        confirmTitle: "Confirm Logout",
-        confirmMessage: "Are you sure you want to logout?\nYour data will be deleted and you'll need to register again.",
-        confirmYesText: "Yes, Logout",
-        confirmNoText: "No, Cancel",
         onlineStatus: "Online now",
         newMessageTitle: "📝 New Message",
         sendMessageText: "Send Message",
@@ -974,10 +985,20 @@ const translations = {
         comment: "comment",
         on: "on",
         repliedTo: "Replied to",
-        mediaCount: (count) => `${count} media`
+        mediaCount: (count) => `${count} media`,
+        enterPhone: "Please enter your phone number",
+        enterOTP: "Please enter the verification code",
+        invalidOTP: "Invalid verification code",
+        phoneVerified: "Phone verified successfully!",
+        sendingOTP: "Sending code...",
+        verifyingOTP: "Verifying...",
+        resendOTP: "Code resent",
+        completeProfile: "Please complete your profile"
     },
     ar: {
-        authSubtitle: "أنشئ حسابك الآن للانضمام إلى المجتمع",
+        authSubtitle: "أدخل رقم هاتفك للتحقق",
+        otpSubtitle: "أدخل رمز التحقق",
+        profileSubtitle: "أكمل ملفك الشخصي",
         backToHomeText: "الرجوع للرئيسية",
         editProfileText: "تعديل البروفايل",
         newPostTitle: "📝 مشاركة جديدة",
@@ -1007,10 +1028,6 @@ const translations = {
         darkModeText: "الوضع المظلم",
         languageLabelText: "اللغة",
         saveBtnText: "حفظ",
-        confirmTitle: "تأكيد تسجيل الخروج",
-        confirmMessage: "هل توافق على تسجيل الخروج من الموقع؟\nسيتم حذف بياناتك وسيطلب منك إعادة التسجيل من جديد.",
-        confirmYesText: "نعم، خروج",
-        confirmNoText: "لا، إلغاء",
         onlineStatus: "متصل الآن",
         newMessageTitle: "📝 رسالة جديدة",
         sendMessageText: "إرسال الرسالة",
@@ -1049,16 +1066,42 @@ const translations = {
         confirmDelete: "هل أنت متأكد من الحذف؟",
         goToPost: "🔍 عرض في المنشور",
         comment: "تعليق",
-        reply: "رد",
         on: "على",
         repliedTo: "رد على",
-        mediaCount: (count) => `${count} وسائط`
+        mediaCount: (count) => `${count} وسائط`,
+        enterPhone: "يرجى إدخال رقم هاتفك",
+        enterOTP: "يرجى إدخال رمز التحقق",
+        invalidOTP: "رمز التحقق غير صحيح",
+        phoneVerified: "تم التحقق من الرقم بنجاح!",
+        sendingOTP: "جاري إرسال الرمز...",
+        verifyingOTP: "جاري التحقق...",
+        resendOTP: "تم إعادة إرسال الرمز",
+        completeProfile: "يرجى إكمال ملفك الشخصي"
     }
 };
 
 let currentLanguage = 'en';
+let currentUser = null;
+let confirmationResult = null;
+let allPosts = [];
+let allNotifications = [];
+let allMessages = [];
+let selectedFiles = [];
+let mobileSelectedFiles = [];
+let currentViewerMedia = [];
+let currentViewerIndex = 0;
+let currentChatUser = null;
+let currentChatRoomId = null;
+let newMessageTargetUser = null;
+let commentsOpenState = {};
 
-// Language Functions (unchanged)
+// Initialize reCAPTCHA
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sendOTPBtn', {
+    'size': 'invisible',
+    'callback': (response) => {}
+});
+
+// Language Functions
 function changeLanguage(lang) {
     currentLanguage = lang;
     localStorage.setItem('helperpal_language', lang);
@@ -1085,6 +1128,8 @@ function changeLanguage(lang) {
 function updateUILanguage() {
     const t = translations[currentLanguage];
     if (els.authSubtitle) els.authSubtitle.textContent = t.authSubtitle;
+    if (els.otpSubtitle) els.otpSubtitle.textContent = t.otpSubtitle;
+    if (els.profileSubtitle) els.profileSubtitle.textContent = t.profileSubtitle;
     if (els.backToHomeText) els.backToHomeText.textContent = t.backToHomeText;
     if (els.editProfileText) els.editProfileText.textContent = t.editProfileText;
     if (els.newPostTitle) els.newPostTitle.textContent = t.newPostTitle;
@@ -1114,10 +1159,6 @@ function updateUILanguage() {
     if (els.darkModeText) els.darkModeText.textContent = t.darkModeText;
     if (els.languageLabelText) els.languageLabelText.textContent = t.languageLabelText;
     if (els.saveBtnText) els.saveBtnText.textContent = t.saveBtnText;
-    if (els.confirmTitle) els.confirmTitle.textContent = t.confirmTitle;
-    if (els.confirmMessage) els.confirmMessage.textContent = t.confirmMessage;
-    if (els.confirmYesText) els.confirmYesText.textContent = t.confirmYesText;
-    if (els.confirmNoText) els.confirmNoText.textContent = t.confirmNoText;
     if (els.onlineStatus) els.onlineStatus.textContent = t.onlineStatus;
     if (els.newMessageTitle) els.newMessageTitle.textContent = t.newMessageTitle;
     if (els.sendMessageText) els.sendMessageText.textContent = t.sendMessageText;
@@ -1126,6 +1167,10 @@ function updateUILanguage() {
     if (els.mobilePostInput) els.mobilePostInput.placeholder = t.writeSomething;
     if (els.newMessageText) els.newMessageText.placeholder = t.writeMessage;
     if (els.chatInput) els.chatInput.placeholder = t.writeMessage;
+  
+    if (els.sendOTPBtn) els.sendOTPBtn.textContent = t.sendingOTP;
+    if (els.verifyOTPBtn) els.verifyOTPBtn.textContent = t.verifyingOTP;
+    if (els.resendOTPBtn) els.resendOTPBtn.textContent = t.resendOTP;
   
     updatePostsCount();
 }
@@ -1150,14 +1195,40 @@ window.addEventListener('load', function() {
     const savedLang = localStorage.getItem('helperpal_language') || 'en';
     if (els.languageSelect) els.languageSelect.value = savedLang;
     changeLanguage(savedLang);
+    
+    loadDarkMode();
+    
+    // Check if user is already logged in
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            // Check if user is blocked
+            const snapshot = await get(child(ref(db), `blockedUsers/${user.phoneNumber}`));
+            if (snapshot.exists()) {
+                alert(translations[currentLanguage].blockedMessage);
+                await signOut(auth);
+                showAuthScreen();
+                return;
+            }
+            
+            // Load user data from database
+            const userSnapshot = await get(child(ref(db), `users/${user.phoneNumber}`));
+            if (userSnapshot.exists()) {
+                currentUser = userSnapshot.val();
+                showMainView();
+                loadPosts();
+                loadNotifications();
+                loadMessages();
+            } else {
+                // New user, show profile completion
+                showProfileCompletion(user.phoneNumber);
+            }
+        } else {
+            showAuthScreen();
+        }
+    });
 });
 
-let currentUser = null, allPosts = [], allNotifications = [], allMessages = [],
-    selectedFiles = [], mobileSelectedFiles = [], currentViewerMedia = [],
-    currentViewerIndex = 0, currentChatUser = null, currentChatRoomId = null,
-    newMessageTargetUser = null, commentsOpenState = {};
-
-// Dark Mode (unchanged)
+// Dark Mode
 function loadDarkMode() {
     const saved = localStorage.getItem('helperpal_theme'),
           isDark = saved !== 'light';
@@ -1165,6 +1236,7 @@ function loadDarkMode() {
     if (els.darkModeToggle) els.darkModeToggle.checked = isDark;
     if (els.darkModeIcon) els.darkModeIcon.textContent = isDark ? '☀️' : '🌙';
 }
+
 window.toggleDarkMode = () => {
     const isDark = els.darkModeToggle.checked;
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : '');
@@ -1172,37 +1244,136 @@ window.toggleDarkMode = () => {
     localStorage.setItem('helperpal_theme', isDark ? 'dark' : 'light');
 };
 
-// Check User (unchanged)
-const savedUser = localStorage.getItem('helperpal_user');
-if (savedUser) {
-    currentUser = JSON.parse(savedUser);
-    loadDarkMode();
-    checkIfBlocked(currentUser.phone);
-} else {
-    loadDarkMode();
-    showAuthScreen();
-}
+// Auth Functions
+window.sendOTP = async () => {
+    const phoneNumber = els.phoneNumber.value.trim();
+    if (!phoneNumber) {
+        alert(translations[currentLanguage].enterPhone);
+        return;
+    }
+    
+    try {
+        els.sendOTPBtn.disabled = true;
+        els.sendOTPBtn.textContent = translations[currentLanguage].sendingOTP;
+        
+        confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier);
+        
+        els.phoneAuthContainer.style.display = 'none';
+        els.otpAuthContainer.style.display = 'block';
+    } catch (error) {
+        alert(error.message);
+        console.error(error);
+    } finally {
+        els.sendOTPBtn.disabled = false;
+        els.sendOTPBtn.textContent = translations[currentLanguage].sendOTPBtn;
+    }
+};
 
-function checkIfBlocked(phone) {
-    get(child(ref(db), `blockedUsers/${phone}`)).then(s => {
-        if (s.exists()) {
-            alert(translations[currentLanguage].blockedMessage);
-            localStorage.removeItem('helperpal_user');
-            showAuthScreen();
-        } else {
+window.verifyOTP = async () => {
+    const otp = els.otpCode.value.trim();
+    if (!otp) {
+        alert(translations[currentLanguage].enterOTP);
+        return;
+    }
+    
+    try {
+        els.verifyOTPBtn.disabled = true;
+        els.verifyOTPBtn.textContent = translations[currentLanguage].verifyingOTP;
+        
+        const result = await confirmationResult.confirm(otp);
+        const user = result.user;
+        
+        // Check if user profile exists
+        const snapshot = await get(child(ref(db), `users/${user.phoneNumber}`));
+        
+        if (snapshot.exists()) {
+            // Existing user
+            currentUser = snapshot.val();
             showMainView();
             loadPosts();
             loadNotifications();
             loadMessages();
+        } else {
+            // New user - show profile completion
+            showProfileCompletion(user.phoneNumber);
         }
-    });
+    } catch (error) {
+        alert(translations[currentLanguage].invalidOTP);
+        console.error(error);
+    } finally {
+        els.verifyOTPBtn.disabled = false;
+        els.verifyOTPBtn.textContent = translations[currentLanguage].verifyOTPBtn;
+    }
+};
+
+window.resendOTP = async () => {
+    try {
+        await window.sendOTP();
+        alert(translations[currentLanguage].resendOTP);
+    } catch (error) {
+        alert(error.message);
+    }
+};
+
+function showProfileCompletion(phoneNumber) {
+    els.otpAuthContainer.style.display = 'none';
+    els.profileAuthContainer.style.display = 'block';
+    if (els.editPhone) els.editPhone.value = phoneNumber;
 }
+
+window.completeProfile = async () => {
+    const name = els.loginName.value.trim();
+    const birthdate = els.loginBirthdate.value.trim();
+    const governorate = els.loginGovernorate.value;
+    const job = els.loginJob.value.trim();
+    const phone = auth.currentUser?.phoneNumber;
+    
+    if (!name || !birthdate || !governorate || !job) {
+        alert(translations[currentLanguage].allFieldsRequired);
+        return;
+    }
+    
+    const userData = {
+        name,
+        phone,
+        birthdate,
+        governorate,
+        job,
+        registeredAt: Date.now(),
+        lastLogin: Date.now()
+    };
+    
+    // First user becomes admin
+    const usersSnapshot = await get(child(ref(db), 'users'));
+    if (!usersSnapshot.exists()) {
+        userData.isAdmin = true;
+    }
+    
+    await set(ref(db, `users/${phone}`), userData);
+    
+    currentUser = userData;
+    showMainView();
+    loadPosts();
+    loadNotifications();
+    loadMessages();
+};
+
+window.logout = async () => {
+    if (confirm(translations[currentLanguage].confirmDelete)) {
+        await signOut(auth);
+        currentUser = null;
+        showAuthScreen();
+    }
+};
 
 function showAuthScreen() {
     els.authScreen.classList.remove('hidden');
     els.mainView.classList.remove('show');
     els.mobileProfileIcon.style.display = 'none';
     els.mobileBottomBar.style.display = 'none';
+    els.phoneAuthContainer.style.display = 'block';
+    els.otpAuthContainer.style.display = 'none';
+    els.profileAuthContainer.style.display = 'none';
 }
 
 function showMainView() {
@@ -1213,35 +1384,6 @@ function showMainView() {
     if (window.innerWidth <= 768) $('chatBackBtn').style.display = 'block';
     updateProfileUI();
 }
-
-// Login, Profile, Mobile, Modals, Files, Publish, Media Viewer, Chat, My Posts, Notifications, Comments, Load Posts (ALL UNCHANGED - only layout swapped via CSS)
-window.handleLogin = () => {
-    const { loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob } = els;
-    const [name, phone, birthdate, governorate, job] = [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].map(e => e.value.trim());
-  
-    if (!name || !phone || !birthdate || !governorate || !job) {
-        alert(translations[currentLanguage].allFieldsRequired);
-        return;
-    }
-  
-    get(child(ref(db), `blockedUsers/${phone}`)).then(s => {
-        if (s.exists()) {
-            alert(translations[currentLanguage].blockedMessage);
-            return;
-        }
-      
-        const userData = { name, phone, birthdate, governorate, job, registeredAt: Date.now(), lastLogin: Date.now() };
-        set(ref(db, `users/${phone}`), userData).then(() => {
-            currentUser = userData;
-            localStorage.setItem('helperpal_user', JSON.stringify(currentUser));
-            showMainView();
-            loadPosts();
-            loadNotifications();
-            loadMessages();
-            [loginName, loginPhone, loginBirthdate, loginGovernorate, loginJob].forEach(e => e.value = '');
-        });
-    });
-};
 
 function updateProfileUI() {
     if (!currentUser) return;
@@ -1268,33 +1410,34 @@ window.openModal = () => {
     if (els.languageSelect) els.languageSelect.value = currentLanguage;
     $('profileModal').style.display = 'flex';
 };
+
 window.closeModal = id => $(id).style.display = 'none';
+
 window.saveProfile = () => {
-    const [newName, newPhone, newBirthdate, newGovernorate, newJob] = [els.editName, els.editPhone, els.editBirthdate, els.editGovernorate, els.editJob].map(e => e.value.trim());
+    const [newName, newBirthdate, newGovernorate, newJob] = [els.editName, els.editBirthdate, els.editGovernorate, els.editJob].map(e => e.value.trim());
   
-    if (!newName || !newPhone || !newBirthdate || !newGovernorate || !newJob) {
+    if (!newName || !newBirthdate || !newGovernorate || !newJob) {
         alert(translations[currentLanguage].allFieldsRequired);
         return;
     }
   
-    const updatedUser = { ...currentUser, name: newName, phone: newPhone, birthdate: newBirthdate, governorate: newGovernorate, job: newJob };
-    set(ref(db, `users/${newPhone}`), updatedUser).then(() => {
+    const updatedUser = { 
+        ...currentUser, 
+        name: newName, 
+        birthdate: newBirthdate, 
+        governorate: newGovernorate, 
+        job: newJob 
+    };
+    
+    set(ref(db, `users/${currentUser.phone}`), updatedUser).then(() => {
         currentUser = updatedUser;
         localStorage.setItem('helperpal_user', JSON.stringify(currentUser));
         updateProfileUI();
         closeModal('profileModal');
     });
 };
-window.showLogoutConfirm = () => els.confirmModal.classList.add('show');
-window.closeConfirmModal = () => els.confirmModal.classList.remove('show');
-window.confirmLogout = () => {
-    localStorage.removeItem('helperpal_user');
-    currentUser = null;
-    closeConfirmModal();
-    showAuthScreen();
-};
 
-// File Uploads (unchanged)
+// File Uploads
 els.fileUpload.addEventListener('change', e => {
     if (!e.target.files) return;
     [...e.target.files].forEach(file => {
@@ -1312,6 +1455,7 @@ els.fileUpload.addEventListener('change', e => {
     });
     e.target.value = '';
 });
+
 function renderFilePreviews() {
     els.filePreviewContainer.innerHTML = selectedFiles.map((file, i) => {
         if (file.type === 'video') {
@@ -1329,6 +1473,7 @@ function renderFilePreviews() {
         }
     }).join('');
 }
+
 window.removeFile = i => { selectedFiles.splice(i, 1); renderFilePreviews(); };
 
 window.toggleMobileImagePicker = () => {
@@ -1337,6 +1482,7 @@ window.toggleMobileImagePicker = () => {
         els.mobileImageBtn.classList.remove('active');
     } else els.mobileFileUpload.click();
 };
+
 els.mobileFileUpload.addEventListener('change', e => {
     if (!e.target.files) return;
     [...e.target.files].forEach(file => {
@@ -1356,6 +1502,7 @@ els.mobileFileUpload.addEventListener('change', e => {
     els.mobileImagePreview.classList.add('show');
     els.mobileImageBtn.classList.add('active');
 });
+
 function renderMobileFilePreviews() {
     els.mobilePreviewGrid.innerHTML = mobileSelectedFiles.map((file, i) => {
         if (file.type === 'video') {
@@ -1371,6 +1518,7 @@ function renderMobileFilePreviews() {
         }
     }).join('');
 }
+
 window.removeMobileFile = i => {
     mobileSelectedFiles.splice(i, 1);
     renderMobileFilePreviews();
@@ -1380,7 +1528,7 @@ window.removeMobileFile = i => {
     }
 };
 
-// Publish Posts (unchanged)
+// Publish Posts
 window.publishPost = () => {
     const desc = els.postDesc.value.trim();
     if (!desc && !selectedFiles.length) {
@@ -1407,6 +1555,7 @@ window.publishPost = () => {
         if (window.innerWidth <= 768) els.rightSidebar.classList.remove('show');
     });
 };
+
 window.publishMobilePost = () => {
     const text = els.mobilePostInput.value.trim();
     if (!text && !mobileSelectedFiles.length) {
@@ -1435,7 +1584,7 @@ window.publishMobilePost = () => {
     });
 };
 
-// Media Viewer, Chat, Messages, My Posts, Notifications, Comments, Load Posts (ALL REMAIN EXACTLY THE SAME)
+// Media Viewer
 window.openMediaViewer = (media, index) => {
     currentViewerMedia = media;
     currentViewerIndex = index;
@@ -1443,12 +1592,14 @@ window.openMediaViewer = (media, index) => {
     els.mediaViewerModal.classList.add('show');
     document.body.style.overflow = 'hidden';
 };
+
 window.closeMediaViewer = () => {
     els.mediaViewerModal.classList.remove('show');
     document.body.style.overflow = '';
     const videos = els.mediaViewerContainer.querySelectorAll('video');
     videos.forEach(v => v.pause());
 };
+
 window.navigateMedia = dir => {
     const newIndex = currentViewerIndex + dir;
     if (newIndex >= 0 && newIndex < currentViewerMedia.length) {
@@ -1456,6 +1607,7 @@ window.navigateMedia = dir => {
         renderMediaViewer();
     }
 };
+
 function renderMediaViewer() {
     if (!currentViewerMedia.length) return;
     els.mediaViewerContainer.innerHTML = '';
@@ -1480,7 +1632,9 @@ function renderMediaViewer() {
     els.mediaViewerContainer.appendChild(slide);
 }
 
+// Chat Functions
 function getChatRoomId(u1, u2) { return [u1, u2].sort().join('_'); }
+
 window.openNewMessageModal = target => {
     if (target === currentUser.name) {
         alert(translations[currentLanguage].cantMessageYourself);
@@ -1491,10 +1645,12 @@ window.openNewMessageModal = target => {
     els.newMessageText.value = '';
     els.newMessageModal.classList.add('show');
 };
+
 window.closeNewMessageModal = () => {
     els.newMessageModal.classList.remove('show');
     newMessageTargetUser = null;
 };
+
 window.sendNewMessage = () => {
     const text = els.newMessageText.value.trim();
     if (!text || !newMessageTargetUser) {
@@ -1522,6 +1678,7 @@ window.sendNewMessage = () => {
     alert(translations[currentLanguage].messageSent);
     openChat(newMessageTargetUser);
 };
+
 window.openChat = target => {
     if (target === currentUser.name) return;
     currentChatUser = target;
@@ -1532,11 +1689,13 @@ window.openChat = target => {
     loadChatMessages();
     markMessagesAsRead(target);
 };
+
 window.closeChat = () => {
     els.chatModal.classList.remove('show');
     currentChatUser = null;
     currentChatRoomId = null;
 };
+
 function markMessagesAsRead(target) {
     const chatRoomId = getChatRoomId(currentUser.name, target);
     get(child(ref(db), `messages/${chatRoomId}`)).then(s => {
@@ -1550,6 +1709,7 @@ function markMessagesAsRead(target) {
         if (Object.keys(updates).length) update(ref(db), updates);
     });
 }
+
 function loadChatMessages() {
     if (!currentChatRoomId) return;
     onValue(ref(db, `messages/${currentChatRoomId}`), s => {
@@ -1568,6 +1728,7 @@ function loadChatMessages() {
         els.chatMessages.scrollTop = els.chatMessages.scrollHeight;
     });
 }
+
 window.sendChatMessage = () => {
     const text = els.chatInput.value.trim();
     if (!text || !currentChatRoomId) return;
@@ -1588,6 +1749,7 @@ window.sendChatMessage = () => {
     });
     els.chatInput.value = '';
 };
+
 function loadMessages() {
     onValue(ref(db, 'messages'), s => {
         const data = s.val();
@@ -1612,6 +1774,7 @@ function loadMessages() {
         if (els.messagesSection.classList.contains('show')) renderMessages();
     });
 }
+
 function updateMessageBadge() {
     const totalUnread = allMessages.reduce((sum, c) => sum + c.unreadCount, 0);
     els.messagesCount.textContent = allMessages.length;
@@ -1620,6 +1783,7 @@ function updateMessageBadge() {
         els.messageBadge.classList.add('show');
     } else els.messageBadge.classList.remove('show');
 }
+
 function renderMessages() {
     const t = translations[currentLanguage];
     els.messagesList.innerHTML = !allMessages.length ?
@@ -1639,15 +1803,18 @@ function renderMessages() {
         ).join('');
 }
 
+// Section Toggles
 window.toggleMyPosts = () => toggleSection(els.myPostsSection, els.myPostsToggle, renderMyPosts);
 window.toggleNotifications = () => {
     toggleSection(els.notificationsSection, els.notificationsToggle, renderNotifications);
     markAllNotificationsAsRead();
 };
+
 window.toggleMessages = () => {
     toggleSection(els.messagesSection, els.messagesToggle, renderMessages);
     markAllMessagesAsRead();
 };
+
 function toggleSection(section, toggle, render) {
     const isShowing = section.classList.contains('show');
     [els.myPostsSection, els.notificationsSection, els.messagesSection].forEach(s => s.classList.remove('show'));
@@ -1659,17 +1826,20 @@ function toggleSection(section, toggle, render) {
         setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
 }
+
 function markAllNotificationsAsRead() {
     allNotifications.forEach(n => {
         if (!n.read) update(ref(db, `notifications/${n.id}`), { read: true });
     });
 }
+
 function markAllMessagesAsRead() {
     allMessages.forEach(c => {
         if (c.unreadCount > 0) markMessagesAsRead(c.user);
     });
 }
 
+// My Posts Functions
 function getUserCommentsAndReplies() {
     const userComments = [];
     allPosts.forEach(post => {
@@ -1697,6 +1867,7 @@ function getUserCommentsAndReplies() {
     });
     return userComments.sort((a, b) => b.timestamp - a.timestamp);
 }
+
 function renderMyPosts() {
     const t = translations[currentLanguage];
     const myPosts = allPosts.filter(p => p.author === currentUser.name),
@@ -1753,6 +1924,7 @@ function renderMyPosts() {
     if (!myPosts.length && !myComments.length)
         els.myPostsList.innerHTML = `<div class="no-items">${t.noPostsOrComments}</div>`;
 }
+
 window.goToPost = postId => {
     const el = $(`post-${postId}`);
     if (el) {
@@ -1781,12 +1953,14 @@ window.deleteUserComment = (postId, commentId) => {
     update(ref(db, `posts/${postId}`), { comments: deleteFromTree(post.comments || []) })
         .then(() => alert(t.commentDeleted));
 };
+
 window.deletePost = postId => {
     const t = translations[currentLanguage];
     if (confirm(t.confirmDelete))
         remove(ref(db, `posts/${postId}`)).then(() => alert(t.postDeleted));
 };
 
+// Notifications Functions
 function loadNotifications() {
     onValue(ref(db, 'notifications'), s => {
         const data = s.val();
@@ -1803,6 +1977,7 @@ function loadNotifications() {
         if (els.notificationsSection.classList.contains('show')) renderNotifications();
     });
 }
+
 function updateNotificationBadge() {
     const unread = allNotifications.filter(n => !n.read).length;
     els.notificationsCount.textContent = allNotifications.length;
@@ -1811,6 +1986,7 @@ function updateNotificationBadge() {
         els.notificationBadge.classList.add('show');
     } else els.notificationBadge.classList.remove('show');
 }
+
 function renderNotifications() {
     const t = translations[currentLanguage];
     els.notificationsList.innerHTML = !allNotifications.length ?
@@ -1834,6 +2010,7 @@ function renderNotifications() {
             </div>`;
         }).join('');
 }
+
 function getTimeAgo(ts) {
     const diff = Date.now() - ts;
     const mins = Math.floor(diff / 60000);
@@ -1853,6 +2030,7 @@ function getTimeAgo(ts) {
         return `${days} day${days !== 1 ? 's' : ''} ago`;
     }
 }
+
 function navigateToNotification(notificationId) {
     const n = allNotifications.find(n => n.id === notificationId);
     if (!n) return;
@@ -1875,6 +2053,7 @@ function navigateToNotification(notificationId) {
         }
     }, 300);
 }
+
 function createNotification(from, to, type, postId, preview, text = '') {
     if (from === to) return;
     push(ref(db, 'notifications'), {
@@ -1888,10 +2067,12 @@ function createNotification(from, to, type, postId, preview, text = '') {
     });
 }
 
+// Comments Functions
 window.toggleComments = postId => {
     commentsOpenState[postId] = !commentsOpenState[postId];
     updatePostCommentsUI(postId);
 };
+
 function updatePostCommentsUI(postId) {
     const section = $(`comments-section-${postId}`),
           btn = $(`comments-btn-${postId}`);
@@ -1910,9 +2091,11 @@ function updatePostCommentsUI(postId) {
         btn.innerHTML = t.showComments(count);
     }
 }
+
 function getCommentsCount(postId) {
     return allPosts.find(p => p.id === postId)?.comments?.length || 0;
 }
+
 function findCommentInTree(comments, id) {
     for (const c of comments) {
         if (c.id === id) return c;
@@ -1923,6 +2106,7 @@ function findCommentInTree(comments, id) {
     }
     return null;
 }
+
 function updateCommentInTree(comments, id, updater) {
     return comments.map(c => {
         if (c.id === id) return updater(c);
@@ -1932,6 +2116,7 @@ function updateCommentInTree(comments, id, updater) {
         return c;
     });
 }
+
 window.addComment = postId => {
     const input = $(`comment-input-${postId}`),
           text = input.value.trim();
@@ -1955,6 +2140,7 @@ window.addComment = postId => {
         input.value = '';
     });
 };
+
 window.addReply = (postId, parentCommentId) => {
     const input = $(`reply-input-${parentCommentId}`),
           text = input.value.trim();
@@ -1987,6 +2173,7 @@ window.addReply = (postId, parentCommentId) => {
         toggleReplyInput(parentCommentId, false);
     });
 };
+
 window.toggleReplyInput = (commentId, show) => {
     const container = $(`reply-container-${commentId}`);
     if (container) {
@@ -1998,6 +2185,7 @@ window.toggleReplyInput = (commentId, show) => {
     }
 };
 
+// Load Posts
 function loadPosts() {
     onValue(ref(db, 'posts'), s => {
         const data = s.val();
@@ -2013,6 +2201,7 @@ function loadPosts() {
         if (els.myPostsSection.classList.contains('show')) renderMyPosts();
     });
 }
+
 function renderComment(c, postId, level = 0) {
     const t = translations[currentLanguage];
     const isAuthor = c.author === currentUser.name;
@@ -2042,6 +2231,7 @@ function renderComment(c, postId, level = 0) {
             ''}
     </div>`;
 }
+
 function renderPosts() {
     const t = translations[currentLanguage];
     els.postsContainer.innerHTML = '';
@@ -2116,13 +2306,12 @@ function renderPosts() {
     });
 }
 
-// Close Modals & Keyboard (unchanged)
+// Close Modals & Keyboard
 window.onclick = e => {
     if (e.target.classList.contains('modal')) e.target.style.display = 'none';
     if (e.target === els.mediaViewerModal) closeMediaViewer();
     if (e.target === els.chatModal) closeChat();
     if (e.target === els.newMessageModal) closeNewMessageModal();
-    if (e.target === els.confirmModal) closeConfirmModal();
     if (window.innerWidth <= 768 && e.target === els.rightSidebar) els.rightSidebar.classList.remove('show');
 };
 
@@ -2132,18 +2321,21 @@ els.mobilePostInput.addEventListener('keypress', e => {
         publishMobilePost();
     }
 });
+
 els.chatInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
         sendChatMessage();
     }
 });
+
 els.newMessageText.addEventListener('keypress', e => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendNewMessage();
     }
 });
+
 document.addEventListener('keydown', e => {
     if (els.mediaViewerModal.classList.contains('show')) {
         if (e.key === 'Escape') closeMediaViewer();
@@ -2153,9 +2345,9 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
         if (els.chatModal.classList.contains('show')) closeChat();
         if (els.newMessageModal.classList.contains('show')) closeNewMessageModal();
-        if (els.confirmModal.classList.contains('show')) closeConfirmModal();
     }
 });
+
 document.addEventListener('keypress', e => {
     if (e.target.classList.contains('comment-input') && e.key === 'Enter')
         addComment(e.target.id.replace('comment-input-', ''));
