@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helper Pal · Our Vision & Mission</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ===== الحماية الكاملة ===== */
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+        }
+
+        /* منع تحديد النص */
+        body {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        /* منع قائمة الكليك يمين */
+        body {
+            -webkit-touch-callout: none !important;
+        }
+
+        /* منع السحب والإفلات */
+        img, video, canvas, iframe, a, div, p, h1, h2, h3, h4, h5, h6, span, i, strong, em {
+            -webkit-user-drag: none !important;
+            user-drag: none !important;
+            pointer-events: auto;
+        }
+
+        /* ===== التصميم الأساسي ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0a1525 0%, #142433 100%);
+            color: #eef5ff;
+            line-height: 1.8;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 20%),
+                              radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.03) 0%, transparent 20%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .vision-card {
+            max-width: 1000px;
+            width: 100%;
+            margin: auto;
+            background: rgba(18, 28, 40, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(59, 130, 246, 0.25);
+            border-radius: 3rem;
+            padding: 3.5rem 3rem;
+            box-shadow: 0 40px 80px -20px #000000, 
+                        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .vision-card::after {
+            content: '';
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px dashed rgba(59, 130, 246, 0.15);
+            border-radius: 2.5rem;
+            pointer-events: none;
+        }
+
+        /* زر تبديل اللغة */
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 10;
+        }
+        
+        .lang-btn {
+            background: rgba(59, 130, 246, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .lang-btn i {
+            font-size: 1.2rem;
+            color: #fbbf24;
+        }
+        
+        .lang-btn:hover {
+            background: #3b82f6;
+            border-color: white;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 15px rgba(59, 130, 246, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        h1 span {
+            color: #3b82f6;
+            font-weight: 800;
+        }
+
+        .basmala {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #90caf9;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .intro-box {
+            background: linear-gradient(145deg, #0f1e2f, #0a1727);
+            border-radius: 2rem;
+            padding: 2rem 2.5rem;
+            margin: 2rem 0;
+            border: 1px solid #3b82f633;
+            box-shadow: 0 15px 0 #060e17;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-box::before {
+            content: '“';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 10rem;
+            color: #3b82f61a;
+            font-family: serif;
+            pointer-events: none;
+        }
+
+        .intro-box p {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #e1efff;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin: 2.8rem 0 1.2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            border-bottom: 3px solid #3b82f644;
+            padding-bottom: 0.7rem;
+        }
+
+        h2 i {
+            font-size: 2rem;
+            color: #3b82f6;
+            background: #1a2a3c;
+            padding: 0.7rem;
+            border-radius: 50%;
+            box-shadow: 0 5px 0 #0b141f;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: #d9e6ff;
+            font-weight: 400;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        ul li {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.8rem 1.2rem;
+            border-radius: 60px 20px 20px 60px;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+
+        ul li:hover {
+            border-color: #3b82f644;
+            background: rgba(59, 130, 246, 0.05);
+            transform: translateX(-5px);
+        }
+
+        ul li i {
+            color: #3b82f6;
+            margin-top: 0.3rem;
+            min-width: 28px;
+            font-size: 1.4rem;
+        }
+
+        .hadith-box {
+            background: #0f1d2e;
+            padding: 1.5rem 2rem;
+            border-radius: 4rem 4rem 4rem 1rem;
+            margin: 2rem 0;
+            border-right: 8px solid #fbbf24;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #f0f6ff;
+            box-shadow: 0 10px 0 #0a131f;
+        }
+
+        .hadith-box i {
+            color: #fbbf24;
+            margin-left: 15px;
+            font-size: 1.8rem;
+            vertical-align: middle;
+        }
+
+        .highlight-box {
+            background: #0b1829;
+            border-radius: 3rem 3rem 3rem 1rem;
+            padding: 2rem 2.5rem;
+            margin: 3rem 0;
+            border: 2px solid #3b82f6;
+            font-weight: 600;
+            line-height: 1.8;
+            font-size: 1.3rem;
+            position: relative;
+            box-shadow: 0 20px 0 #070f19;
+        }
+
+        .highlight-box strong {
+            color: #3b82f6;
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .callout {
+            background: #1e3146;
+            border-radius: 2rem;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            border: 1px solid #3b82f677;
+        }
+
+        .callout i {
+            font-size: 3rem;
+            color: #fbbf24;
+        }
+
+        .callout p {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 2.5rem;
+            color: #fff;
+            background: #3b82f6;
+            text-decoration: none;
+            border: 2px solid #3b82f6;
+            padding: 0.9rem 2.5rem;
+            border-radius: 60px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 10px 0 #1e3a5f;
+        }
+
+        .back-home:hover {
+            background: transparent;
+            color: #3b82f6;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 0 #0e1e2f;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px dashed #3b82f644;
+            text-align: center;
+            color: #a0b8d4;
+        }
+
+        @media (max-width: 700px) {
+            .vision-card {
+                padding: 2rem 1.5rem;
+            }
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+            }
+            .lang-btn {
+                padding: 7px 18px;
+                font-size: 0.9rem;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+            .basmala {
+                font-size: 1.6rem;
+            }
+            .intro-box p {
+                font-size: 1.2rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            ul li {
+                font-size: 1.1rem;
+                padding: 0.7rem 1rem;
+                border-radius: 40px 15px 15px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="vision-card">
+
+    <!-- زر تبديل اللغة - في الأعلى -->
+    <div class="language-switcher">
+        <button class="lang-btn" onclick="toggleLanguage()" id="langToggle">
+            <i class="fas fa-globe"></i>
+            <span id="langText">العربية</span>
+            <i class="fas fa-exchange-alt" style="font-size: 0.9rem;"></i>
+        </button>
+    </div>
+
+    <!-- البسملة (تظهر فقط في العربية) -->
+    <div class="basmala" id="basmala" style="display: none;"></div>
+
+    <h1 id="mainTitle"><span>Our Vision</span> & Mission</h1>
+
+    <!-- فقرة ترحيبية -->
+    <div class="intro-box">
+        <p id="introText">
+            Welcome to <strong>Helper Pal Platform</strong> — where a kind word turns into impact, 
+            help becomes construction, and success turns into a story we write together ✨
+        </p>
+    </div>
+
+    <!-- رؤيتنا -->
+    <h2 id="visionTitle"><i class="fas fa-eye"></i> <span>Our Vision</span></h2>
+    <p id="visionText">
+        Together we dream of building a safe, interconnected digital community full of ambition and teamwork. 
+        A community that knows no impossible, where every member inspires others, 
+        and every shared knowledge turns into light illuminating others' paths. 
+        We want Helper Pal to be a home for every seeker of good, and a station for every dreamer who wants to achieve themselves.
+    </p>
+
+    <!-- رسالتنا -->
+    <h2 id="missionTitle"><i class="fas fa-hand-holding-heart"></i> <span>Our Mission: Why Are You Here?</span></h2>
+    <div id="missionTexts">
+        <p>
+            Our mission goes beyond just a platform… We are here to redefine the meaning of giving. 
+            Every post, every word of encouragement, every solution you provide to someone in need — makes a real difference in their life. 
+            With you and people like you, wishes turn into achievements. We believe your success is our success, and your progress is proof of this community's strength.
+        </p>
+        <p>
+            <strong>But there is something deeper...</strong> At Helper Pal, you don't just offer help, you <strong>build bridges of relationships</strong> with people who share your ambition and desire to progress. These relationships are not just words, but <strong>real capital</strong> for your life. Every positive interaction, every thank you you receive, every appreciation you get, is an investment in your future. Imagine that someone you helped yesterday becomes your success partner tomorrow. Imagine a word of thanks from a member opens a door of opportunity you never dreamed of. This is the real impact.
+        </p>
+        <p>
+            <strong>And what about knowledge?</strong> Here lies greatness. <strong>Sharing beneficial knowledge and experience</strong> in any field (programming, marketing, design, life skills, entrepreneurship) is <strong>continuous charity</strong> that never stops. Every piece of information you benefit others with remains in your record of good deeds even after you're gone. Sharing experience is the highest level of learning; when you explain something to others, you solidify it in yourself and open horizons you never expected. <strong>Don't just be a receiver, be a teacher, be a publisher of good.</strong>
+        </p>
+        <p>
+            We are here to make every interaction <strong>a success story</strong>, every support <strong>a tangible impact</strong>, and every idea <strong>a tool for building a better future</strong>. We believe that a small community of pure hearts can make big change, and that <strong>every new relationship you build here adds value to your life, develops your skills, opens horizons you never dreamed of</strong>, and elevates your mention in this world and the hereafter through beneficial knowledge you share.
+        </p>
+    </div>
+
+    <!-- الأحاديث (تظهر فقط في العربية) -->
+    <div class="hadith-box" id="hadith1" style="display: none;"></div>
+    <div class="hadith-box" id="hadith2" style="display: none;"></div>
+    <div class="hadith-box" id="hadith3" style="display: none;"></div>
+
+    <!-- مبادئنا -->
+    <h2 id="principlesTitle"><i class="fas fa-heart"></i> <span>Our Principles We Live By</span></h2>
+    <ul id="principlesList">
+        <li><i class="fas fa-star"></i> <strong>If you see a post from someone needing help:</strong> Don't pass by indifferently. If you can, help them. If you can't, maybe you know someone who can. Connect them, for the guide to good is like its doer.</li>
+        <li><i class="fas fa-star"></i> <strong>If you have a friend interested in this field:</strong> Guide them to us. Having more interested people enhances opportunities for everyone and creates movement and activity that benefits every member.</li>
+        <li><i class="fas fa-star"></i> <strong>Don't keep a beneficial idea or experience to yourself:</strong> Share it in a post. Maybe one word could be the reason for guiding someone's entire life. Make your knowledge continuous charity.</li>
+        <li><i class="fas fa-star"></i> <strong>Share your expertise in any field:</strong> Programming, marketing, design, life skills, even cooking and sports. Every beneficial knowledge you offer others is credit for you in this life and the hereafter.</li>
+        <li><i class="fas fa-star"></i> <strong>The safe environment is everyone's responsibility:</strong> We maintain our language, respect each other's opinions, and do not allow any bad content or harmful comments. We want everyone to feel safe and respected.</li>
+        <li><i class="fas fa-star"></i> <strong>Humility is our hallmark:</strong> No to arrogance in doing good or helping others. Allah raises the humble in this world and the hereafter.</li>
+        <li><i class="fas fa-star"></i> <strong>A kind word is charity:</strong> Don't be stingy with encouragement, thanks, or sincere prayers for your brother.</li>
+        <li><i class="fas fa-globe"></i> <strong>Why write in English?</strong> We are an authentic Arab community, and Arabic is our first language and welcome anytime. But if you can write in English, know that you open unlimited doors for yourself. There are members from outside the Arab world seeking knowledge and opportunities, and with English you can reach them and they can reach you. Imagine a scientific post or practical experience you share in English being read by eyes from different parts of the world, turning into job opportunities, partnerships, or even international friendships. By doing so, you break the language barrier, make your knowledge a global commodity, and increase your chances of learning about new cultures and experiences. Ultimately, you are free to choose your language, but remember that English might be your key to a wider world of opportunities.</li>
+    </ul>
+
+    <!-- رسالة محورية -->
+    <div class="highlight-box" id="highlightBox">
+        <strong><i class="fas fa-bolt"></i> You are here to make a difference and build your future</strong>
+        With your help, you become the reason for someone else's success. This success could be a turning point in their life. 
+        Imagine a word from you or a simple answer changed someone's path forever. This is your lasting impact. The best part? All of this builds you a good reputation, expands your network, and opens doors of goodness you never expected.
+    </div>
+
+    <!-- نداء للعضو -->
+    <div class="callout" id="callout">
+        <i class="fas fa-users"></i>
+        <p>
+            <strong>You are not just a member</strong> — you are a partner in building this platform. 
+            Your presence, your posts, your interaction, are all foundation stones in the structure of Helper Pal. 
+            Make your mark clear, and leave a good impact that people remember you by even after you're gone.
+        </p>
+    </div>
+
+    <!-- لمسة ختامية -->
+    <div style="background: #0c1a2b; border-radius: 2rem; padding: 2rem; text-align: center; margin: 2.5rem 0;" id="closingBox">
+        <i class="fas fa-quote-left" style="color: #fbbf24; font-size: 2rem; opacity: 0.6;"></i>
+        <p style="font-size: 1.4rem; font-weight: 600; color: #fff;" id="closingText">
+            "Since you joined here, you've become part of a great success story. 
+            Let's write it together with letters of light and righteous deeds."
+        </p>
+    </div>
+
+    <!-- شكر خالص -->
+    <p class="text-center" style="font-size: 1.4rem; color: #bdd3ff;" id="thanksText">
+        <i class="fas fa-clock"></i> Thank you for your precious time, 
+        and we wish you an unforgettable journey full of successes and brilliance at Helper Pal 🚀
+    </p>
+
+    <!-- رابط العودة -->
+    <div class="text-center">
+        <a href="index.html" class="back-home" id="backHomeBtn">
+            <i class="fas fa-arrow-left" id="backArrow"></i> <span id="backHomeText">Back to Home</span>
+        </a>
+    </div>
+
+    <!-- تذكير -->
+    <div class="footer-note" id="footerNote">
+        <i class="fas fa-leaf"></i> Together we make good, and cooperate in righteousness and piety.
+    </div>
+
+</div>
+
+<script>
+    // ===== الحماية القصوى =====
+    
+    // منع القوائم (كليك يمين)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // منع F12 وأدوات المطور
+    document.addEventListener('keydown', function(e) {
+        // منع F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+Shift+I (أدوات المطور)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+Shift+C (Inspect Element)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+U (View Source)
+        if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+S (Save)
+        if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // منع Ctrl+P (Print)
+        if (e.ctrlKey && (e.key === 'P' || e.keyCode === 80)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // منع السحب والإفلات
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // منع تحديد النص (مع استثناء حقول الإدخال)
+    document.addEventListener('selectstart', function(e) {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // منع النسخ
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // كشف أدوات المطور (طريقة إضافية)
+    setInterval(function() {
+        const before = new Date();
+        debugger;
+        const after = new Date();
+        if (after - before > 100) {
+            // إذا كان debugger يعمل، المستخدم في أدوات المطور
+            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a1525;color:white;font-size:2rem;text-align:center;padding:2rem;">⚠️ أدوات المطور غير مسموح بها على هذه الصفحة</div>';
+        }
+    }, 1000);
+
+    // ===== بيانات الترجمة الكاملة =====
+    const translations = {
+        en: {
+            langBtn: "العربية",
+            basmala: "",
+            mainTitle: "<span>Our Vision</span> & Mission",
+            introText: "Welcome to <strong>Helper Pal Platform</strong> — where a kind word turns into impact, help becomes construction, and success turns into a story we write together ✨",
+            visionTitle: "Our Vision",
+            visionText: "Together we dream of building a safe, interconnected digital community full of ambition and teamwork. A community that knows no impossible, where every member inspires others, and every shared knowledge turns into light illuminating others' paths. We want Helper Pal to be a home for every seeker of good, and a station for every dreamer who wants to achieve themselves.",
+            missionTitle: "Our Mission: Why Are You Here?",
+            missionP1: "Our mission goes beyond just a platform… We are here to redefine the meaning of giving. Every post, every word of encouragement, every solution you provide to someone in need — makes a real difference in their life. With you and people like you, wishes turn into achievements. We believe your success is our success, and your progress is proof of this community's strength.",
+            missionP2: "<strong>But there is something deeper...</strong> At Helper Pal, you don't just offer help, you <strong>build bridges of relationships</strong> with people who share your ambition and desire to progress. These relationships are not just words, but <strong>real capital</strong> for your life. Every positive interaction, every thank you you receive, every appreciation you get, is an investment in your future. Imagine that someone you helped yesterday becomes your success partner tomorrow. Imagine a word of thanks from a member opens a door of opportunity you never dreamed of. This is the real impact.",
+            missionP3: "<strong>And what about knowledge?</strong> Here lies greatness. <strong>Sharing beneficial knowledge and experience</strong> in any field (programming, marketing, design, life skills, entrepreneurship) is <strong>continuous charity</strong> that never stops. Every piece of information you benefit others with remains in your record of good deeds even after you're gone. Sharing experience is the highest level of learning; when you explain something to others, you solidify it in yourself and open horizons you never expected. <strong>Don't just be a receiver, be a teacher, be a publisher of good.</strong>",
+            missionP4: "We are here to make every interaction <strong>a success story</strong>, every support <strong>a tangible impact</strong>, and every idea <strong>a tool for building a better future</strong>. We believe that a small community of pure hearts can make big change, and that <strong>every new relationship you build here adds value to your life, develops your skills, opens horizons you never dreamed of</strong>, and elevates your mention in this world and the hereafter through beneficial knowledge you share.",
+            hadith1: "",
+            hadith2: "",
+            hadith3: "",
+            principlesTitle: "Our Principles We Live By",
+            principlesList: [
+                "<i class='fas fa-star'></i> <strong>If you see a post from someone needing help:</strong> Don't pass by indifferently. If you can, help them. If you can't, maybe you know someone who can. Connect them, for the guide to good is like its doer.",
+                "<i class='fas fa-star'></i> <strong>If you have a friend interested in this field:</strong> Guide them to us. Having more interested people enhances opportunities for everyone and creates movement and activity that benefits every member.",
+                "<i class='fas fa-star'></i> <strong>Don't keep a beneficial idea or experience to yourself:</strong> Share it in a post. Maybe one word could be the reason for guiding someone's entire life. Make your knowledge continuous charity.",
+                "<i class='fas fa-star'></i> <strong>Share your expertise in any field:</strong> Programming, marketing, design, life skills, even cooking and sports. Every beneficial knowledge you offer others is credit for you in this life and the hereafter.",
+                "<i class='fas fa-star'></i> <strong>The safe environment is everyone's responsibility:</strong> We maintain our language, respect each other's opinions, and do not allow any bad content or harmful comments. We want everyone to feel safe and respected.",
+                "<i class='fas fa-star'></i> <strong>Humility is our hallmark:</strong> No to arrogance in doing good or helping others. Allah raises the humble in this world and the hereafter.",
+                "<i class='fas fa-star'></i> <strong>A kind word is charity:</strong> Don't be stingy with encouragement, thanks, or sincere prayers for your brother.",
+                "<i class='fas fa-globe'></i> <strong>Why write in English?</strong> We are an authentic Arab community, and Arabic is our first language and welcome anytime. But if you can write in English, know that you open unlimited doors for yourself. There are members from outside the Arab world seeking knowledge and opportunities, and with English you can reach them and they can reach you. Imagine a scientific post or practical experience you share in English being read by eyes from different parts of the world, turning into job opportunities, partnerships, or even international friendships. By doing so, you break the language barrier, make your knowledge a global commodity, and increase your chances of learning about new cultures and experiences. Ultimately, you are free to choose your language, but remember that English might be your key to a wider world of opportunities."
+            ],
+            highlightBox: "<strong><i class='fas fa-bolt'></i> You are here to make a difference and build your future</strong> With your help, you become the reason for someone else's success. This success could be a turning point in their life. Imagine a word from you or a simple answer changed someone's path forever. This is your lasting impact. The best part? All of this builds you a good reputation, expands your network, and opens doors of goodness you never expected.",
+            callout: "<strong>You are not just a member</strong> — you are a partner in building this platform. Your presence, your posts, your interaction, are all foundation stones in the structure of Helper Pal. Make your mark clear, and leave a good impact that people remember you by even after you're gone.",
+            closingText: "\"Since you joined here, you've become part of a great success story. Let's write it together with letters of light and righteous deeds.\"",
+            thanksText: "<i class='fas fa-clock'></i> Thank you for your precious time, and we wish you an unforgettable journey full of successes and brilliance at Helper Pal 🚀",
+            backHomeText: "Back to Home",
+            footerNote: "<i class='fas fa-leaf'></i> Together we make good, and cooperate in righteousness and piety."
+        },
+        ar: {
+            langBtn: "English",
+            basmala: "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ",
+            mainTitle: "<span>رؤيتنا</span> ورسالتنا",
+            introText: "مرحباً بك في <strong>منصة هيلبر بال</strong> — المكان الذي تتحول فيه الكلمة الطيبة إلى أثر، والمساعدة إلى بناء، والنجاح إلى قصة نكتبها سويًا ✨",
+            visionTitle: "رؤيتنا",
+            visionText: "نحلم معًا ببناء مجتمع إلكتروني آمن، مترابط، مليء بالطموح والعمل الجماعي. مجتمع لا يعرف المستحيل، حيث كل عضو هو سبب في إلهام غيره، وكل معرفة تُنشر تتحول إلى نور يضيء طريق الآخرين. نريد لهيلبر بال أن تكون بيتًا لكل باحث عن الخير، ومحطة لكل حالم يريد تحقيق ذاته.",
+            missionTitle: "رسالتنا: لماذا أنت هنا؟",
+            missionP1: "رسالتنا أبعد من مجرد منصة… نحن هنا لنعيد تعريف معنى العطاء. كل مشاركة، كل كلمة تشجيع، كل حل تقدمه لشخص محتاج — يصنع فرقًا حقيقيًا في حياته. بك وبأمثالك تتحول الأماني إلى إنجازات. نؤمن أن نجاحك هو نجاح لنا، وتقدمك هو دليل على قوة هذا المجتمع.",
+            missionP2: "<strong>لكن هناك ما هو أعمق...</strong> في هيلبر بال، أنت لا تقدم المساعدة فحسب، بل <strong>تبني جسوراً من العلاقات</strong> مع أناس يشاركونك الطموح والرغبة في التقدم. هذه العلاقات ليست مجرد كلمات، بل هي <strong>رأس مال حقيقي</strong> لحياتك. كل تفاعل إيجابي، كل شكر تتلقاه، كل تقدير تحصل عليه، هو استثمار في مستقبلك. تخيل أن شخصاً ساعدته بالأمس، يصبح شريك نجاحك غداً. تخيل أن كلمة شكر من عضو، تفتح لك باب فرصة لم تكن تحلم بها. هذا هو الأثر الحقيقي.",
+            missionP3: "<strong>وماذا عن العلم؟</strong> هنا تكمن العظمة. <strong>مشاركة العلم النافع والخبرة</strong> في أي مجال (برمجة، تسويق، تصميم، مهارات حياتية، ريادة اعمال) هو <strong>صدقة جارية</strong> لا تنقطع. كل معلومة تفيد بها غيرك، تبقى في ميزان حسناتك حتى بعد رحيلك. مشاركة الخبرة هي أعلى مراحل التعلم، فأنت عندما تشرح شيئاً لغيرك، ترسخه في نفسك ويتفتح لك من الآفاق ما لم تكن تتوقع. <strong>لا تكن مجرد متلقي، كن معلماً، كن ناشراً للخير.</strong>",
+            missionP4: "نحن هنا لنجعل من كل تفاعل <strong>قصة نجاح</strong>، ومن كل دعم <strong>أثراً ملموساً</strong>، ومن كل فكرة <strong>أداة لبناء مستقبل أفضل</strong>. نحن نؤمن بأن مجتمعاً صغيراً من القلوب النقية قادر على صنع التغيير الكبير، وأن <strong>كل علاقة جديدة تبنيها هنا تضيف قيمة لحياتك، وتطور مهاراتك، وتفتح آفاقاً لم تكن تحلم بها</strong>، وترفع ذكرك في الدنيا والآخرة بعلم نافع تشاركه.",
+            hadith1: '<i class="fas fa-quote-right"></i> قال رسول الله ﷺ: <strong>«المؤمن للمؤمن كالبنيان يَشُدُّ بعضُه بعضًا»</strong> وشبك بين أصابعه. — هكذا نحن، متكاتفون، قويون معًا.',
+            hadith2: '<i class="fas fa-quote-right"></i> وقال ﷺ: <strong>«من تواضع لله رفعه»</strong>. فلا مكان للكبر هنا، بالتواضع نرتقي ونساعد بلا مقابل.',
+            hadith3: '<i class="fas fa-quote-right"></i> وقال ﷺ: <strong>«الدال على الخير كفاعله»</strong>. مجرد دلالتك لغيرك على خير، يكتب لك به الأجر. سبحان الله!',
+            principlesTitle: "مبادئنا ",
+            principlesList: [
+                "<i class='fas fa-star'></i> <strong>إذا رأيت منشورًا لشخص يحتاج مساعدة:</strong> لا تمر مرور الكرام. إن استطعت، ساعده. وإن لم تستطع، فربما تعرف أحدًا يستطيع. أوصله به، فالدال على الخير كفاعله.",
+                "<i class='fas fa-star'></i> <strong>إذا كان لديك صديق يهتم بهذا المجال:</strong> دُلَّه علينا. فوجود عدد أكبر من المهتمين يعزز الفرص للجميع، ويخلق حركة ونشاطًا يعود بالخير على كل عضو.",
+                "<i class='fas fa-star'></i> <strong>لا تحتفظ بفكرة أو تجربة نافعة:</strong> انشرها في منشور، فربما كلمة واحدة تكون سببًا في توجيه حياة إنسان كامل. اجعل علمك صدقة جارية.",
+                "<i class='fas fa-star'></i> <strong>شارك خبرتك في أي مجال:</strong> البرمجة، التسويق، التصميم، المهارات الحياتية، حتى الطبخ والرياضة. كل علم نافع تقدمه للغير هو رصيد لك في الدنيا والآخرة.",
+                "<i class='fas fa-star'></i> <strong>البيئة الآمنة مسؤوليتنا جميعًا:</strong> نحافظ على لغتنا، نحترم آراء بعضنا، ولا نسمح بأي محتوى سيء أو تعليق مؤذٍ. نريد أن يشعر الجميع بالأمان والاحترام.",
+                "<i class='fas fa-star'></i> <strong>التواضع عنواننا:</strong> لا للتكبر على فعل الخير أو مساعدة الغير. فالمتواضع يرفعه الله في الدنيا والآخرة.",
+                "<i class='fas fa-star'></i> <strong>الكلمة الطيبة صدقة:</strong> لا تبخل بتشجيع أو شكر أو دعوة صادقة لأخيك.",
+                "<i class='fas fa-globe'></i> <strong>فائدة الكتابه بالانجليزيه؟</strong> نحن مجتمع عربي أصيل، والعربية لغتنا الأولى وهي مرحب بها في أي وقت. لكن إن استطعت الكتابة باللغة الإنجليزية، فاعلم أنك تفتح لنفسك أبواباً لا حدود لها. وجود أعضاء من خارج الوطن العربي يبحثون عن العلم والفرص، وباللغة الإنجليزية تستطيع أن تصل إليهم ويصلون إليك. تخيل أن منشوراً علمياً أو خبرة عملية تشاركها باللغة الإنجليزية تقرأها عيون من مختلف أنحاء العالم، وتتحول إلى فرص عمل، شراكات، أو حتى صداقات دولية. أنت بذلك تكسر حاجز اللغة، وتجعل من علمك سلعة عالمية، وتزيد فرصك في التعرف على ثقافات وخبرات جديدة. في النهاية، أنت حر في اختيار لغتك، لكن تذكر أن الإنجليزية قد تكون مفتاحك لعالم أوسع من الفرص."
+            ],
+            highlightBox: "<strong><i class='fas fa-bolt'></i> أنت هنا لتصنع الفرق وتبني مستقبلك</strong> بمساعدتك، تكون سببًا في نجاح شخص آخر. هذا النجاح قد يكون نقطة تحول في حياته. تخيل أن كلمة منك أو إجابة بسيطة غيرت مسار أحدهم للأبد. هذا هو أثرك الذي يبقى. والأجمل؟ أن كل هذا يبني لك سمعة طيبة، ويوسع شبكة معارفك، ويفتح لك أبواباً من الخير لم تكن تتوقعها.",
+            callout: "<strong>أنت لست مجرد عضو</strong> — أنت شريك في بناء هذه المنصة. وجودك، مشاركاتك، تفاعلك، كلها حجر أساس في صرح هيلبر بال. اجعل بصمتك واضحة، واترك أثرًا طيبًا يذكرك به الناس حتى بعد غيابك.",
+            closingText: "\"منذ انضمامك إلى هنا، أصبحت جزءًا من قصة نجاح كبيرة. فلنكتبها معًا بأحرف من نور وعمل صالح.\"",
+            thanksText: "<i class='fas fa-clock'></i> شكرًا لوقتك الثمين، ونتمنى لك رحلة لا تُنسى مليئة بالنجاحات والتألق في هيلبر بال 🚀",
+            backHomeText: "العودة إلى الرئيسية",
+            footerNote: "<i class='fas fa-leaf'></i> معًا نصنع الخير، ونتعاون على البر والتقوى."
+        }
+    };
+
+    let currentLang = 'en'; // اللغة الافتراضية إنجليزية
+
+    function toggleLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+        applyLanguage(currentLang);
+        
+        // تغيير اتجاه الصفحة
+        if (currentLang === 'ar') {
+            document.documentElement.lang = 'ar';
+            document.documentElement.dir = 'rtl';
+            document.getElementById('backArrow').className = 'fas fa-arrow-right';
+        } else {
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+            document.getElementById('backArrow').className = 'fas fa-arrow-left';
+        }
+    }
+
+    function applyLanguage(lang) {
+        const t = translations[lang];
+        
+        // تحديث نص الزر
+        document.getElementById('langText').innerText = t.langBtn;
+        
+        // العناصر الأساسية
+        document.getElementById('basmala').innerHTML = t.basmala;
+        document.getElementById('basmala').style.display = lang === 'ar' ? 'block' : 'none';
+        document.getElementById('mainTitle').innerHTML = t.mainTitle;
+        document.getElementById('introText').innerHTML = t.introText;
+        
+        // عناوين
+        document.getElementById('visionTitle').querySelector('span').innerHTML = t.visionTitle;
+        document.getElementById('visionText').innerHTML = t.visionText;
+        
+        document.getElementById('missionTitle').querySelector('span').innerHTML = t.missionTitle;
+        
+        // فقرات الرسالة
+        const missionDiv = document.getElementById('missionTexts');
+        missionDiv.innerHTML = `
+            <p>${t.missionP1}</p>
+            <p>${t.missionP2}</p>
+            <p>${t.missionP3}</p>
+            <p>${t.missionP4}</p>
+        `;
+        
+        // الأحاديث
+        document.getElementById('hadith1').innerHTML = t.hadith1;
+        document.getElementById('hadith2').innerHTML = t.hadith2;
+        document.getElementById('hadith3').innerHTML = t.hadith3;
+        
+        // إظهار/إخفاء الأحاديث حسب اللغة
+        const hadith1 = document.getElementById('hadith1');
+        const hadith2 = document.getElementById('hadith2');
+        const hadith3 = document.getElementById('hadith3');
+        
+        if (lang === 'ar') {
+            hadith1.style.display = 'block';
+            hadith2.style.display = 'block';
+            hadith3.style.display = 'block';
+        } else {
+            hadith1.style.display = 'none';
+            hadith2.style.display = 'none';
+            hadith3.style.display = 'none';
+        }
+        
+        // عنوان المبادئ
+        document.getElementById('principlesTitle').querySelector('span').innerHTML = t.principlesTitle;
+        
+        // قائمة المبادئ
+        const principlesUl = document.getElementById('principlesList');
+        principlesUl.innerHTML = '';
+        t.principlesList.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = item;
+            principlesUl.appendChild(li);
+        });
+        
+        // باقي العناصر
+        document.getElementById('highlightBox').innerHTML = t.highlightBox;
+        document.getElementById('callout').innerHTML = `<i class="fas fa-users"></i><p>${t.callout}</p>`;
+        document.getElementById('closingText').innerHTML = t.closingText;
+        document.getElementById('thanksText').innerHTML = t.thanksText;
+        document.getElementById('backHomeText').innerText = t.backHomeText;
+        document.getElementById('footerNote').innerHTML = t.footerNote;
+    }
+
+    // تطبيق اللغة الافتراضية (الإنجليزية)
+    applyLanguage('en');
+</script>
+
+</body>
+</html>
